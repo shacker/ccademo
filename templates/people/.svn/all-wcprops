@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/code/!svn/ver/3161/projects/intranet/templates/people
+END
+profile_admin_edit.html
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/code/!svn/ver/3161/projects/intranet/templates/people/profile_admin_edit.html
+END
+profiles_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/code/!svn/ver/3161/projects/intranet/templates/people/profiles_list.html
+END
+profile.html
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/code/!svn/ver/1889/projects/intranet/templates/people/profile.html
+END
+profile_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/code/!svn/ver/2108/projects/intranet/templates/people/profile_detail.html
+END
+profile_edit.html
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/code/!svn/ver/3161/projects/intranet/templates/people/profile_edit.html
+END
+profile_edit_related.html
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/code/!svn/ver/3161/projects/intranet/templates/people/profile_edit_related.html
+END
+profile_add.html
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/code/!svn/ver/1215/projects/intranet/templates/people/profile_add.html
+END
+base.html
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/code/!svn/ver/2077/projects/intranet/templates/people/base.html
+END

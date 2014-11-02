@@ -1,0 +1,61 @@
+{% extends "page_base.html" %}
+{% load static from staticfiles %}
+
+{% block page_title %}{{ block.super }}Dashboard{% endblock page_title %}
+
+{% block content %}
+
+	<div class="page-header">
+		<h3>Welcome to Your CCA Dashboard</h3>
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-4">
+			<div class="panel panel-primary">
+			  <div class="panel-heading"><h3 class="panel-title">ETS News</h3></div>
+			  <div class="panel-body">
+			  	<ul>
+			    {% for story in news %}
+			    	<li><a href="{% url 'news_detail' story.slug %}">{{story.title}}</a></li>
+			    {% endfor %}
+			    </ul>
+			  </div>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="panel panel-warning">
+			  <div class="panel-heading"><h3 class="panel-title">NYT Stories</h3></div>
+			  <div class="panel-body">
+			    <ul>
+					{% for story in nyt_stories %}
+						<li><a href="{{story.url}}">{{story.title}}</a></li>
+					{% endfor %}
+			    </ul>
+			  </div>
+			</div>
+		</div>
+
+
+		<div class="col-sm-4">
+			<div class="panel panel-success">
+			  <div class="panel-heading"><h3 class="panel-title">Panel title</h3></div>
+			  <div class="panel-body">
+			    Panel content
+			  </div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="page-header">
+	<h3>Wells</h3>
+	</div>
+	<div class="well">
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean lacinia bibendum nulla sed consectetur.</p>
+	</div>
+
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{
+  "name": "project",
+  "version": "1.0",
+  "homepage": "http://cca.edu",
+  "authors": [
+    "Scot Hacker <shacker@cca.edu>"
+  ],
+  "description": "JS and CSS assets for CCA Demo",
+  "license": "Private",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "../static/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass-official": "3.2",
+    "jquery": "~2.1.0"
+  }
+}

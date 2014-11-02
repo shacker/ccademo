@@ -1,0 +1,10 @@
+Django==1.7.1
+requests
+django-countries
+django-localflavor
+pillow
+sorl-thumbnail
+simplejson
+psycopg2
+django-extensions
+

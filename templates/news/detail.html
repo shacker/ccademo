@@ -1,0 +1,17 @@
+{% extends "page_base.html" %}
+{% load static from staticfiles %}
+
+{% block page_title %}{{ block.super }}News - {{story.title}}{% endblock page_title %}
+
+{% block content %}
+
+	<div class="page-header">
+		<h3>{{story.title}}</h3>
+		<p>{{story.author.get_full_name}}, {{story.timestamp}}</p>
+	</div>
+
+	<div class="well">
+		{{story.body|linebreaks}}
+	</div>
+
+{% endblock content %}
