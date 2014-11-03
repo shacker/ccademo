@@ -1,0 +1,17 @@
+.DS_Store
+.project
+.ropeproject
+*.pyc
+*.log
+*.swp
+*~
+/data
+.~*
+common/CACHE
+local_settings.py
+dump.rdb
+src/*
+public/*
+.sass-cache
+static/bower_components/*
+.stversions
