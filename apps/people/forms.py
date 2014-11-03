@@ -257,7 +257,5 @@ class QueryForm(forms.Form):
     alum = forms.BooleanField(
                     label='Include Alumni?',
                     required=False,)
-    inactive = forms.BooleanField(
-                    label='Include inactive users?',
-                    required=False,)
+
 

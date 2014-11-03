@@ -1,5 +1,4 @@
 {% extends "page_sub.html" %}
-
 {% load bootstrap %}
 
 {% block title %}{{block.super}} People Finder{% endblock %}
@@ -11,7 +10,7 @@
     <div class="">
         <form action="" method="get" accept-charset="utf-8">
             {% csrf_token %}
-            {{ basic_form }}
+            {{ basic_form|bootstrap }}
             <input type="submit" value="Search" class="btn btn-primary" />
         </form>
     </div>
