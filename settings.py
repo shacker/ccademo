@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'bootstrapform',
 
     # Our apps
+    'base',
     'dashboard',
     'news',
     'people'
