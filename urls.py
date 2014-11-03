@@ -9,4 +9,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^people/', include('people.urls')),
 
+	(r'^accounts/login$', 'django_cas_ng.views.login'),
+	(r'^accounts/logout$', 'django_cas_ng.views.logout'),
+
 )

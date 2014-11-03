@@ -64,6 +64,17 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend',
+)
+
+# Via https://pypi.python.org/pypi/django-cas-ng/3.1.0
+CAS_SERVER_URL = 'https://cas.cca.edu/cas/login'
+CAS_ADMIN_PREFIX = '/admin'
+CAS_LOGOUT_COMPLETELY = True
+
 ROOT_URLCONF = 'urls'
 
 WSGI_APPLICATION = 'wsgi.application'

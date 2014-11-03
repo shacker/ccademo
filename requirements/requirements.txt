@@ -8,3 +8,4 @@ simplejson
 psycopg2
 django-extensions
 django-bootstrap-form
+django-cas-ng
