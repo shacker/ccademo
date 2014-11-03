@@ -16,8 +16,7 @@ PHONE_HELP = "312-567-8912 (US) or 55-11-3312-3412 (Int'l)"
 
 class FileWidget(forms.FileInput):
     """
-    Swiped from django admin.  Maybe all our media forms could inheret
-    this.  TODO
+    Swiped from django admin.
     """
 
     def __init__(self, attrs={}):

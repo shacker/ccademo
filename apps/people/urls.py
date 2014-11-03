@@ -6,7 +6,7 @@ from people import views
 urlpatterns = patterns('',
     url(r'^directory/$',
         views.profiles_list,
-        name='directory'),
+        name='people_directory'),
 
     url(r'^(?P<grad_yr>\d+)/$',
         views.profiles_resume_index,

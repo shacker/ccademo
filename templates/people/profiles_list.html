@@ -1,150 +1,120 @@
-{% extends "people/base.html" %}
+{% extends "pane-two.html" %}
 
-{% block title %}J-School People Finder{% endblock %}
+{% load bootstrap %}
+
+{% block title %}{{block.super}} People Finder{% endblock %}
 {% block page_heading %}J-School People Finder{% endblock %}
 
-{% block extrahead %}
-{{ block.super }}
-<script type="text/javascript">
-$(document).ready(function(){
-  $(".box_toggle h2").click(function() { 
-      $(this).siblings(".box_contents").slideToggle();
-  }); 
-});
-</script>
-{% endblock %}
 
 {% block app_nav %}
-
-
-<div id="basic_search" class="box box_toggle search_form">
-<h2>Basic Search</h2>
-<div class="box_contents {% if alumni_search %}hide{%endif %}">
-<form action="" method="get" accept-charset="utf-8">{% csrf_token %}
-<ul>
-{{ basic_form.as_ul }}
-<li class="submit"><input type="submit" value="Search" class="button" /></li>
-</ul>
-</form>
-</div>
-</div>
-
-<div id="alumni_search" class="box box_toggle search_form">
-<h2>Alumni Search</h2>
-<div class="box_contents {% if not alumni_search %}hide{% endif %}">
-<form action="" method="get" accept-charset="utf-8">{% csrf_token %}
-<ul>
-{{ alum_form.as_ul }}
-<li class="submit"><input type="submit" value="Search" class="button" />
-<input type="hidden" name="alumni_search" value="1" /></li>
-</ul>
-</form>
-</div>
-</div>
+    <h4><strong>Search</strong></h4>
+    <div class="">
+        <form action="" method="get" accept-charset="utf-8">
+            {% csrf_token %}
+            {{ basic_form }}
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </form>
+    </div>
 {% endblock %}
 
 
+{% block main %}
 
+    <p class="results">{{ contact_list.count }} results</p>
 
-{% block content %}
-<p class="results">{{ contact_list.count }} results
-<span class="current"> {{ paginator }} </span>
-</p>
-{% if explanatinon %}
-<p class="explanation">Searching for: {{explanation}}</p>
-{% endif %}
+    {% if explanatinon %}
+        <p class="explanation">Searching for: {{explanation}}</p>
+    {% endif %}
 
-<table class="grid" border="0" cellspacing="1" cellpadding="4">
-    <tr class="row2">
-    <th>Name</th>
-    <th>Email</th>
-    <th>Phone</th>
-    <th>Office</th>   
-    </tr>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Office</th>
+            </tr>
+        </thead>
 
-    {% for contact in paginator.object_list %}
-        <tr class="{% cycle 'row1' 'row2' %}">
-            
-        <td>
-        <a style="text-decoration: underline;" href="{% url people_profile_detail contact.user.username %}">
-        <span style="font-size:1.25em;">{{ contact.user.last_name }}, {{ contact.user.first_name }}</a> </span>
-        </td>
-        
-        <td>
-        <a href="mailto:{{ contact.user.email }}">{{ contact.user.email }}</a>  
-        </td>
-        
-        <td>
-        {# If both exist... #}
-        {% if contact.staff.extension and contact.instructor.extension %}  
-            {# If same, choose one to display. Arbitrary decision. #}
-            {% ifequal contact.staff.extension contact.instructor.extension %}  
-                o: {{ contact.staff.extension }}<br />  
-            {# If not same, must be different.  Display both. #}
-            {% else %} 
-                o: {{ contact.staff.extension }}<br />
-                o: {{ contact.instructor.extension }}<br />
-            {% endifequal %}
-        {# Check if any exist.  If so, display it. #}
-        {% else %}
-            {% if contact.staff.extension %}
-                o: {{ contact.staff.extension }}<br />
+        {% for contact in paginator.object_list %}
+            <tr class="{% cycle 'row1' 'row2' %}">
+
+            <td>
+                <a href="{% url 'people_profile_detail' contact.user.username %}">
+                {{ contact.user.last_name }}, {{ contact.user.first_name }}</a>
+            </td>
+
+            <td>
+                <a href="mailto:{{ contact.user.email }}">{{ contact.user.email }}</a>
+            </td>
+
+            <td>
+            {# If both exist... #}
+            {% if contact.staff.extension and contact.instructor.extension %}
+                {# If same, choose one to display. Arbitrary decision. #}
+                {% ifequal contact.staff.extension contact.instructor.extension %}
+                    x: {{ contact.staff.extension }}<br />
+                {# If not same, must be different.  Display both. #}
+                {% else %}
+                    x: {{ contact.staff.extension }}<br />
+                    x: {{ contact.instructor.extension }}<br />
+                {% endifequal %}
+            {# Check if any exist.  If so, display it. #}
             {% else %}
-                o: {{ contact.instructor.extension }}<br />
+                {% if contact.staff.extension %}
+                    x: {{ contact.staff.extension }}<br />
+                {% else %}
+                    x: {{ contact.instructor.extension }}<br />
+                {% endif %}
             {% endif %}
-        {% endif %}
-        {# Only show home & mobile numbers for staff and faculty to other staff and faculty. #}
-        {% if contact.user.is_instructor or contact.user.is_staff %}
-            {% if user.is_instructor or user.is_staff %}
-                {% if contact.mobile_phone1 %} 
+            {# Only show  mobile numbers for staff and faculty to other staff and faculty. #}
+            {% if contact.user.is_instructor or contact.user.is_staff %}
+                {% if user.is_instructor or user.is_staff %}
+                    {% if contact.mobile_phone1 %}
+                        m: {{ contact.mobile_phone1 }}<br />
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if contact.mobile_phone1 %}
                     m: {{ contact.mobile_phone1 }}<br />
                 {% endif %}
-                {% if contact.home_phone1 %} 
-                    h: {{ contact.home_phone1 }}
+            {% endif %}
+            </td>
+            <td>
+            {# If both exist... #}
+            {% if contact.staff.office_num and contact.instructor.office_num %}
+                {# If same, choose one to display. Arbitrary decision. #}
+                {% ifequal contact.staff.office_num contact.instructor.office_num %}
+                    {{ contact.staff.office_num }}
+                {# If not same, must be different.  Display both. #}
+                {% else %}
+                    {{ contact.staff.office_num }}<br />
+                    {{ contact.instructor.office_num }}
+                {% endifequal %}
+            {# Check if any exist.  If so, display it. #}
+            {% else %}
+                {% if contact.staff.office_num %}
+                    {{ contact.staff.office_num }}
+                {% else %}
+                    {{ contact.instructor.office_num }}
                 {% endif %}
             {% endif %}
-        {% else %}
-            {% if contact.mobile_phone1 %} 
-                m: {{ contact.mobile_phone1 }}<br /> 
-            {% endif %}       
-        {% endif %}   
-        </td>    
-        <td>
-        {# If both exist... #}
-        {% if contact.staff.office_num and contact.instructor.office_num %}  
-            {# If same, choose one to display. Arbitrary decision. #}
-            {% ifequal contact.staff.office_num contact.instructor.office_num %}  
-                {{ contact.staff.office_num }}  
-            {# If not same, must be different.  Display both. #}
-            {% else %} 
-                {{ contact.staff.office_num }}<br />
-                {{ contact.instructor.office_num }}
-            {% endifequal %}
-        {# Check if any exist.  If so, display it. #}
-        {% else %}
-            {% if contact.staff.office_num %}
-                {{ contact.staff.office_num }}
-            {% else %}
-                {{ contact.instructor.office_num }}
-            {% endif %}
-        {% endif %}
-        </td>   
-        </tr>
-    {% endfor %}
-</table>
+            </td>
+            </tr>
+        {% endfor %}
+    </table>
 
 
-<br />
-<div class="pagination">
-	<span class="step-links">
-	{% if paginator.has_previous %}<a href="?{{ request.META.QUERY_STRING }}&amp;page={{ paginator.previous_page_number }}" class="util-link">&lt;&lt; Previous page</a> ...{% endif %}
-	<span class="current">
-		{{ paginator }}
-	</span>
-	{% if paginator.has_next %} ... <a href="?{{ request.META.QUERY_STRING }}&amp;page={{ paginator.next_page_number }}" class="util-link">Next page &gt;&gt;</a>{% endif %}
-	</span>
+    <br />
+    <div class="pagination">
+    	<span class="step-links">
+    	{% if paginator.has_previous %}<a href="?{{ request.META.QUERY_STRING }}&amp;page={{ paginator.previous_page_number }}" class="util-link">&lt;&lt; Previous page</a> ...{% endif %}
+    	<span class="current">
+    		{{ paginator }}
+    	</span>
+    	{% if paginator.has_next %} ... <a href="?{{ request.META.QUERY_STRING }}&amp;page={{ paginator.next_page_number }}" class="util-link">Next page &gt;&gt;</a>{% endif %}
+    	</span>
+    </div>
 
-</div>
-
-{% endblock %}
+{% endblock main %}
 

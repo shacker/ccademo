@@ -1,186 +1,188 @@
-{% extends 'people/base.html' %}
+{% extends "pane-one.html" %}
+
+
 
 {% block title %}{{ profile }}{% endblock %}
 
 {% block page_heading %}{{ profile }}{% endblock %}
 
-{% block content %}
+{% block main %}
 
-<h2>{{profile}}</h2>
-
-
-{% if profile.mug_shot %}
-<p><img width="250" src="{{MEDIA_URL}}{{ profile.mug_shot }}" /></p>
-{% else %}
-<p><img width="100" src="{{STATIC_URL}}images/silhouette.jpg" /></p>
-{% endif %}
+    <h2>{{profile}}</h2>
 
 
-<ul>
-<li>Title: {{ profile.title }}</li>
-<li>Email Address: <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a></li>
-<li>Secondary Email: {{ profile.email2 }}</li>
-<li>Home Phone:
-    {# Only show home/mobile numbers for staff and faculty to other staff and faculty. #}
-    {% if profile.user.is_instructor or profile.user.is_staff %}
-        {% if user.is_instructor or user.is_staff %}
+    {% if profile.mug_shot %}
+    <p><img width="250" src="{{MEDIA_URL}}{{ profile.mug_shot }}" /></p>
+    {% else %}
+    <p><img width="100" src="{{STATIC_URL}}images/silhouette.jpg" /></p>
+    {% endif %}
+
+
+    <ul>
+    <li>Title: {{ profile.title }}</li>
+    <li>Email Address: <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a></li>
+    <li>Secondary Email: {{ profile.email2 }}</li>
+    <li>Home Phone:
+        {# Only show home/mobile numbers for staff and faculty to other staff and faculty. #}
+        {% if profile.user.is_instructor or profile.user.is_staff %}
+            {% if user.is_instructor or user.is_staff %}
+                {{ profile.home_phone1 }}
+            {% endif %}
+        {% else %}
             {{ profile.home_phone1 }}
         {% endif %}
-    {% else %}
-        {{ profile.home_phone1 }}
-    {% endif %}
-    </li>
+        </li>
 
-<li>Work Phone: {{ profile.biz_phone1 }}</li>
-<li>Mobile Phone:
-    {# Only show home/mobile numbers for staff and faculty to other staff and faculty. #}
-    {% if profile.user.is_instructor or profile.user.is_staff %}
-        {% if user.is_instructor or user.is_staff %}
+    <li>Work Phone: {{ profile.biz_phone1 }}</li>
+    <li>Mobile Phone:
+        {# Only show home/mobile numbers for staff and faculty to other staff and faculty. #}
+        {% if profile.user.is_instructor or profile.user.is_staff %}
+            {% if user.is_instructor or user.is_staff %}
+                {{ profile.mobile_phone1 }}
+            {% endif %}
+        {% else %}
             {{ profile.mobile_phone1 }}
         {% endif %}
-    {% else %}
-        {{ profile.mobile_phone1 }}
-    {% endif %}
+        </li>
+    <li>Fax: {{ profile.fax }}</li>
+    <li>Timezone: {{ profile.timezone }}</li>
+    </ul>
+
+    {% for a in profile.address_set.all %}
+    <h2>{{a.get_address_type_display}} Address</h2>
+    <ul>
+    <li>
+    {% if a.street_1 %}{{a.street_1}}<br/>{% endif %}
+    {% if a.street_2 %}{{a.street_2}}<br/>{% endif %}
+    {% if a.street_3 %}{{a.street_3}}<br/>{% endif %}
+    {% if a.city %}{{a.city}},{% endif %}
+    {% if a.state %}{{a.state}}{% endif %}
+    {% if a.state_other %}{{a.other}}{% endif %}
+    {% if a.postal_code %}{{a.postal_code}}{% endif %}
+    {% if a.country %}<br />{{a.country}}{% endif %}
     </li>
-<li>Fax: {{ profile.fax }}</li>
-<li>Timezone: {{ profile.timezone }}</li>
-</ul>
+    </ul>
+    {% endfor %}
 
-{% for a in profile.address_set.all %}
-<h2>{{a.get_address_type_display}} Address</h2>
-<ul>
-<li>
-{% if a.street_1 %}{{a.street_1}}<br/>{% endif %}
-{% if a.street_2 %}{{a.street_2}}<br/>{% endif %}
-{% if a.street_3 %}{{a.street_3}}<br/>{% endif %}
-{% if a.city %}{{a.city}},{% endif %}
-{% if a.state %}{{a.state}}{% endif %}
-{% if a.state_other %}{{a.other}}{% endif %}
-{% if a.postal_code %}{{a.postal_code}}{% endif %}
-{% if a.country %}<br />{{a.country}}{% endif %}
-</li>
-</ul>
-{% endfor %}
-
-{% if profile.education_set.all %}
-<h2>Education</h2>
-<ul>
-{% for e in profile.education_set.all %}
-<li>
-{% if e.school %}
-    {{e.get_diploma_display}}, {{e.school}}: {{e.start_date|date:"F Y"}} - {{e.end_date|date:"F Y"}}<br />
-{% endif %}
-{{ e.description }}
-</li>
-{% endfor %}
-</ul>
-{% endif %}
-
-
-{% if profile.story_set.all %}
-<h2>Published Stories</h2>
-<ul>
-{% for s in profile.story_set.all %}
-<li>
-<p><a href="{{s.url}}">{{s.headline}}</a> {{s.publication}}<br />
-    {{s.summary|safe}}</p>
-</li>
-{% endfor %}
-</ul>
-{% endif %}
-
-
-{% if profile.book_set.all %}
-<h2>Books</h2>
-<ul>
-{% for b in profile.book_set.all %}
-<li>
-<p><a href="{{b.url}}">{{b.title}}</a> {{b.publication}}<br />
-{{b.published_on}} {% if b.isbn %}:: ISBN: {{b.isbn}}{% endif %}<br />
-{{b.description|linebreaks}}</p>
-</li>
-{% endfor %}
-</ul>
-{% endif %}
-
-
-{% if profile.otherwork_set.all %}
-<h2>Other Works</h2>
-<ul>
-{% for o in profile.otherwork_set.all %}
-<li>
-    {{o.description}}
-    {% if o.url %}
-        <br /><a href="{{ o.url }}">More info</a>
+    {% if profile.education_set.all %}
+    <h2>Education</h2>
+    <ul>
+    {% for e in profile.education_set.all %}
+    <li>
+    {% if e.school %}
+        {{e.get_diploma_display}}, {{e.school}}: {{e.start_date|date:"F Y"}} - {{e.end_date|date:"F Y"}}<br />
     {% endif %}
-</li>
-{% endfor %}
-</ul>
-{% endif %}
+    {{ e.description }}
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
 
 
-{% if profile.award_set.all %}
-<h2>Awards</h2>
-<ul>
-{% for a in profile.award_set.all %}
-<li>
-<p>{% if a.date_received %}{{a.date_received|date:"F Y"}}: {{a.title}}{% endif %}
-    {{a.description|linebreaks}}</p>
-</li>
-{% endfor %}
-</ul>
-{% endif %}
+    {% if profile.story_set.all %}
+    <h2>Published Stories</h2>
+    <ul>
+    {% for s in profile.story_set.all %}
+    <li>
+    <p><a href="{{s.url}}">{{s.headline}}</a> {{s.publication}}<br />
+        {{s.summary|safe}}</p>
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
 
 
-{% if profile.experience_set.all %}
-<h2>Work Experience</h2>
-<ul>
-{% for e in profile.experience_set.all %}
-<li>
-<p>{% if e.title %}
-{{e.title}}, {{e.company}}, {{e.city}} {{e.state}}  <br />
-    {{e.start_date|date:"F Y"}} - {{e.end_date|date:"F Y"}} <br />{% endif %}
-    {{e.description}}
-    </p>
-</li>
-{% endfor %}
-</ul>
-{% endif %}
+    {% if profile.book_set.all %}
+    <h2>Books</h2>
+    <ul>
+    {% for b in profile.book_set.all %}
+    <li>
+    <p><a href="{{b.url}}">{{b.title}}</a> {{b.publication}}<br />
+    {{b.published_on}} {% if b.isbn %}:: ISBN: {{b.isbn}}{% endif %}<br />
+    {{b.description|linebreaks}}</p>
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
 
 
-{% if profile.skill_set.all %}
-<h2>Skills</h2>
-<ul>
-{% for s in profile.skill_set.all %}
-<li>
-    {{s.summary|linebreaks}}
-</li>
-{% endfor %}
-</ul>
-{% endif %}
+    {% if profile.otherwork_set.all %}
+    <h2>Other Works</h2>
+    <ul>
+    {% for o in profile.otherwork_set.all %}
+    <li>
+        {{o.description}}
+        {% if o.url %}
+            <br /><a href="{{ o.url }}">More info</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
 
-{% if profile.alumni %}
-<h2>Alumni Graduating Class of {{profile.alumni.grad_year}}</h2>
-<ul>
-<li>Freelancing?: {{profile.alumni.freelance|yesno}}</li>
-<li>Employer: {{profile.alumni.employer}}</li>
-<li>Medium: {{profile.alumni.get_medium_display}}</li>
-<li>Specialty: {{profile.alumni.specialty}}</li>
-<li>Previous Employer #1: {{profile.alumni.prev_emp1}}</li>
-<li>Previous Employer #2: {{profile.alumni.prev_emp2}}</li>
-<li>Previous Employer #3: {{profile.alumni.prev_emp3}}</li>
-<li>First Job Out of J-School: {{profile.alumni.first_job}}</li>
-<li>Previous Intership #1: {{profile.alumni.prev_intern1}}</li>
-<li>Previous Intership #2: {{profile.alumni.prev_intern2}}</li>
-<li>Previous Intership #3: {{profile.alumni.prev_intern3}}</li>
-<li>Notes: {{profile.alumni.notes}}</li>
-</ul>
-{% endif %}
 
-<small>This is the intranet-only version of {{ profile }}'s profile, which includes more information than the <a href="http://journalism.berkeley.edu/profiles/{{ profile.user }}">public version</a>.</small>
+    {% if profile.award_set.all %}
+    <h2>Awards</h2>
+    <ul>
+    {% for a in profile.award_set.all %}
+    <li>
+    <p>{% if a.date_received %}{{a.date_received|date:"F Y"}}: {{a.title}}{% endif %}
+        {{a.description|linebreaks}}</p>
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
 
-{% if request.user == profile.user %}
-    <p><a href="{% url 'people_profile_edit' %}" class="btn btn-primary">Edit your profile</a></p>
-{% endif %}
 
-{% endblock %}
+    {% if profile.experience_set.all %}
+    <h2>Work Experience</h2>
+    <ul>
+    {% for e in profile.experience_set.all %}
+    <li>
+    <p>{% if e.title %}
+    {{e.title}}, {{e.company}}, {{e.city}} {{e.state}}  <br />
+        {{e.start_date|date:"F Y"}} - {{e.end_date|date:"F Y"}} <br />{% endif %}
+        {{e.description}}
+        </p>
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    {% if profile.skill_set.all %}
+    <h2>Skills</h2>
+    <ul>
+    {% for s in profile.skill_set.all %}
+    <li>
+        {{s.summary|linebreaks}}
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if profile.alumni %}
+    <h2>Alumni Graduating Class of {{profile.alumni.grad_year}}</h2>
+    <ul>
+    <li>Freelancing?: {{profile.alumni.freelance|yesno}}</li>
+    <li>Employer: {{profile.alumni.employer}}</li>
+    <li>Medium: {{profile.alumni.get_medium_display}}</li>
+    <li>Specialty: {{profile.alumni.specialty}}</li>
+    <li>Previous Employer #1: {{profile.alumni.prev_emp1}}</li>
+    <li>Previous Employer #2: {{profile.alumni.prev_emp2}}</li>
+    <li>Previous Employer #3: {{profile.alumni.prev_emp3}}</li>
+    <li>First Job Out of J-School: {{profile.alumni.first_job}}</li>
+    <li>Previous Intership #1: {{profile.alumni.prev_intern1}}</li>
+    <li>Previous Intership #2: {{profile.alumni.prev_intern2}}</li>
+    <li>Previous Intership #3: {{profile.alumni.prev_intern3}}</li>
+    <li>Notes: {{profile.alumni.notes}}</li>
+    </ul>
+    {% endif %}
+
+    <small>This is the intranet-only version of {{ profile }}'s profile, which includes more information than the <a href="http://journalism.berkeley.edu/profiles/{{ profile.user }}">public version</a>.</small>
+
+    {% if request.user == profile.user %}
+        <p><a href="{% url 'people_profile_edit' %}" class="btn btn-primary">Edit your profile</a></p>
+    {% endif %}
+
+{% endblock main %}

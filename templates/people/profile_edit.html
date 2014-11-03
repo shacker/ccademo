@@ -1,4 +1,7 @@
-{% extends 'people/base.html' %}
+{% extends "pane-one.html" %}
+
+
+
 {% load bootstrap %}
 
 {% block title %}Update your profile{% endblock %}
@@ -91,13 +94,15 @@
 </ul>
 
 <ul>
-<strong>Experience</strong>
-{% for obj in profile.experience_set.all %}
-<li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='experience' %}"
-    >{{ obj }}</a></li>
-{% endfor %}
-<li class="add_new"><a href="{% url 'people_profile_add_related' related_model='experience' %}"
-        >Add New</a></li>
+    <strong>Experience</strong>
+    {% for obj in profile.experience_set.all %}
+    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='experience' %}">
+        {{ obj }}</a>
+    </li>
+    {% endfor %}
+    <li class="add_new">
+        <a href="{% url 'people_profile_add_related' related_model='experience' %}">Add New</a>
+    </li>
 </ul>
 
 <ul>
@@ -118,22 +123,17 @@
     <li class="add_new"><a href="{% url 'people_profile_add_related' related_model='education' %}"
             >Add New</a></li>
 </ul>
-</p>
+
 </div>
 {% endblock %}
 
 {% block help_nav_content %}
     <p>The links above allow you to edit more details about your profile.</p>
-    <p>Adding your information here allows parts of the J-School website to promote your published works and experiences.    This information is carefully managed and only certain parts are public.
+    <p>Adding your information here allows parts of the CCA website to promote your published works and experiences. This information is carefully managed and only certain parts are public.
     </p>
 {% endblock %}
 
 {% block content %}
-
-    <p>
-        Please update your profile here and click the submit at the bottom.
-    </p>
-
 
     <form role="form" class="form" accept-charset="utf-8" enctype="multipart/form-data" action="" method="post">
         <div class="form-group">

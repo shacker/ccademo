@@ -21,10 +21,6 @@
             <script src="{% static 'bower_components/modernizr/modernizr.js' %}"></script>
             <script src="{% static 'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js' %}"></script>
 
-            <script src="{% static 'bower_components/angular-route/angular-route.js' %}"></script>
-            <script src="{% static 'js/angular/app.js' %}"></script>
-            <script src="{% static 'js/angular/books/controllers.js' %}"></script>
-
         {% block extra_head %}{% endblock %}
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -54,8 +50,13 @@
                 </div>
             {% endif %}
 
-            {% block content %}
-            {% endblock content %}
+            {% block app_header %}{% endblock app_header %}
+
+            <div class="row">
+                {# Pages can be rendered with or without left nav by extending either "pane-one" or "page-two" #}
+                {% block content %}  {% endblock content %}
+
+            </div>
 
         </div> <!-- /container -->
 

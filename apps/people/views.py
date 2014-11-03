@@ -244,7 +244,7 @@ def _get_explanation(query_params, form):
 
 
 @login_required
-def profiles_list(request,template_name="people/directory.html"):
+def profiles_list(request,template_name="people/profiles_list.html"):
 
     """
     Browse / search / filter contacts.
