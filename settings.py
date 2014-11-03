@@ -24,14 +24,14 @@ TEMPLATE_DIRS = (
 SECRET_KEY = 'abc123'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.cca.edu',  # Allow domain and subdomains
+]
 
-
-# Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'django_countries',
     'simplejson',
     'django_extensions',
+    'bootstrapform',
 
     # Our apps
     'dashboard',
@@ -98,7 +99,6 @@ STATIC_URL = '/static/'
 
 # Locations for static files
 STATICFILES_DIRS = ( os.path.join(BASE_DIR,'static/'),)
-print STATICFILES_DIRS
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',

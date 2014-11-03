@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     url(r'^$', 'dashboard.views.dashboard', name='dashboard'),
     url(r'^news/(?P<slug>[\w-]+)/$', 'news.views.news_detail',  name='news_detail'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^profiles/', include('people.urls')),
+    url(r'^people/', include('people.urls')),
 
 )

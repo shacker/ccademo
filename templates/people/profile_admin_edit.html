@@ -24,7 +24,8 @@
 Please update the extended profile form and click the submit at the bottom.
 </p>
 
-<form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+<form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+{% csrf_token %}
 
 {% for f in forms %}
 <h3>{{f.prefix|title}}</h3>

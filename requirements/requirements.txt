@@ -7,4 +7,4 @@ sorl-thumbnail
 simplejson
 psycopg2
 django-extensions
-
+django-bootstrap-form

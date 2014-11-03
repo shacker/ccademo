@@ -6,12 +6,13 @@
 
 {% block content %}
 
-<p>This is the intranet-only version of {{ profile }}'s profile, which includes more information than the <a href="http://journalism.berkeley.edu/profiles/{{ profile.user }}">public version</a>.</p>
+<h2>{{profile}}</h2>
+
 
 {% if profile.mug_shot %}
 <p><img width="250" src="{{MEDIA_URL}}{{ profile.mug_shot }}" /></p>
 {% else %}
-<p><img width="100" src="{{MEDIA_URL}}images/silhouette.jpg" /></p>
+<p><img width="100" src="{{STATIC_URL}}images/silhouette.jpg" /></p>
 {% endif %}
 
 
@@ -19,7 +20,7 @@
 <li>Title: {{ profile.title }}</li>
 <li>Email Address: <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a></li>
 <li>Secondary Email: {{ profile.email2 }}</li>
-<li>Home Phone: 
+<li>Home Phone:
     {# Only show home/mobile numbers for staff and faculty to other staff and faculty. #}
     {% if profile.user.is_instructor or profile.user.is_staff %}
         {% if user.is_instructor or user.is_staff %}
@@ -31,7 +32,7 @@
     </li>
 
 <li>Work Phone: {{ profile.biz_phone1 }}</li>
-<li>Mobile Phone: 
+<li>Mobile Phone:
     {# Only show home/mobile numbers for staff and faculty to other staff and faculty. #}
     {% if profile.user.is_instructor or profile.user.is_staff %}
         {% if user.is_instructor or user.is_staff %}
@@ -69,7 +70,7 @@
 {% if e.school %}
     {{e.get_diploma_display}}, {{e.school}}: {{e.start_date|date:"F Y"}} - {{e.end_date|date:"F Y"}}<br />
 {% endif %}
-{{ e.description }} 
+{{ e.description }}
 </li>
 {% endfor %}
 </ul>
@@ -123,7 +124,7 @@
 <ul>
 {% for a in profile.award_set.all %}
 <li>
-<p>{% if a.date_received %}{{a.date_received|date:"F Y"}}: {{a.title}}{% endif %} 
+<p>{% if a.date_received %}{{a.date_received|date:"F Y"}}: {{a.title}}{% endif %}
     {{a.description|linebreaks}}</p>
 </li>
 {% endfor %}
@@ -174,6 +175,12 @@
 <li>Previous Intership #3: {{profile.alumni.prev_intern3}}</li>
 <li>Notes: {{profile.alumni.notes}}</li>
 </ul>
+{% endif %}
+
+<small>This is the intranet-only version of {{ profile }}'s profile, which includes more information than the <a href="http://journalism.berkeley.edu/profiles/{{ profile.user }}">public version</a>.</small>
+
+{% if request.user == profile.user %}
+    <p><a href="{% url 'people_profile_edit' %}" class="btn btn-primary">Edit your profile</a></p>
 {% endif %}
 
 {% endblock %}
