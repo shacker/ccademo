@@ -25,6 +25,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('__unicode__','title','get_primary_email','mobile_phone1')
     raw_id_fields = ('user',)
     inlines = [ StaffInline, StudentInline, AlumniInline, InstructorInline]
+    exclude = ('followees',)
 
 class ProfileRelatedAdmin(admin.ModelAdmin):
     search_fields = ['profile__user__username', 'profile__user__first_name', 'profile__user__last_name',]

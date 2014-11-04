@@ -11,3 +11,4 @@ django-bootstrap-form
 django-cas-ng
 csvImporter
 fabric
+python-ldap

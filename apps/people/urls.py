@@ -36,7 +36,7 @@ urlpatterns = patterns('',
         views.following,
         name="following"),
 
-    url(r'^(?P<username>\w+)/$',
+    url(r'^(?P<username>[\w-]+)/$',
         views.profile_detail,
         name='people_profile_detail'),
 
