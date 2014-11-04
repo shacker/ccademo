@@ -40,11 +40,11 @@ urlpatterns = patterns('',
         views.profile_detail,
         name='people_profile_detail'),
 
-    url(r'^follow/(?P<username>\w+)/$',
+    url(r'^follow/(?P<username>[\w-]+)/$',
         views.follow,
         name="follow"),
 
-    url(r'^unfollow/(?P<username>\w+)/$',
+    url(r'^unfollow/(?P<username>[\w-]+)/$',
         views.unfollow,
         name="unfollow"),
 
