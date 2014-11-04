@@ -17,6 +17,9 @@ TEMPLATE_DIRS = (
     BASE_DIR + '/templates/',
 )
 
+# Datatel output will be placed here
+IMPORTER_DATA_DIR = os.path.join(BASE_DIR, 'data/enroldata')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 

@@ -8,13 +8,11 @@
 
     <h2>{{profile}}</h2>
 
-
-    {% if profile.mug_shot %}
-    <p><img width="250" src="{{MEDIA_URL}}{{ profile.mug_shot }}" /></p>
+    {% if profile.datatel_avatar_url %}
+        <p><img width="100" src="{{ profile.datatel_avatar_url }}" /></p>
     {% else %}
-    <p><img width="100" src="{{STATIC_URL}}images/silhouette.jpg" /></p>
+        <p><img width="100" src="{{ STATIC_URL }}images/silhouette.jpg" /></p>
     {% endif %}
-
 
     <ul>
     <li>Title: {{ profile.title }}</li>

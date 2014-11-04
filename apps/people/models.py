@@ -137,6 +137,8 @@ class Profile(BaseProfile):
     """
 
     user = models.OneToOneField(User, primary_key=True)
+    person_id = models.IntegerField(blank=True, null=True, help_text='Datatel ID')
+    datatel_avatar_url = models.CharField('Datatel avatar URL', blank=True, null=True, max_length=60)
     suffix = models.IntegerField(
                 max_length=2,
                 blank=True, null=True, choices=constants.PROFILE_SUFFIX_CHOICES)
@@ -163,6 +165,7 @@ class Profile(BaseProfile):
     email_on_follow = models.BooleanField(default=True,help_text='Receive email when someone follows you.')
 
     # Model Managers
+    objects = models.Manager()
     active_objects = ActiveProfileManager()
     alumni_objects = ActiveProfileAlumniManager()
     staff_objects = StaffProfileManager()
@@ -601,4 +604,19 @@ class Education(models.Model):
         return self.school
 
 
+# =====================
+# These refer to temporary import tables only - never use these models except in import scripts
 
+class ImporterUsers(models.Model):
+    action = models.CharField(max_length=2, blank=True)
+    person_id = models.IntegerField(blank=True, null=True)
+    section_id = models.IntegerField(blank=True, null=True)
+    first_name = models.CharField(max_length=24, blank=True)
+    last_name = models.CharField(max_length=24, blank=True)
+    email = models.CharField(max_length=32, blank=True)
+    photo_url = models.CharField(max_length=140, blank=True)
+    person_type = models.CharField(max_length=12, blank=True)
+
+    class Meta:
+        managed = False
+        db_table = 'importer_users'

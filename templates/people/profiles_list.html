@@ -36,49 +36,49 @@
         </thead>
 
         {% for contact in paginator.object_list %}
-            <tr class="{% cycle 'row1' 'row2' %}">
+            <tr>
 
-            <td>
-                <a href="{% url 'people_profile_detail' contact.user.username %}">
-                {{ contact.user.last_name }}, {{ contact.user.first_name }}</a>
-            </td>
+                <td>
+                    <a href="{% url 'people_profile_detail' contact.user.username %}">
+                    {{ contact.user.last_name }}, {{ contact.user.first_name }}</a>
+                </td>
 
-            <td>
-                <a href="mailto:{{ contact.user.email }}">{{ contact.user.email }}</a>
-            </td>
+                <td>
+                    <a href="mailto:{{ contact.user.email }}">{{ contact.user.email }}</a>
+                </td>
 
-            <td>
-            {# If both exist... #}
-            {% if contact.staff.extension and contact.instructor.extension %}
-                {# If same, choose one to display. Arbitrary decision. #}
-                {% ifequal contact.staff.extension contact.instructor.extension %}
-                    x: {{ contact.staff.extension }}<br />
-                {# If not same, must be different.  Display both. #}
+                <td>
+                {# If both exist... #}
+                {% if contact.staff.extension and contact.instructor.extension %}
+                    {# If same, choose one to display. Arbitrary decision. #}
+                    {% ifequal contact.staff.extension contact.instructor.extension %}
+                        x: {{ contact.staff.extension }}<br />
+                    {# If not same, must be different.  Display both. #}
+                    {% else %}
+                        x: {{ contact.staff.extension }}<br />
+                        x: {{ contact.instructor.extension }}<br />
+                    {% endifequal %}
+                {# Check if any exist.  If so, display it. #}
                 {% else %}
-                    x: {{ contact.staff.extension }}<br />
-                    x: {{ contact.instructor.extension }}<br />
-                {% endifequal %}
-            {# Check if any exist.  If so, display it. #}
-            {% else %}
-                {% if contact.staff.extension %}
-                    x: {{ contact.staff.extension }}<br />
-                {% else %}
-                    x: {{ contact.instructor.extension }}<br />
+                    {% if contact.staff.extension %}
+                        x: {{ contact.staff.extension }}<br />
+                    {% else %}
+                        {# x: {{ contact.instructor.extension }}<br /> #}
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-            {# Only show  mobile numbers for staff and faculty to other staff and faculty. #}
-            {% if contact.user.is_instructor or contact.user.is_staff %}
-                {% if user.is_instructor or user.is_staff %}
+                {# Only show  mobile numbers for staff and faculty to other staff and faculty. #}
+                {% if contact.user.is_instructor or contact.user.is_staff %}
+                    {% if user.is_instructor or user.is_staff %}
+                        {% if contact.mobile_phone1 %}
+                            m: {{ contact.mobile_phone1 }}<br />
+                        {% endif %}
+                    {% endif %}
+                {% else %}
                     {% if contact.mobile_phone1 %}
                         m: {{ contact.mobile_phone1 }}<br />
                     {% endif %}
                 {% endif %}
-            {% else %}
-                {% if contact.mobile_phone1 %}
-                    m: {{ contact.mobile_phone1 }}<br />
-                {% endif %}
-            {% endif %}
-            </td>
+                </td>
             <td>
             {# If both exist... #}
             {% if contact.staff.office_num and contact.instructor.office_num %}
@@ -103,16 +103,13 @@
         {% endfor %}
     </table>
 
-
-    <br />
     <div class="pagination">
-    	<span class="step-links">
+
     	{% if paginator.has_previous %}<a href="?{{ request.META.QUERY_STRING }}&amp;page={{ paginator.previous_page_number }}" class="util-link">&lt;&lt; Previous page</a> ...{% endif %}
-    	<span class="current">
-    		{{ paginator }}
-    	</span>
+
+    	<span class="current">{{ paginator }}</span>
+
     	{% if paginator.has_next %} ... <a href="?{{ request.META.QUERY_STRING }}&amp;page={{ paginator.next_page_number }}" class="util-link">Next page &gt;&gt;</a>{% endif %}
-    	</span>
     </div>
 
 {% endblock main %}
