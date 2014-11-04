@@ -1,12 +1,15 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import widgets
 from localflavor.us.models import USStateField
-
-from people.models import Alumni, Instructor, Student, Staff, \
-                          Experience, Reference, Award, \
-                          Education, Address, Donation, Profile, Skill
 from people.constants import STATE_CHOICES_WITH_NULL
+from people.models import (
+    Alumni, Instructor, Student, Staff,
+    Experience, Reference, Award,
+    Education, Address, Donation, Profile, Skill
+    )
 
 class AlumniInline(admin.StackedInline):
      model = Alumni
@@ -20,12 +23,17 @@ class StudentInline(admin.StackedInline):
 class StaffInline(admin.StackedInline):
      model = Staff
 
-class ProfileAdmin(admin.ModelAdmin):
+class ProfileAdmin(admin.StackedInline):
+    model = Profile
     search_fields = ['user__username', 'user__first_name', 'user__last_name',]
     list_display = ('__unicode__','title','get_primary_email','mobile_phone1')
     raw_id_fields = ('user',)
     inlines = [ StaffInline, StudentInline, AlumniInline, InstructorInline]
     exclude = ('followees',)
+
+# Define a new User admin
+class UserAdmin(UserAdmin):
+    inlines = (ProfileAdmin, )
 
 class ProfileRelatedAdmin(admin.ModelAdmin):
     search_fields = ['profile__user__username', 'profile__user__first_name', 'profile__user__last_name',]
@@ -110,7 +118,11 @@ class ReferenceAdmin(ProfileRelatedAdmin):
     raw_id_fields = ('profile',)
 
 
-admin.site.register(Profile, ProfileAdmin)
+# Override Django's UserAdmin with our own
+# Don't register Profile since it's fields are handled on the User record
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
+
 admin.site.register(Instructor, InstructorAdmin)
 admin.site.register(Staff, StaffAdmin)
 admin.site.register(Student, StudentAdmin)
