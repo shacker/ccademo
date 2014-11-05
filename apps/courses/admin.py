@@ -1,6 +1,7 @@
 from courses.models import *
 from django.contrib import admin
 from django.contrib.admin import widgets
+
 from django import forms
 
 # Custom Admin Action enables making a complete copy of a course (like a Save As...)
@@ -23,19 +24,20 @@ class OfferingAdminForm(forms.ModelForm):
     # need to override the form instance, and in that instance, use our custom active_objects model manager.
 
     instructors = forms.ModelMultipleChoiceField(
-        widget = widgets.FilteredSelectMultiple('Instructors',False),
-        queryset = Instructor.objects.all(),
-        help_text = "")
+        required=False,
+        widget = widgets.FilteredSelectMultiple('Instructors',is_stacked=False),
+        queryset = Instructor.objects.all())
 
     students = forms.ModelMultipleChoiceField(
-        widget = widgets.FilteredSelectMultiple('Students',False),
-        queryset = User.objects.filter(is_active=True),
-        help_text = "")
+        required=False,
+        widget = widgets.FilteredSelectMultiple('Students',is_stacked=False),
+        queryset = User.objects.filter(is_active=True))
+
 
 
 class OfferingAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__','section','sec_term','course_sec_id')
-    search_fields = ('title','course__long_title')
+    list_display = ('__unicode__','course_sec_id','section','sec_term',)
+    search_fields = ('title','course__long_title',)
     actions = [make_copy]
     form = OfferingAdminForm
     raw_id_fields = ('students',)

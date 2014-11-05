@@ -33,53 +33,54 @@ class Command(BaseCommand):
             if tc.action == "A":  # Only act on ADDs for now
                 # We need both a Course and an Offering. Check to see whether they exist before creating
 
-                try:
-                    course = Course.objects.get(internal_title=tc.course)
-                    print(course, " already exists, skipping import.")
-                except:
-                    course = Course.objects.create(
-                        long_title = tc.sec_short_title,
-                        internal_title = tc.course,
-                        short_title_formatted = tc.short_title_formatted,
-                        description = tc.sec_desc,
+                course, created = Course.objects.get_or_create(
+                    internal_title=tc.course,
+                    defaults={
+                            'long_title': tc.sec_short_title,
+                            'short_title_formatted':  tc.short_title_formatted,
+                            'description': tc.sec_desc,
+                        }
                     )
-                    print("Created course ", course)
+                if created:
+                    print("Created course {course}.".format(course=course))
+                else:
+                    print("Course {course} already exists, skipping.".format(course=course))
+
 
                 # What program is this course offered under? Create program if needed
-                try:
-                    prog = Program.objects.get(name=tc.dept)
-                except:
-                    prog = Program.objects.create(
-                        name = tc.dept,
-                        slug = tc.dept,
+                prog, created = Program.objects.get_or_create(
+                    name = tc.dept,
+                    slug = tc.dept,
                     )
-                print("Program is ", prog)
+                print("Program is {prog}".format(prog=prog))
+
 
                 # Add current course to selected program
                 course.programs.add(prog)
 
                 # Get or create Semester and Room objects
-                # created is True if new object was created
                 semester, created = Semester.objects.get_or_create(name=tc.sec_term,)
+                # TODO: Real rooms!
                 room, created = Room.objects.get_or_create(number="100",)
 
-                # TODO - change others to get_or_create
-
-                # Set up a course offering for this course
-                try:
-                    offering = Offering.objects.get(course_sec_id = tc.course_sec_id)
-                    print("Course offering ", offering, " already exists, skipping.")
-                except:
-                    offering = Offering.objects.create(
-                        course = course,
-                        course_sec_id = tc.course_sec_id,
-                        section = tc.section,
-                        sec_term = semester,
-                        start_date = datetime.datetime.strptime(tc.sec_start_date, "%m/%d/%Y"),
-                        end_date = datetime.datetime.strptime(tc.sec_end_date, "%m/%d/%Y"),
-                        location = room,
+                # Set up a course offering (course instance)
+                offering, created = Offering.objects.get_or_create(
+                    course_sec_id = tc.course_sec_id,
+                    defaults={
+                        'course' : course,
+                        'section' : tc.section,
+                        'sec_term' : semester,
+                        'start_date' : datetime.datetime.strptime(tc.sec_start_date, "%m/%d/%Y"),
+                        'end_date' : datetime.datetime.strptime(tc.sec_end_date, "%m/%d/%Y"),
+                        'location' : room,
+                        }
                     )
-                    print("Created offering ", offering)
+                if created:
+                    print("Created offering {offering}".format(offering=offering))
+                else:
+                    print("Course offering {offering} already exists, skipping.".format(offering=offering))
+
+
                 print
 
 
