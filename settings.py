@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'bootstrapform',
     'anonymizer',
+    'sorl.thumbnail',
 
     # Our apps
     'base',

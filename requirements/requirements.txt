@@ -3,7 +3,7 @@ requests
 django-countries
 django-localflavor
 pillow
-sorl-thumbnail
+sorl-thumbnail==11.12.1b
 simplejson
 psycopg2
 django-extensions
