@@ -17,6 +17,7 @@ def make_copy(modeladmin, request, queryset):
 make_copy.short_description = "Make copies of selected courses"
 
 
+
 class OfferingAdminForm(forms.ModelForm):
     # To get the list of Instructors in the Course admin form to show only active instructors,
     # need to override the form instance, and in that instance, use our custom active_objects model manager.
@@ -32,22 +33,18 @@ class OfferingAdminForm(forms.ModelForm):
         help_text = "")
 
 
-
-
 class OfferingAdmin(admin.ModelAdmin):
-    # list_display = ('title',)
-    search_fields = ('title','cstring__name')
+    list_display = ('__unicode__','section','sec_term','course_sec_id')
+    search_fields = ('title','course__long_title')
     actions = [make_copy]
     form = OfferingAdminForm
     raw_id_fields = ('students',)
 
+
+
 class MajorAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ('name',)
-
-
-class CategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',)}
 
 
 class AssignmentAdmin(admin.ModelAdmin):
@@ -55,7 +52,6 @@ class AssignmentAdmin(admin.ModelAdmin):
 
 class MaterialAdmin(admin.ModelAdmin):
     raw_id_fields = ('offering',)
-    list_display = ('__unicode__','offering')
 
 
 class ProgramAdminForm(forms.ModelForm):
@@ -80,51 +76,17 @@ class ProgramAdmin(admin.ModelAdmin):
             str += m.name + ", "
         return str
 
-class EvalLogAdmin(admin.ModelAdmin):
-    raw_id_fields = ('user',)
-    list_display = ('__unicode__','sem','offering','q_group')
-    list_filter = ['sem', 'offering', 'q_group']
-    search_fields = ('user__username','offering__title','q_group__q_group_title',)
-
 
 class SemesterAdmin(admin.ModelAdmin):
     list_display = ('name', 'current')
 
-class EvalQuestionAdmin(admin.ModelAdmin):
-    list_display = ('text','type','q_group', 'semester_added')
-
-class EvalResponseAdmin(admin.ModelAdmin):
-    list_display = ('id','text_response','numeric_response','q_group','semester')
-
-class CourseAdminForm(forms.ModelForm):
-    # Custom form for Programs selection in Course
-    programs = forms.ModelMultipleChoiceField(
-                widget = widgets.FilteredSelectMultiple('Programs',False),
-                queryset = Program.objects.all(),
-                help_text = "")
-
-    majors = forms.ModelMultipleChoiceField(
-        widget = widgets.FilteredSelectMultiple('Majors',False),
-        queryset = Major.objects.all(),
-        help_text = "")
-
-class CourseAdmin(admin.ModelAdmin):
-    list_display = ('title','ccn')
-    form = CourseAdminForm
 
 class InstructorAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Course,CourseAdmin)
+admin.site.register(Course)
 admin.site.register(Offering,OfferingAdmin)
 admin.site.register(Program,ProgramAdmin)
-admin.site.register(Major,MajorAdmin)
-admin.site.register(Category,CategoryAdmin)
 admin.site.register(Semester,SemesterAdmin)
 admin.site.register(Assignment,AssignmentAdmin)
 admin.site.register(Material,MaterialAdmin)
-admin.site.register(Cstring)
-admin.site.register(EvalQGroup)
-admin.site.register(EvalLog,EvalLogAdmin)
-admin.site.register(EvalQuestion,EvalQuestionAdmin)
-admin.site.register(EvalResponse,EvalResponseAdmin)

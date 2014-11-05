@@ -16,7 +16,7 @@
 
     {% if profile.about %}
     <div class="well">
-        {{ profile.about }}
+        {{ profile.about|truncatewords:100 }}
     </div>
     {% endif %}
 

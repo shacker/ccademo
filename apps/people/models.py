@@ -147,8 +147,8 @@ class Profile(BaseProfile):
                     blank=True, null=True,
                     choices=constants.PROFILE_SALUTATION_CHOICES)
     middle_name = models.CharField(max_length=50, blank=True,null=True)
-    title = models.CharField(blank=True,null=True, max_length=128)
-    about = models.TextField(blank=True,null=True,help_text="A few sentences about yourself - capsule biography. No HTML allowed.")
+    title = models.CharField(blank=True,null=True, max_length=32)
+    about = models.TextField(blank=True,null=True,help_text="A few sentences about yourself - capsule biography. No HTML allowed.", max_length=256)
     email2 = models.EmailField('Secondary Email', blank=True,null=True)
     home_phone1 = models.CharField('Home Phone',max_length=60, blank=True,null=True)
     biz_phone1 = models.CharField('Business Phone',max_length=60, blank=True,null=True)

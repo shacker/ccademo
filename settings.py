@@ -50,12 +50,14 @@ INSTALLED_APPS = (
     'simplejson',
     'django_extensions',
     'bootstrapform',
+    'anonymizer',
 
     # Our apps
     'base',
     'dashboard',
     'news',
-    'people'
+    'people',
+    'courses'
 )
 
 MIDDLEWARE_CLASSES = (

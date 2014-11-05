@@ -12,3 +12,4 @@ django-cas-ng
 csvImporter
 fabric
 python-ldap
+pytz
