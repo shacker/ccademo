@@ -42,6 +42,12 @@ class OfferingAdmin(admin.ModelAdmin):
     form = OfferingAdminForm
     raw_id_fields = ('students',)
 
+class CourseAdmin(admin.ModelAdmin):
+    search_fields = ('internal_title','long_title',)
+    list_display = ('__unicode__','internal_title','short_title_formatted',)
+
+
+
 
 
 class MajorAdmin(admin.ModelAdmin):
@@ -86,7 +92,7 @@ class SemesterAdmin(admin.ModelAdmin):
 class InstructorAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Course)
+admin.site.register(Course, CourseAdmin)
 admin.site.register(Offering,OfferingAdmin)
 admin.site.register(Program,ProgramAdmin)
 admin.site.register(Semester,SemesterAdmin)

@@ -1,0 +1,61 @@
+{% extends "page_base.html" %}
+{% load thumbnail %}
+{% load static from staticfiles %}
+
+{% block title %}Course Details{% endblock %}
+
+
+{% block content %}
+
+
+<!-- BEGIN course_description -->
+<div class="course_description">
+        <h2>{{ course.internal_title }}: {{ course.long_title }}</h2>
+
+        <div class="well">
+            <p>{{ course.description|linebreaks|safe}}</p>
+        </div>
+        <p><strong>Restrictions and Prerequisites:</strong> {% if course.restrictions %}{{ course.restrictions }} {% endif %}  {% if not course.restrictions %}None {% endif %}</p>
+
+
+
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Sections</h3>
+          </div>
+          <div class="panel-body">
+            <p>This course is being offered in the <strong>{{term}} term</strong> in the following sections:</p>
+
+
+            <table class="table">
+            <thead>
+                <tr>
+                    <th>Section</th>
+                    <th>Title</th>
+                    <th>Meeting</th>
+                    <th>ID</th>
+
+                </tr>
+            </thead>
+            {% for section in sections %}
+            <tr>
+                <td>{{section.section}}</td>
+                <td><a href="{% url 'offering_detail' section.id %}">Sec: :  {{section}}</a></td>
+                <td>{{section.start_date}}</td>
+
+                <td>{{section.course_sec_id}}</td>
+
+            </tr>
+            {% endfor %}
+            </table>
+          </div>
+        </div>
+
+
+
+</div>
+
+
+
+{% endblock content %}

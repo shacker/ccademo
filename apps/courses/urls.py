@@ -11,9 +11,9 @@ urlpatterns = patterns('courses.views',
     url(r'^descriptions/$', 'offerings_schedule', {'printable': True}, name="courses_descriptions"),
     url(r'^categories/$', 'program_categories', name="program_categories"),
     url(r'^majors/$', 'program_majors', name="program_majors"),
+    url(r'^course/(?P<internal_title>[\w-]+)/$', 'course_detail',  name='course_detail'),
 
     url(r'^category/(?P<slug>[\w-]+)/$', 'program_category', name='program_category'),
-    url(r'^major/(?P<slug>[\w-]+)/$', 'program_major', name='program_major'),
 
     url(r'^class/(?P<course_id>[\d]+)$', 'offering_detail', name="offering_detail"),
     url(r'^class/(?P<course_id>[\d]+)/schedule$', 'offering_schedule', name="offering_schedule"),

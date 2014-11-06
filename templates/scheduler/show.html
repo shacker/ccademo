@@ -13,13 +13,15 @@
         </div>
 
         {% if myclasses %}
-        <ul class="list-group">
+        {# TODO - move style #}
         <style type="text/css">
             .badge a {
                 color:white;
             }
-
         </style>
+
+        <ul class="list-group">
+
 
             {% for c in myclasses %}
             <li class="list-group-item">

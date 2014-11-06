@@ -14,6 +14,7 @@
       <ul class="nav navbar-nav">
 
         <li><a href="{% url 'people_directory' %}">People Finder</a></li>
+        <li><a href="{% url 'offerings_schedule' %}">Courses</a></li>
 
         {% if user.is_authenticated %}
           <li><a>You are: {{user}}</a></li>

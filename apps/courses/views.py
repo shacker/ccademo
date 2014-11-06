@@ -1,4 +1,4 @@
-from courses.models import Program, Offering, Semester, Assignment, Material
+from courses.models import Program, Course, Offering, Semester, Assignment, Material
 from people.models import Instructor
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -128,7 +128,7 @@ def program_sec_faculty(request,progslug=False):
 
 
 
-def offerings_schedule(request,printable=False,sem_id=False):
+def offerings_schedule(request, printable=False, sem_id=False):
     """
     Schedule of ALL course offerings - one view handles both calendar and printable view.
     """
@@ -157,7 +157,15 @@ def offerings_schedule(request,printable=False,sem_id=False):
 
     # Complete list of semesters and courses
     semesters = Semester.objects.filter(live=True).order_by('-id')
-    offerings = Offering.objects.filter(sec_term=current_sem)
+    # offerings = Offering.objects.filter(sec_term=current_sem)
+
+    # To generate a unique list of courses (not offerings) for this semester,
+    # get all offerings for this semester and derive the distinct internal_titles
+    # from their related courses. There's probably a better way to do this query :)
+    semofferings = Offering.objects.filter(sec_term=current_sem)
+    courselist = semofferings.distinct('course__internal_title').values('course__internal_title')
+    courses = Course.objects.filter(internal_title__in=courselist).order_by('internal_title')
+
 
     # Which template? Calendar style or printable?
     if printable :
@@ -165,7 +173,6 @@ def offerings_schedule(request,printable=False,sem_id=False):
     else :
         template = 'courses/schedule.html'
 
-    no_sidebar = True
 
     return render_to_response(
         template,
@@ -391,6 +398,26 @@ def program_detail(request,program_slug):
 
     return render_to_response(
         'courses/program_detail.html',
+        locals(),
+        context_instance=RequestContext(request)
+        )
+
+
+
+def course_detail(request, internal_title):
+    """
+    Detail info on a particular course
+    """
+
+    course = get_object_or_404(Course, internal_title=internal_title)
+    term = Semester.objects.get(current=True)
+    sections = Offering.objects.filter(course=course, sec_term=term).order_by('section')
+
+    # For use in Programs sidebar
+    # programs = Program.objects.all()
+
+    return render_to_response(
+        'courses/course_detail.html',
         locals(),
         context_instance=RequestContext(request)
         )

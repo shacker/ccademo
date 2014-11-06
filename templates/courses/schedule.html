@@ -29,56 +29,21 @@
 <table id="schedule" class="table" >
     <thead>
         <tr>
-            <th>Sec. ID</th>
-            <th>Course Title</th>
-            <th>Instructor</th>
+            <th>ID</th>
+            <th>Title</th>
             <th>Units</th>
-            <th>Fee</th>
-            <th>Lim*</th>
-            <th>Time</th>
-            <th>Location</th>
+            <th>Type</th>
         </tr>
     </thead>
 
-    {% for offering in offerings %}
+    {% for course in courses %}
         <tr>
-
-            <td>{{ offering.course_sec_id }}</td>
-
-            <td>
-                <a href="{% url 'offering_detail' offering.id %}"
-                    onclick="OpenDetails(this.href); return false">
-                {% if offering.title %}
-                    {{ offering.title|truncatewords:4 }}
-                {% else %}
-                    {{ offering.course.long_title|truncatewords:4 }}
-                {% endif %}
-            </a>
-            </td>
-            <td>
-            {% ifnotequal offering.instructors.count 1  %}
-              See details
-            {% endifnotequal %}
-            {% ifequal offering.instructors.count 1 %}
-            {% for i in offering.instructors.all %}{{ i }}{% endfor %}
-            {% endifequal %}
-            </td>
-            <td>{{ offering.course.units }}</td>
-            <td><strong>{{ offering.fee|yesno:"Y," }}</strong></td>
-            <td>{% if offering.enroll_lim %}{{ offering.enroll_lim }}{% endif %}</td>
-            <td>{{ offering.time }}</td>
-            <td>
-            {# If location is "other", print the location_other field. In the Rooms table "Other" is record 59 #}
-            {% ifequal offering.location.id 59 %}
-                Other (see details)
-            {% else %}
-                {{ offering.location }}
-            {% endifequal %}
-            </td>
+            <td><a href="{% url 'course_detail' course.internal_title %}">{{ course.internal_title }}</a></td>
+            <td><a href="{% url 'course_detail' course.internal_title %}">{{ course.long_title }}</a></td>
+            <td>{{ course.units }}</td>
+            <td>{{ course.type }}</td>
         </tr>
     {% endfor %}
-
-
 
 </table>
 
