@@ -1,6 +1,5 @@
-from courses.models import Program, Offering, Semester, Category, Major, Assignment, Material
+from courses.models import Program, Offering, Semester, Assignment, Material
 from people.models import Instructor
-from notifications.models import Notification, Delivered
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -158,7 +157,7 @@ def offerings_schedule(request,printable=False,sem_id=False):
 
     # Complete list of semesters and courses
     semesters = Semester.objects.filter(live=True).order_by('-id')
-    offerings = Offering.objects.filter(semester=current_sem)
+    offerings = Offering.objects.filter(sec_term=current_sem)
 
     # Which template? Calendar style or printable?
     if printable :
@@ -215,7 +214,7 @@ def offering_announcements(request,course_id):
     """
 
     offering = get_object_or_404(Offering, id=course_id)
-    announcements = Notification.objects.filter(offering=offering)
+    # announcements = Notification.objects.filter(offering=offering)
 
     return render_to_response(
         'courses/offering_announcements.html',

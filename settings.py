@@ -53,12 +53,16 @@ INSTALLED_APPS = (
     'anonymizer',
     'sorl.thumbnail',
 
+    # 'postman',
+
+
     # Our apps
     'base',
     'dashboard',
     'news',
     'people',
-    'courses'
+    'courses',
+    'scheduler',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -76,6 +80,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'django_cas_ng.backends.CASBackend',
 )
+
+# AUTH_USER_MODEL = 'auth.User'
 
 # Via https://pypi.python.org/pypi/django-cas-ng/3.1.0
 CAS_SERVER_URL = 'https://cas.cca.edu/cas/login'

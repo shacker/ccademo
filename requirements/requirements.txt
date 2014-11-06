@@ -13,3 +13,4 @@ csvImporter
 fabric
 python-ldap
 pytz
+# django-postman

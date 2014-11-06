@@ -1,0 +1,41 @@
+{% extends "page_base.html" %}
+
+{% block title %}Course Schedule{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-6">
+        <h1>Schedule Builder</h1>
+        <div class="well">
+            You've added the courses below to your schedule.<br />
+            <b>This is NOT an official schedule and does NOT mean you've actually enrolled in these courses! </b>
+        </div>
+
+        {% if myclasses %}
+        <ul class="list-group">
+        <style type="text/css">
+            .badge a {
+                color:white;
+            }
+
+        </style>
+
+            {% for c in myclasses %}
+            <li class="list-group-item">
+                <span class="badge"><a href="{% url 'remove_course_from_schedule' c.id %}">X</a></span>
+                <strong><a href="{% url 'offering_detail' c.id %}">{{c.course_sec_id}}: {{c}}</a></strong> <br>
+                Room: {{c.location}}, {{c.start_date|date:"f a"}}<br />
+            </li>
+            {% endfor %}
+
+        </ul>
+        {% else %}
+            <p>You haven't added any classes to your schedule yet.
+            To build your schedule, click "Add to Schedule" button
+            while surfing the course catalog.</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
