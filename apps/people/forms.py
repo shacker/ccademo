@@ -240,8 +240,8 @@ class AlumniQueryForm(forms.Form):
                             label='State',
                             choices=STATE_CHOICES_W_NULL, required=False)
 
-class QueryForm(forms.Form):
 
+class QueryForm(forms.Form):
 
     TYPE_CHOICES = (
         ('','---------'),

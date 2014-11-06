@@ -86,9 +86,11 @@
             </dd>
         </dl>
 
-        {% if user.is_superuser %}
-            <p class="minor"><strong>&curren;</strong> Inherits from parent course <a href="{% url 'admin:courses_course_change' offering.course.id %}">{{offering.course}} ({{offering.course.id}})</a></p>
-        {% endif %}
+        <div class="alert alert-success" role="alert">
+            This sectional offering is an instance of CCA course:
+            <a href="{% url 'course_detail' offering.course.internal_title %}">{{offering.course}} ({{offering.course.internal_title}})</a>
+        </div>
+
 
 </div>
 

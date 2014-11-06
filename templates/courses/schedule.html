@@ -1,30 +1,39 @@
-{% extends "page_base.html" %}
+{% extends "page_sub.html" %}
+
+{% load bootstrap %}
 
 {% block title %}Course Schedule{% endblock %}                     {# html <head> title; use Title Case #}
-{% block body_class %}section{% endblock %}         {# lowercase; no spaces #}
-{% block body_id %}section{% endblock %}            {# lowercase; no spaces  #}
-{% block section_name %}Courses{% endblock %}              {# main section name; e.g. 'Events'; use Title Case; #}
 
 
-{% block content %}
-<div id="main_content" class="grid_16">
+{% block app_nav %}
 <form action="" method="post">
     {% csrf_token %}
-
-    <h2>Course Schedule for {{ current_sem }}</h2>
-
     <p>
-        View another semester:
+        <label class="control-label">View Another Semester</label>
 
-        <select name="sem">
+        <div class="form-group">
+        <select name="sem" class="form-control">
         {% for s in semesters  %}
             <option value="{{ s.id }}"
                 {% ifequal s.id current_sem.id  %}selected="selected"{% endifequal %}>{{ s.name }}
         {% endfor %}
         </select>
-        <input type="submit" class="btn btn-xs btn-primary small" name="changesem" value="Go">
+        </div>
+        <input type="submit" class="btn btn-primary small" name="changesem" value="Go">
     </p>
 </form>
+
+<form action="" method="get" accept-charset="utf-8">
+    {% csrf_token %}
+    {{ search_form|bootstrap }}
+    <input type="submit" value="Search" class="btn btn-primary" />
+</form>
+{% endblock %}
+
+{% block main %}
+
+<h2>Course Schedule for {{ current_sem }}</h2>
+
 
 <table id="schedule" class="table" >
     <thead>
@@ -56,4 +65,4 @@
 </ul>
 
 </div> <!-- END main_content -->
-{% endblock content %}
+{% endblock main %}

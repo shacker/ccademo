@@ -12,3 +12,8 @@ class CourseContactForm(Form):
     subject = forms.CharField(required=True, max_length=100)
     body = forms.CharField(widget=forms.Textarea,required=True)
 
+
+# For search
+class QueryForm(forms.Form):
+
+    q = forms.CharField(label='Title/Keywords', required=False)

@@ -5,8 +5,9 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from courses.forms import CourseContactForm
+from courses.forms import CourseContactForm, QueryForm
 from postman.models import Message, STATUS_PENDING, STATUS_ACCEPTED
+from django.db.models import Q  # For search
 
 
 def program_home(request):
@@ -133,6 +134,14 @@ def offerings_schedule(request, printable=False, sem_id=False):
     Schedule of ALL course offerings - one view handles both calendar and printable view.
     """
 
+    # Construct query params dict for search
+    basic_params = {
+        'q': request.GET.get('q',''),
+        }
+
+    keywords = basic_params['q']
+    search_form = QueryForm(basic_params)
+
     # First handle selections from semester switcher dropdown
     if request.POST.get('sem'):
         sem = get_object_or_404(Semester, pk=request.POST.get('sem'))
@@ -157,7 +166,6 @@ def offerings_schedule(request, printable=False, sem_id=False):
 
     # Complete list of semesters and courses
     semesters = Semester.objects.filter(live=True).order_by('-id')
-    # offerings = Offering.objects.filter(sec_term=current_sem)
 
     # To generate a unique list of courses (not offerings) for this semester,
     # get all offerings for this semester and derive the distinct internal_titles
@@ -166,6 +174,14 @@ def offerings_schedule(request, printable=False, sem_id=False):
     courselist = semofferings.distinct('course__internal_title').values('course__internal_title')
     courses = Course.objects.filter(internal_title__in=courselist).order_by('internal_title')
 
+    # if keywords exist, filter the results
+    if keywords:
+
+        # Use Q object for 'OR' type query
+        courses = courses.filter(
+                Q(internal_title__icontains=keywords) |
+                Q(long_title__icontains=keywords)
+            )
 
     # Which template? Calendar style or printable?
     if printable :
