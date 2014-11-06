@@ -1,13 +1,17 @@
-{% extends "base.html" %}
+{% extends "page_sub.html" %}
 {% load thumbnail %}
 
-{% block title %}Course Contacter{% endblock %}
+{% block title %}Course Offering Contacter{% endblock %}
 
-{% block content %}
+{% block app_nav %}
+    {% include "sidebars/class.html" %}
+{% endblock app_nav %}
 
-<h1>Contact</h1>
-<h2>{{offering}}</h2>
-<h3>{{offering.semester}}</h3>
+
+{% block main %}
+
+<h2>Contact: {{offering}} ({{offering.sec_term}})</h2>
+
 
 <p>Your message will be sent to:</p>
 
@@ -22,8 +26,8 @@
     {% csrf_token %}
     <table>
     {{form.as_table}}
-    </table>    
+    </table>
     <p><input type="submit" value="submit"></p>
 </form>
 
-{% endblock content %}
+{% endblock main %}

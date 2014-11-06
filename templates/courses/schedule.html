@@ -1,23 +1,20 @@
 {% extends "page_sub.html" %}
-
 {% load bootstrap %}
 
-{% block title %}Course Schedule{% endblock %}                     {# html <head> title; use Title Case #}
-
+{% block title %}Course Schedule{% endblock %}
 
 {% block app_nav %}
 <form action="" method="post">
     {% csrf_token %}
     <p>
         <label class="control-label">View Another Semester</label>
-
         <div class="form-group">
-        <select name="sem" class="form-control">
-        {% for s in semesters  %}
-            <option value="{{ s.id }}"
-                {% ifequal s.id current_sem.id  %}selected="selected"{% endifequal %}>{{ s.name }}
-        {% endfor %}
-        </select>
+            <select name="sem" class="form-control">
+            {% for s in semesters  %}
+                <option value="{{ s.id }}"
+                    {% ifequal s.id current_sem.id  %}selected="selected"{% endifequal %}>{{ s.name }}
+            {% endfor %}
+            </select>
         </div>
         <input type="submit" class="btn btn-primary small" name="changesem" value="Go">
     </p>

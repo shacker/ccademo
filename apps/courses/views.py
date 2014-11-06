@@ -160,11 +160,10 @@ def offerings_schedule(request, printable=False, sem_id=False):
 
     # Current semester may come through in the URL. If not, default to current semester.
     if sem_id :
-        current_sem = get_object_or_404(Semester,pk=sem_id)
+        current_sem = get_object_or_404(Semester, pk=sem_id)
     else:
-        current_sem = get_object_or_404(Semester,current=True)
+        current_sem = get_object_or_404(Semester, current=True)
 
-    # Complete list of semesters and courses
     semesters = Semester.objects.filter(live=True).order_by('-id')
 
     # To generate a unique list of courses (not offerings) for this semester,
@@ -198,12 +197,12 @@ def offerings_schedule(request, printable=False, sem_id=False):
 
 
 
-def offering_detail(request,course_id):
+def offering_detail(request, course_sec_id):
     """
     Detail info on a particular course offering
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
 
     if request.user.is_authenticated():
         if request.user in offering.students.all():
@@ -217,12 +216,12 @@ def offering_detail(request,course_id):
         )
 
 
-def offering_schedule(request,course_id):
+def offering_schedule(request, course_sec_id):
     """
     Class schedule for a particular course offering
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
 
     return render_to_response(
         'courses/offering_schedule.html',
@@ -231,12 +230,12 @@ def offering_schedule(request,course_id):
         )
 
 
-def offering_announcements(request,course_id):
+def offering_announcements(request, course_sec_id):
     """
     Announcements displayed to students in a given course offering
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
     # announcements = Notification.objects.filter(offering=offering)
 
     return render_to_response(
@@ -246,12 +245,12 @@ def offering_announcements(request,course_id):
         )
 
 
-def offering_library(request,course_id):
+def offering_library(request, course_sec_id):
     """
     Files shared with a course offering
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
 
 
     return render_to_response(
@@ -260,29 +259,13 @@ def offering_library(request,course_id):
         context_instance=RequestContext(request)
         )
 
-def offering_public(request,course_id):
-    """
-    Course overview as shared to the public
-    """
 
-    offering = get_object_or_404(Offering, id=course_id)
-
-    return render_to_response(
-        'courses/offering_public.html',
-        locals(),
-        context_instance=RequestContext(request)
-        )
-
-
-
-
-
-def offering_contact(request,course_id):
+def offering_contact(request, course_sec_id):
     """
     Allows students to make private contact with instructors of a given offering
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
     recips = offering.instructors.all()
 
     if request.method == 'POST':
@@ -315,12 +298,12 @@ def offering_contact(request,course_id):
         )
 
 
-def offering_policies(request,course_id):
+def offering_policies(request, course_sec_id):
     """
     Simple text field display for grading and policies fields on the Offering model.
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
 
 
     return render_to_response(
@@ -330,12 +313,12 @@ def offering_policies(request,course_id):
         )
 
 
-def offering_assignments(request,course_id):
+def offering_assignments(request, course_sec_id):
     """
     List of assignments given by instructors to students in a given course offering.
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
     assignments = Assignment.objects.filter(offering=offering)
 
 
@@ -347,7 +330,7 @@ def offering_assignments(request,course_id):
 
 
 
-def offering_assignment_detail(request,assign_id):
+def offering_assignment_detail(request, assign_id):
     """
     Detail view for individual Assignments (popup only)
     """
@@ -359,12 +342,12 @@ def offering_assignment_detail(request,assign_id):
         context_instance=RequestContext(request)
         )
 
-def offering_materials(request,course_id):
+def offering_materials(request, course_sec_id):
     """
     Materials required by particpants in a given offering
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
     materials = Material.objects.filter(offering=offering)
 
     return render_to_response(
@@ -373,7 +356,7 @@ def offering_materials(request,course_id):
         context_instance=RequestContext(request)
         )
 
-def offering_material_detail(request,material_id):
+def offering_material_detail(request, material_id):
     """
     Detail view for class materials requirements (popup only)
     """
@@ -386,12 +369,12 @@ def offering_material_detail(request,material_id):
         )
 
 
-def offering_participants(request,course_id):
+def offering_participants(request, course_sec_id):
     """
     List of students, TAs and instructors associated with a given course offering.
     """
 
-    offering = get_object_or_404(Offering, id=course_id)
+    offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
     students = offering.students.all()
     instructors = offering.instructors.all()
 

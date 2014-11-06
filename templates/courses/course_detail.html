@@ -7,7 +7,6 @@
 
 {% block content %}
 
-
 <!-- BEGIN course_description -->
 <div class="course_description">
         <h2>{{ course.internal_title }}: {{ course.long_title }}</h2>
@@ -15,8 +14,6 @@
         <div class="well">
             <p>{{ course.description|linebreaks|safe}}</p>
         </div>
-        <p><strong>Restrictions and Prerequisites:</strong> {% if course.restrictions %}{{ course.restrictions }} {% endif %}  {% if not course.restrictions %}None {% endif %}</p>
-
 
 
 
@@ -41,7 +38,7 @@
             {% for section in sections %}
             <tr>
                 <td>{{section.section}}</td>
-                <td><a href="{% url 'offering_detail' section.id %}">Sec: :  {{section}}</a></td>
+                <td><a href="{% url 'offering_detail' section.course_sec_id %}">{{section}}</a></td>
                 <td>{{section.start_date}}</td>
 
                 <td>{{section.course_sec_id}}</td>
@@ -52,6 +49,7 @@
           </div>
         </div>
 
+        <p><strong>Restrictions and Prerequisites:</strong> {% if course.restrictions %}{{ course.restrictions }} {% endif %}  {% if not course.restrictions %}None {% endif %}</p>
 
 
 </div>

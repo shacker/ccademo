@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "page_sub.html" %}
 {% load thumbnail %}
 
-{% block title %}Class Materials{% endblock %}
+{% block title %}Course Offering Materials{% endblock %}
 
 {% block extrahead %}
   <link type="text/css" href="{{STATIC_URL}}js/jquery-ui/css/smoothness/jquery-ui-1.8.8.css" rel="Stylesheet" />
@@ -9,31 +9,35 @@
 {% endblock extrahead %}
 
 
-{% block content %}
+{% block app_nav %}
+    {% include "sidebars/class.html" %}
+{% endblock app_nav %}
+
+
+{% block main %}
 
 <script>
     function loadPop(url) {
         // Loads task and event displays into jquery-ui popover dialog
         $('#materials-pop').load(url);
-        $('#materials-pop').dialog('open'); 
+        $('#materials-pop').dialog('open');
     }
 
 </script>
 
-<h1>Materials</h1>
-<h2>{{offering}}</h2>
-<h3>{{offering.semester}}</h3>
+<h2>Materials: {{offering}} ({{offering.sec_term}})</h2>
+
 
 {% if materials.count > 0 %}
     <p>Things you'll need for this class:</p>
     {% for m in materials  %}
         <p class="shortblock">
             <strong>{{m}}</strong> <br>
-            <a href="{% url offering_material_detail m.id %}" onclick="loadPop(this.href);return false;" class="button small blue" style="margin-top:10px;">Details</a> 
+            <a href="{% url offering_material_detail m.id %}" onclick="loadPop(this.href);return false;" class="button small blue" style="margin-top:10px;">Details</a>
         </p>
     {% endfor %}
 
-{% else %}    
+{% else %}
     <p>No materials required for this class (or they have not yet been entered into CalCentral).</p>
 {% endif %}
 
@@ -43,9 +47,9 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $("#materials-pop").dialog({
-        autoOpen: false, 
-        bgiframe: true, 
-        height: 500, width: 650, 
+        autoOpen: false,
+        bgiframe: true,
+        height: 500, width: 650,
         modal: false,
         buttons: {
                     "Done reading": function() {
@@ -55,4 +59,4 @@ $(document).ready(function() {
         });
 });
 </script>
-{% endblock content %}
+{% endblock main %}

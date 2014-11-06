@@ -1,16 +1,21 @@
-{% extends "base.html" %}
+{% extends "page_sub.html" %}
 {% load thumbnail %}
 
-{% block title %}Course Participants{% endblock %}
-
-{% block content %}
-
-<h1>Library</h1>
-
-<h2>{{offering}}</h2>
-<h3>{{offering.semester}}</h3>
-
-<p class="alert">Not yet implemented</p>
+{% block title %}Course Offering Participants{% endblock %}
 
 
-{% endblock content %}
+{% block app_nav %}
+    {% include "sidebars/class.html" %}
+{% endblock app_nav %}
+
+
+{% block main %}
+
+<h2>Library: {{offering}} ({{offering.sec_term}})</h2>
+
+
+<div class="alert alert-success" role="alert">
+Not yet implemented
+</div>
+
+{% endblock main %}

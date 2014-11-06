@@ -1,0 +1,15 @@
+
+<ul class="list-group">
+
+    <li class="list-group-item"><a href="{% url 'offering_detail' offering.course_sec_id %}">Course Home</a></li>
+    <li class="list-group-item"><a href="{% url 'offering_schedule' offering.course_sec_id %}">Course Schedule</a></li>
+    <li class="list-group-item"><a href="{% url 'offering_announcements' offering.course_sec_id %}">Announcements</a></li>
+    <li class="list-group-item"><a href="{% url 'offering_contact' offering.course_sec_id %}">Contact</a></li>
+    <li class="list-group-item"><a href="{% url 'offering_policies' offering.course_sec_id %}">Grading and Policies</a></li>
+    <li class="list-group-item"><a href="{% url 'offering_assignments' offering.course_sec_id %}">Assignments</a></li>
+    <li class="list-group-item"><a href="{% url 'offering_participants' offering.course_sec_id %}">Participants</a></li>
+    <li class="list-group-item"><a href="{% url 'offering_materials' offering.course_sec_id %}">Class Materials</a></li>
+    <li class="list-group-item"><a href="{% url 'offering_library' offering.course_sec_id %}">Library</a></li>
+
+</ul>
+

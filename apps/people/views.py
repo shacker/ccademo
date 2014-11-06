@@ -222,6 +222,7 @@ def _get_query_val(dict, key):
 
     return None
 
+# TODO - What in the world is this for?
 def _get_explanation(query_params, form):
     """
     Given a set of query parameters return a string explaning what

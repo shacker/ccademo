@@ -1,8 +1,9 @@
-{% extends "page_base.html" %}
+{% extends "page_sub.html" %}
+
 {% load thumbnail %}
 {% load static from staticfiles %}
 
-{% block title %}Course Details{% endblock %}
+{% block title %}Course Offering Details{% endblock %}
 
 {% block extrahead %}
   <link type="text/css"
@@ -13,7 +14,11 @@
 {% endblock extrahead %}
 
 
-{% block content %}
+{% block app_nav %}
+    {% include "sidebars/class.html" %}
+{% endblock app_nav %}
+
+{% block main %}
 
 <script>
     function loadPop(url) {
@@ -28,12 +33,13 @@
                 {{ offering.title }}
             {% else %}
                 {{ offering.course.long_title }}
-            {% endif %}</h2>
+            {% endif %}
+            ({{offering.sec_term}})
+        </h2>
 
         <div class="well">
             <p>{{ offering.description|linebreaks|safe}}</p>
         </div>
-        <p><strong>Restrictions and Prerequisites:</strong> {% if offering.restrictions %}{{ offering.restrictions }} {% endif %}  {% if not offering.restrictions %}None {% endif %}</p>
 
         {% if scheduled %}
             This class is already in your <a href="{% url scheduler %}">schedule</a>.
@@ -121,4 +127,4 @@ $(document).ready(function() {
         });
 });
 </script>
-{% endblock content %}
+{% endblock main %}
