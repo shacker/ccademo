@@ -1,0 +1,24 @@
+{% extends "page_base.html" %}
+
+{% block extra_head %} {% endblock extra_head %}
+
+
+{% block content %}
+
+	<div class="row">
+		<div class="col-sm-4">
+		<h1>Majors at CCA</h1>
+
+	    <ul class="list-group">
+
+		{% for p in programs  %}
+		    <li class="list-group-item">
+		    	<a href="{% url 'programs_detail' p.slug %}">{{p}}</a>
+		    </li>
+
+		{% endfor %}
+		</ul>
+		</div>
+	</div>
+{% endblock content %}
+

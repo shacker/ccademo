@@ -9,11 +9,10 @@ urlpatterns = patterns('courses.views',
     url(r'^descriptions/sem/(?P<sem_id>[\d]+)/$', 'offerings_schedule', {'printable': True}, name="courses_descriptions_sem"),
     url(r'^schedule/$', 'offerings_schedule', name="offerings_schedule"),
     url(r'^descriptions/$', 'offerings_schedule', {'printable': True}, name="courses_descriptions"),
-    url(r'^categories/$', 'program_categories', name="program_categories"),
-    url(r'^majors/$', 'program_majors', name="program_majors"),
-    url(r'^course/(?P<internal_title>[\w-]+)/$', 'course_detail',  name='course_detail'),
+    url(r'^programs/(?P<slug>[\w-]+)$', 'programs_detail', name="programs_detail"),
+    url(r'^programs/$', 'programs_list', name="programs_list"),
 
-    url(r'^category/(?P<slug>[\w-]+)/$', 'program_category', name='program_category'),
+    url(r'^course/(?P<internal_title>[\w-]+)/$', 'course_detail',  name='course_detail'),
 
     # Course offering subsections
     url(r'^class/(?P<course_sec_id>[\d]+)$', 'offering_detail', name="offering_detail"),

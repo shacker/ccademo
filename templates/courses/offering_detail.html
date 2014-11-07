@@ -1,5 +1,4 @@
 {% extends "page_sub.html" %}
-
 {% load thumbnail %}
 {% load static from staticfiles %}
 
@@ -47,50 +46,66 @@
             <p><a href="" class="btn btn-primary" onclick="loadPop(this.href);return false;">Add to my schedule</a></p>
         {% endif %}
 
-
+        <div class="row">
          <h3>Instructors:</h3>
         {% for i in offering.instructors.all %}
-            <div id="" class="instructor">
-                {% if i.profile.avatar %}
-                    {% thumbnail i.profile.avatar "135x135" crop="center" as im %}
-                        <a href="{% url people_profile_detail i.profile.user.username %}" title=""><img src="{{im.url}}" width="{{im.width}}" height="{{im.height}}" alt="{{i}}'s avatar image" /></a>
-                    {% endthumbnail %}
-                {% else %}
-                    <a href="{% url people_profile_detail i.profile.user.username %}" title=""><img width="135" height="125" src="{{STATIC_URL}}images/silhouette.jpg" /></a>
-                {% endif %}
+            <div class="col-sm-3">
 
-                <br/><a href="{% url people_profile_detail i.profile.user.username %}">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a href="{% url 'people_profile_detail' i.profile.user.username %}">
+                            {{i}}{% if i.profile.suffix %}, {{i.profile.get_suffix_display}}{% endif %}</a><br />
+                            {% if i.profile.title %}{{i.profile.title}}{% endif %}
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                  <a href="{% url 'people_profile_detail' i.profile.user.username %}">
+                    {% if i.profile.datatel_avatar_url %}
+                        <img width="100" src="{{ i.profile.datatel_avatar_url }}" />
+                    {% else %}
+                        <a href="{% url 'people_profile_detail' i.profile.user.username %}" title="">
+                            <img width="100" src="{{ STATIC_URL }}images/silhouette.jpg" />
+                        </a>
+                    {% endif %}
+                    </a>
 
-                    {{i}}{% if i.profile.suffix %}, {{i.profile.get_suffix_display}}{% endif %}</a><br />
-                    {% if i.profile.title %}{{i.profile.title}}{% endif %}
+                  </div>
+                </div>
+
             </div>
          {% endfor %}
+         </div>
 
 
+        <div class="row">
+            <div class="col-sm-12">
 
-        <dl>
-            <dt>COURSE DETAILS:</dt>
-            <dd><strong>Location:</strong>
-            {# If location is "other", print the location_other field. In the Rooms table "Other" is record 59 #}
-            {% ifequal offering.location.id 59 %}
-                {{ offering.location_other }}
-            {% else %}
-                {{ offering.location }}
-            {% endifequal %}
-            </dd>
-            <dd><strong>Time:</strong> {{ offering.start_date }}</dd>
-            <dd><strong>Section ID:</strong> {{ offering.course_sec_id }}</dd>
-            <dd><strong>Type:</strong> {{ offering.course.get_course_type_display }}</dd>
-            <dd><strong>Section:</strong> {{ offering.sec }}</dd>
-            <dd><strong>Units:</strong> {{ offering.course.units }}</dd>
-            <dd><strong>Fee:</strong> {{ offering.fee|yesno:"Yes,No" }}</dd>
-            <dd><strong>Enrollment Limit:</strong> {{ offering.enroll_lim }}</dd>
-            <dd><strong>Programs:</strong>
-            {% for p in offering.course.programs.all %}
-                <a href="">[FIX LINK] {{p}}</a>{% if not forloop.last %},{% endif %}
-            {% endfor %}
-            </dd>
-        </dl>
+            <dl>
+                <dt>COURSE DETAILS:</dt>
+                <dd><strong>Location:</strong>
+                {# If location is "other", print the location_other field. In the Rooms table "Other" is record 59 #}
+                {% ifequal offering.location.id 59 %}
+                    {{ offering.location_other }}
+                {% else %}
+                    {{ offering.location }}
+                {% endifequal %}
+                </dd>
+                <dd><strong>Time:</strong> {{ offering.start_date }}</dd>
+                <dd><strong>Section ID:</strong> {{ offering.course_sec_id }}</dd>
+                <dd><strong>Type:</strong> {{ offering.course.get_course_type_display }}</dd>
+                <dd><strong>Section:</strong> {{ offering.sec_term }}</dd>
+                <dd><strong>Units:</strong> {{ offering.course.units }}</dd>
+                <dd><strong>Fee:</strong> {{ offering.fee|yesno:"Yes,No" }}</dd>
+                <dd><strong>Enrollment Limit:</strong> {{ offering.enroll_lim }}</dd>
+                <dd><strong>Programs:</strong>
+                {% for p in offering.course.programs.all %}
+                    <a href="{% url 'programs_detail' p.slug %}">{{p}}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+                </dd>
+            </dl>
+            </div>
+        </div>
 
         <div class="alert alert-success" role="alert">
             This sectional offering is an instance of CCA course:

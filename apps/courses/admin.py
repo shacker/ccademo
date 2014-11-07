@@ -31,13 +31,13 @@ class OfferingAdminForm(forms.ModelForm):
     students = forms.ModelMultipleChoiceField(
         required=False,
         widget = widgets.FilteredSelectMultiple('Students',is_stacked=False),
-        queryset = User.objects.filter(is_active=True))
+        queryset = Profile.objects.filter(user__is_active=True))
 
 
 
 class OfferingAdmin(admin.ModelAdmin):
     list_display = ('__unicode__','course_sec_id','section','sec_term',)
-    search_fields = ('title','course__long_title',)
+    search_fields = ('title','course__long_title','course_sec_id')
     actions = [make_copy]
     form = OfferingAdminForm
     raw_id_fields = ('students',)

@@ -27,6 +27,9 @@ class Command(BaseCommand):
         local("psql -d {db} -f {schema_file}".format(db=import_db, schema_file=schema_file))
         local('psql -d {db} -c "set client_encoding to \'LATIN1\'; COPY importer_courses (action,course_sec_id,course,section,sec_short_title,sec_desc,sec_start_date,sec_end_date, dept, sec_csxl, sec_term, short_title_formatted) FROM \'{import_file}\' WITH DELIMITER \',\' CSV HEADER"'.format(db=import_db, import_file=import_file))
 
+
+        # TODO Terminology is confusing - this is importing Offerings but calling them courses.
+        # Refactor naming to be clear.
         temp_courses = ImporterCourses.objects.all().distinct('course_sec_id')
         for tc in temp_courses:
             print("row ", tc.id)

@@ -21,6 +21,7 @@ schema_file = os.path.join(settings.BASE_DIR, 'apps', 'base', 'management', 'com
 import_db = settings.DATABASES['default']['NAME']
 
 student_group = Group.objects.get(name='Students')
+faculty_group = Group.objects.get(name='Faculty')
 
 
 class Command(BaseCommand):
@@ -28,9 +29,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        # local("psql -d {db} -c 'DROP TABLE IF EXISTS importer_users'".format(db=import_db))
-        # local("psql -d {db} -f {schema_file}".format(db=import_db, schema_file=schema_file))
-        # local('psql -d {db} -c "COPY importer_users (action,person_id,section_id,first_name,last_name,email,photo_url,person_type) FROM \'{import_file}\' WITH DELIMITER \',\' CSV HEADER"'.format(db=import_db, import_file=import_file))
+        local("psql -d {db} -c 'DROP TABLE IF EXISTS importer_users'".format(db=import_db))
+        local("psql -d {db} -f {schema_file}".format(db=import_db, schema_file=schema_file))
+        local('psql -d {db} -c "COPY importer_users (action,person_id,section_id,first_name,last_name,email,photo_url,person_type) FROM \'{import_file}\' WITH DELIMITER \',\' CSV HEADER"'.format(db=import_db, import_file=import_file))
 
         # Right now we are just making sure we have correct users and profile records,
         # NOT processing enrolments.
@@ -94,4 +95,8 @@ class Command(BaseCommand):
                 if tu.person_type == 'student':
                     Student.objects.create(profile=p)
                     student_group.user_set.add(user)
+
+                if tu.person_type == 'faculty':
+                    Instructor.objects.create(profile=p)
+                    faculty_group.user_set.add(user)
 

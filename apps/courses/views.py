@@ -29,56 +29,36 @@ def program_home(request):
         )
 
 
-def program_categories(request):
+
+
+def programs_list(request):
     """
-    Course categories listing
+    Listing of departments
     """
 
-    categories = Category.objects.all().order_by('name')
+    programs = Program.objects.all()
 
     return render_to_response(
-        'courses/categories.html',
+        'courses/programs_list.html',
         locals(),
         context_instance=RequestContext(request)
         )
 
 
-def program_category(request,slug):
-    """
-    Single category view
-    """
-
-    category = get_object_or_404(Category, slug=slug)
-
-    return render_to_response(
-        'courses/category.html',
-        locals(),
-        context_instance=RequestContext(request)
-        )
-
-def program_majors(request):
-    """
-    Listing of majors
-    """
-
-    majors = Major.objects.all()
-
-    return render_to_response(
-        'courses/majors.html',
-        locals(),
-        context_instance=RequestContext(request)
-        )
-
-
-def program_major(request,slug):
+def programs_detail(request,slug):
     """
     Single major view
     """
 
-    major = get_object_or_404(Major, slug=slug)
+    program = get_object_or_404(Program, slug=slug)
+
+    # Get all instructors in this program. TODO:
+    instructors = None
+
+
 
     return render_to_response(
-        'courses/major.html',
+        'courses/programs_detail.html',
         locals(),
         context_instance=RequestContext(request)
         )

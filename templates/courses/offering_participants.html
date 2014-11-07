@@ -17,7 +17,7 @@
 {% if students.count > 0 %}
     <ul>
     {% for s in students  %}
-        <li><a href="{% url people_profile_detail s %}">{{s.get_profile}}</a></li>
+        <li><a href="{% url 'people_profile_detail' s.user %}">{{s}}</a></li>
     {% endfor %}
     </ul>
 {% else %}
@@ -29,7 +29,7 @@
 {% if instructors.count > 0 %}
     <ul>
     {% for i in instructors  %}
-        <li><a href="{% url people_profile_detail i.profile.user %}">{{i}}</a></li>
+        <li><a href="{% url 'people_profile_detail' i.profile.user %}">{{i}}</a></li>
     {% endfor %}
     </ul>
 {% else %}
