@@ -1,0 +1,20 @@
+{% extends "todo/base.html" %}
+{% load bootstrap %}
+
+{% block page_heading %}{% endblock %}
+{% block title %}Add Todo List{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-sm-4">
+
+		<h2>Add a list:</h2>
+
+		<form action="" method="post" class="form" role="form">
+			{% csrf_token %}
+			{{form|bootstrap}}
+			<p><input type="submit" value="Submit" class="btn btn-primary"></p>
+		</form>
+		</div>
+	</div>
+{% endblock %}

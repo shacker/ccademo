@@ -10,6 +10,8 @@ urlpatterns = patterns('',
     url(r'^people/', include('people.urls')),
     url(r'^courses/', include('courses.urls')),
     url(r'^scheduler/', include('scheduler.urls')),
+	url(r'^todo/', include('todo.urls')),
+
 
     # url(r'^postman/', include('postman.urls')),
 

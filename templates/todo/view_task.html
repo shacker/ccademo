@@ -1,0 +1,117 @@
+{% extends "todo/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Task: {{ task.title }}{% endblock %}
+
+{% block content %}
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        // Initially hide the TaskEdit form
+        $('#TaskEdit').hide();
+
+        // toggle slide to show the Add Task form when link clicked
+        $('#slideToggle').click(function(){
+            $(this).siblings('#TaskEdit').slideToggle();
+        });
+    });
+    </script>
+
+    {% ifequal auth_ok 1 %}
+
+        <h2>{{ task }}</h2>
+
+        <form action="" method="POST"  class="form-horizontal" role="form">
+        {% csrf_token %}
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <strong>In list:</strong> <a href="{% url 'todo-incomplete_tasks' task.list.id task.list.slug %}" class="showlink">{{ task.list }}</a><br />
+            <strong>Assigned to:</strong> {{ task.assigned_to.first_name }} {{ task.assigned_to.last_name }}<br />
+            <strong>Created by:</strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}<br />
+            <strong>Due date:</strong>  {{ task.due_date }}<br />
+            <strong>Completed:</strong> {{ form.completed }}<br />
+            <strong>Priority:</strong> {{ task.priority }}<br />
+          </div>
+        </div>
+
+        <p id="slideToggle" class="btn btn-success">Edit details</p>
+
+        {% if task.note %}
+        <div class="task_note"><strong>Note:</strong> {{ task.note|safe|urlize|linebreaks }}</div>
+        {% endif %}
+
+        <div id="TaskEdit" class="row">
+        <h3>Edit Task</h3>
+
+            <div class="form-group">
+               <label class="control-label col-sm-2" for="id_title">Title:</label>
+               <div class="col-sm-10">
+                {% render_field form.title class+="form-control" %}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+               <label class="control-label col-sm-2" for="id_list">List:</label>
+               <div class="col-sm-3">
+                {% render_field form.list class+="form-control" %}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+               <label class="control-label col-sm-2" for="id_due_date">Due date:</label>
+               <div class="col-sm-10">
+                {% render_field form.due_date class+="form-control" %}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+               <label class="control-label col-sm-2" for="id_assigned_to">Assigned To:</label>
+               <div class="col-sm-3">
+                {% render_field form.assigned_to class+="form-control" %}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+               <label class="control-label col-sm-2" for="id_note">Note:</label>
+               <div class="col-sm-6">
+                {% render_field form.note class+="form-control" %}
+                </div>
+            </div>
+
+            <div class="form-group">
+               <label class="control-label col-sm-2" for="id_priority">Priority:</label>
+               <div class="col-sm-10">
+                {% render_field form.priority class+="form-control" %}
+                </div>
+            </div>
+
+            <p><input type="submit" class="btn btn-primary" name="edit_task" value="Edit task"></p>
+        </div>
+
+        <hr />
+
+        <h3>Add comment</h3>
+            <p><textarea class="form-control" name="comment-body"></textarea></p>
+            <p><input class="btn btn-primary" type="submit" value="Submit"></p>
+        </form>
+
+        <h3>Comments on this task</h3>
+
+        <div class="task_comments">
+        {% for comment in comment_list %}
+            <p><strong>{{ comment.author.first_name }} {{ comment.author.last_name }}, {{ comment.date|date:"F d Y P" }}</strong> </p>
+            {{ comment.body|safe|urlize|linebreaks }}
+        {% empty %}
+            <p>No Comments</p>
+        {% endfor %}
+        </div>
+
+    {% endifequal %}
+
+{% endblock content %}

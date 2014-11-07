@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'localflavor',
 
     # 3rd party apps
@@ -50,9 +51,11 @@ INSTALLED_APPS = (
     'simplejson',
     'django_extensions',
     'bootstrapform',
+    'widget_tweaks',
     'anonymizer',
     'sorl.thumbnail',
     'postman',
+    'todo',
 
 
     # Our apps
@@ -79,6 +82,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'django_cas_ng.backends.CASBackend',
 )
+
+SITE_ID = 1
 
 # AUTH_USER_MODEL = 'auth.User'
 

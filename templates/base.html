@@ -14,12 +14,20 @@
         <title>{% block page_title %}CCA Intranet - {% endblock page_title %}</title>
 
         <!-- Bootstrap core CSS -->
-          <link href="{% static 'styles/css/app.css' %}" rel="stylesheet">
-          <link href="{% static 'styles/css/bootstrap_theme.css' %}" rel="stylesheet">
+        <link href="{% static 'styles/css/app.css' %}" rel="stylesheet">
+        <link href="{% static 'styles/css/bootstrap_theme.css' %}" rel="stylesheet">
 
-            <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-            <script src="{% static 'bower_components/modernizr/modernizr.js' %}"></script>
-            <script src="{% static 'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js' %}"></script>
+        <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+
+        <link type="text/css"
+            href="{% static 'bower_components/jquery-ui/themes/eggplant/jquery-ui.css' %}" rel="Stylesheet" />
+
+        <script type="text/javascript"
+            src="{% static 'bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+
+        <script src="{% static 'bower_components/jquery-ui/ui/datepicker.js' %}"></script>
+        <script src="{% static 'bower_components/modernizr/modernizr.js' %}"></script>
+        <script src="{% static 'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js' %}"></script>
 
         {% block extrahead %}{% endblock extrahead %}
 
