@@ -52,8 +52,7 @@ INSTALLED_APPS = (
     'bootstrapform',
     'anonymizer',
     'sorl.thumbnail',
-
-    # 'postman',
+    'postman',
 
 
     # Our apps

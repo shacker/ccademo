@@ -40,7 +40,6 @@
                 <td>{{section.section}}</td>
                 <td><a href="{% url 'offering_detail' section.course_sec_id %}">{{section}}</a></td>
                 <td>{{section.start_date}}</td>
-
                 <td>{{section.course_sec_id}}</td>
 
             </tr>
@@ -49,7 +48,14 @@
           </div>
         </div>
 
-        <p><strong>Restrictions and Prerequisites:</strong> {% if course.restrictions %}{{ course.restrictions }} {% endif %}  {% if not course.restrictions %}None {% endif %}</p>
+        <p>
+        <strong>Restrictions and Prerequisites:</strong>
+        {% if course.restrictions %}
+            {{ course.restrictions }}
+        {% else %}
+            None
+        {% endif %}
+        </p>
 
 
 </div>
