@@ -4,14 +4,20 @@ from django.conf import settings
 
 import json
 import requests
+import feedparser
 
 
 def dashboard(request):
     """
-    Homepage view
+    Dashboard view
     """
 
-    news = News.objects.filter(published=True)
+    intranews = News.objects.filter(published=True)
+
+    # CCA main site news
+    feed = feedparser.parse('https://www.cca.edu/news/feed')
+    ccanews = feed['entries']
+
 
     # NYT API data
     response = requests.get(

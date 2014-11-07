@@ -15,6 +15,7 @@ csvImporter
 fabric
 python-ldap
 pytz
+feedparser
 
 # manual install  for now
 # django-postman

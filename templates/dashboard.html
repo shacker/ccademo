@@ -16,7 +16,7 @@
 			  <div class="panel-heading"><h3 class="panel-title">ETS News</h3></div>
 			  <div class="panel-body">
 			  	<ul>
-			    {% for story in news %}
+			    {% for story in intranews %}
 			    	<li><a href="{% url 'news_detail' story.slug %}">{{story.title}}</a></li>
 			    {% endfor %}
 			    </ul>
@@ -42,7 +42,13 @@
 			<div class="panel panel-success">
 			  <div class="panel-heading"><h3 class="panel-title">Panel title</h3></div>
 			  <div class="panel-body">
-			    Panel content
+			    <ul>
+					{% for story in ccanews %}
+						{% if forloop.counter|divisibleby:3 %}
+							<li><a href="{{story.url}}">{{story.title}}</a></li>
+						{% endif %}
+					{% endfor %}
+			    </ul>
 			  </div>
 			</div>
 		</div>
