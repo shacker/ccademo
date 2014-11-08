@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+admin.site.index_template = 'admin/cca_custom_index.html'
 
 urlpatterns = patterns('',
 
@@ -20,3 +21,4 @@ urlpatterns = patterns('',
 	(r'^accounts/logout$', 'django_cas_ng.views.logout'),
 
 )
+

@@ -1,0 +1,8 @@
+{% extends "admin/index.html" %}
+{# Override specific blocks from distributed admin/index #}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">CCA Intranet Administration</a></h1>
+<h2><a href="/">Back to site</a></h2>
+<link rel="stylesheet" type="text/css" href="/static/styles/css/admin-custom.css">
+{% endblock %}
