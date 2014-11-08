@@ -26,7 +26,7 @@ class StaffInline(admin.StackedInline):
 class ProfileAdmin(admin.StackedInline):
     model = Profile
     search_fields = ['user__username', 'user__first_name', 'user__last_name',]
-    list_display = ('__unicode__','title','get_primary_email','mobile_phone1')
+    list_display = ('__str__','title','get_primary_email','mobile_phone1')
     raw_id_fields = ('user',)
     inlines = [ StaffInline, StudentInline, AlumniInline, InstructorInline]
     exclude = ('followees',)
@@ -41,11 +41,11 @@ class ProfileRelatedAdmin(admin.ModelAdmin):
 
 
 class StaffAdmin(ProfileRelatedAdmin):
-    list_display = ('__unicode__','office_num','extension')
+    list_display = ('__str__','office_num','extension')
 
 
 class InstructorAdmin(ProfileRelatedAdmin):
-    list_display = ('__unicode__','office_num')
+    list_display = ('__str__','office_num')
 
     class Media:
           js = ('/media/js/tiny_mce/tiny_mce.js',
@@ -53,12 +53,12 @@ class InstructorAdmin(ProfileRelatedAdmin):
 
 
 class StudentAdmin(ProfileRelatedAdmin):
-    list_display = ('__unicode__','enrollment_date',)
+    list_display = ('__str__','enrollment_date',)
     list_filter = ('visiting_scholar', 'enrollment_date',)
 
 
 class AlumniAdmin(ProfileRelatedAdmin):
-    list_display = ('__unicode__','employer','specialty','medium')
+    list_display = ('__str__','employer','specialty','medium')
     list_filter = ('medium',)
 
 

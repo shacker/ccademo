@@ -36,7 +36,7 @@ class Medium(models.Model):
     class Meta:
         db_table = u'medium'
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % (self.description)
 
 
@@ -109,7 +109,7 @@ class BaseProfile(models.Model):
     class Meta:
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.profile.get_display_name()
 
     def get_form_name(self):
@@ -172,7 +172,7 @@ class Profile(BaseProfile):
     emp_objects = EmployeeProfileManager()
 
 
-    def __unicode__(self):
+    def __str__(self):
         return self.get_display_name()
 
 
@@ -303,7 +303,7 @@ class Staff(BaseProfile):
     class Meta:
         verbose_name_plural = "Staff"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.profile.get_display_name()
 
 
@@ -471,8 +471,8 @@ class Donation(models.Model):
     class Meta:
         db_table = u'people_donation'
 
-    def __unicode__(self):
-        return self.profile.__unicode__()
+    def __str__(self):
+        return self.profile.__str__()
 
 
 class Address(models.Model):
@@ -492,7 +492,7 @@ class Address(models.Model):
     # country  = models.ForeignKey(Country,blank=True,null=True)
     display = models.BooleanField(default=True, help_text="Display this address on my profile page")
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s, %s" % (self.street_1, self.city, self.state)
 
     class Meta:
@@ -516,7 +516,7 @@ class Award(models.Model):
     date_received = models.DateField(blank=True,null=True,help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
     display = models.BooleanField(default=True, help_text="Display item on my public profile page")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -531,8 +531,8 @@ class Reference(models.Model):
     profile = models.ForeignKey(Profile)
     body = models.TextField()
 
-    def __unicode__(self):
-        return self.profile.__unicode__()
+    def __str__(self):
+        return self.profile.__str__()
 
 
 
@@ -557,7 +557,7 @@ class Experience(models.Model):
     display = models.BooleanField(default=True, help_text="Display item on my public profile page")
 
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s, %s" % (self.title, self.company)
 
     class Meta:
@@ -574,11 +574,11 @@ class Skill(models.Model):
     summary = models.TextField()
     display = models.BooleanField(default=True, help_text="Display item on my public profile page")
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s ..." % self.summary[:25]
 
-    # def __unicode__(self):
-    #     return self.profile.__unicode__()
+    # def __str__(self):
+    #     return self.profile.__str__()
 
 class Education(models.Model):
     """
@@ -600,7 +600,7 @@ class Education(models.Model):
         verbose_name_plural = "Education"
         ordering = ['-start_date']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.school
 
 
