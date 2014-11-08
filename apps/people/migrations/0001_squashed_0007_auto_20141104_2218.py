@@ -6,14 +6,22 @@ import localflavor.us.models
 from django.conf import settings
 
 
+def add_groups(apps, schema_editor):
+    call_command('loaddata', 'auth.group.json')
+
+
 class Migration(migrations.Migration):
+
+    replaces = [(b'people', '0001_initial'), (b'people', '0002_auto_20141103_2335'), (b'people', '0003_profile_person_id'), (b'people', '0004_profile_datatel_url_field'), (b'people', '0005_auto_20141104_0041'), (b'people', '0006_auto_20141104_2046'), (b'people', '0007_auto_20141104_2218')]
 
     dependencies = [
         ('auth', '0001_initial'),
-        ('people', '0001_initial'),
     ]
 
     operations = [
+        migrations.RunPython(
+            add_groups,
+            ),
         migrations.CreateModel(
             name='ImporterUsers',
             fields=[
@@ -291,7 +299,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='followees',
-            field=models.ManyToManyField(help_text=b'People this person is following.', related_name='followers', null=True, to='people.Profile', blank=True),
+            field=models.ManyToManyField(help_text=b'People this person is following.', related_name='followers', null=True, to=b'people.Profile', blank=True),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -322,6 +330,30 @@ class Migration(migrations.Migration):
             model_name='address',
             name='profile',
             field=models.ForeignKey(to='people.Profile'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='profile',
+            name='person_id',
+            field=models.IntegerField(help_text=b'Datatel ID', null=True, blank=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='profile',
+            name='datatel_avatar_url',
+            field=models.CharField(max_length=60, null=True, verbose_name=b'Datatel avatar URL', blank=True),
+            preserve_default=True,
+        ),
+        migrations.AlterField(
+            model_name='profile',
+            name='about',
+            field=models.TextField(help_text=b'A few sentences about yourself - capsule biography. No HTML allowed.', max_length=256, null=True, blank=True),
+            preserve_default=True,
+        ),
+        migrations.AlterField(
+            model_name='profile',
+            name='title',
+            field=models.CharField(max_length=32, null=True, blank=True),
             preserve_default=True,
         ),
     ]
