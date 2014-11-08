@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block page_title %}{{ block.super }}Landing{% endblock page_title %}
+
+{% block content %}
+
+	<div class="page-header">
+		<h3>Welcome to the CCA Intranet</h3>
+	</div>
+
+	<div class="well">
+		<p>This site aggregates information and data from dozens of campus sources,
+		and is available only to CCA students, faculty and staff.</p>
+		<p class="text-center">
+			<a class="btn btn-primary btn-lg" href="/accounts/login">Please log in to continue</a>
+		</p>
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-4">
+			<div class="panel panel-primary">
+			  <div class="panel-heading"><h3 class="panel-title">ETS News</h3></div>
+			  <div class="panel-body">
+			  	<ul>
+			    {% for story in intranews %}
+			    	<li><a href="{% url 'news_detail' story.slug %}">{{story.title}}</a></li>
+			    {% endfor %}
+			    </ul>
+			  </div>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="panel panel-success">
+			  <div class="panel-heading"><h3 class="panel-title">Chimera News</h3></div>
+			  <div class="panel-body">
+			    <ul>
+					{% for story in ccanews %}
+						<li><a href="{{story.url}}">{{story.title}}</a></li>
+					{% endfor %}
+			    </ul>
+			  </div>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="panel panel-warning">
+			  <div class="panel-heading"><h3 class="panel-title">NYT Stories</h3></div>
+			  <div class="panel-body">
+			    <ul>
+					{% for story in nyt_stories %}
+						<li><a href="{{story.url}}">{{story.title}}</a></li>
+					{% endfor %}
+			    </ul>
+			  </div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+
+
+{% endblock content %}
