@@ -65,6 +65,7 @@ INSTALLED_APPS = (
     'people',
     'courses',
     'scheduler',
+    'notifications',
 )
 
 MIDDLEWARE_CLASSES = (

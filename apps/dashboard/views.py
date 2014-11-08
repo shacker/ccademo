@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from news.models import News
+from notifications.models import Notification
 from django.conf import settings
 
 import json
@@ -17,6 +18,15 @@ def dashboard(request):
     # CCA main site news
     feed = feedparser.parse('https://www.cca.edu/news/feed')
     ccanews = feed['entries'][0:4]
+
+    # Library notifications
+    lib_notifs = Notification.objects.filter(user=request.user, resolved=False, source__name="Library")
+
+    # Housing notifications
+    housing_notifs = Notification.objects.filter(user=request.user, resolved=False, source__name="Housing")
+
+    # Financial aid notifications
+    finaid_notifs = Notification.objects.filter(user=request.user, resolved=False, source__name="Financial Aid")
 
 
     # NYT API data
