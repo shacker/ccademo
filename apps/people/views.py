@@ -91,7 +91,6 @@ def profile_edit_related_multi(request, related_model, obj_id=None):
 
     profile = request.user.profile
     Model = get_model('people', related_model)
-    print Model
 
     form_name = '%sForm' % related_model.title()
     Form = getattr(people_forms,form_name)
@@ -134,7 +133,7 @@ def profile_delete_related(request, related_model, related_obj_id):
     profile = request.user.profile
     Model = get_model('people', related_model)
     item = Model.objects.get(id=related_obj_id)
-    print item.profile
+    print(item.profile)
     if item.profile == profile:
         item.delete()
 
@@ -195,7 +194,7 @@ def _clean_query_dict(dict):
     Remove empty elements from dict and q since it's not passed
     directly to queryset filter.
     """
-    for k,v in dict.items():
+    for k,v in list(dict.items()):
         if not v or not v.strip():
             del dict[k]
     try:

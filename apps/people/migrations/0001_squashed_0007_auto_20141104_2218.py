@@ -299,7 +299,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='followees',
-            field=models.ManyToManyField(help_text=b'People this person is following.', related_name='followers', null=True, to=b'people.Profile', blank=True),
+            field=models.ManyToManyField(to='people.Profile', help_text=b'People this person is following.', related_name='followers', null=True,  blank=True),
             preserve_default=True,
         ),
         migrations.AddField(

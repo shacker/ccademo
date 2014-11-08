@@ -13,7 +13,7 @@ django-widget-tweaks
 django-cas-ng
 csvImporter
 fabric
-python-ldap
+python3-ldap
 pytz
 feedparser
 

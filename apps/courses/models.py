@@ -18,7 +18,7 @@ class Room(models.Model):
     number = models.CharField("Room Number",max_length=64,blank=True, default='')
     has_screen = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s" % (self.name, self.number)
 
 
@@ -29,7 +29,7 @@ class Program(models.Model):
     description = models.TextField(blank=False)
     instructors = models.ManyToManyField(Instructor) # All instructors who have ever taught in this program
 
-    def __unicode__(self):
+    def __str__(self):
       return self.name
 
 
@@ -40,7 +40,7 @@ class Semester(models.Model):
     ord_by = models.IntegerField(null=True, blank=True)
     live = models.BooleanField(default=False, help_text='When checked, this semester&apos;s schedule will appear on the public site.')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -56,7 +56,7 @@ class Course(models.Model):
     restrictions = models.TextField(null=True,blank=True)
     programs = models.ManyToManyField(Program,blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
       return self.long_title
 
 
@@ -86,7 +86,7 @@ class Offering(models.Model):
     #     help_text="Which INSTRUCTOR evaluations question set should this course be evaluated with at the end of the semester?")
     # programs = models.ManyToManyField(Program,blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
       return self.title if self.title else self.course.long_title
 
     def description(self):
@@ -123,7 +123,7 @@ class Assignment(models.Model):
     description = models.TextField(blank=True)
     due_date = models.DateTimeField(blank=True, default=datetime.datetime.now)
 
-    def __unicode__(self):
+    def __str__(self):
       return self.title
 
 
@@ -137,7 +137,7 @@ class Material(models.Model):
     url = models.URLField(blank=True,null=True)
     cost = models.DecimalField('Approximate Cost',blank=True,null=True,max_digits=8,decimal_places=2)
 
-    def __unicode__(self):
+    def __str__(self):
       return self.title
 
 

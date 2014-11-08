@@ -52,7 +52,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'bootstrapform',
     'widget_tweaks',
-    'anonymizer',
+    # 'anonymizer',
     'sorl.thumbnail',
     'postman',
     'todo',

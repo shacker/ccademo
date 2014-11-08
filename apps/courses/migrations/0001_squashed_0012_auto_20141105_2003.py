@@ -45,21 +45,7 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model,),
         ),
-        migrations.CreateModel(
-            name='EvalQGroup',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('q_group_type', models.IntegerField(verbose_name=b'Question set type', choices=[(0, b'Course'), (1, b'Instructor'), (2, b'Other')])),
-                ('q_group_title', models.CharField(max_length=765)),
-                ('page_header', models.TextField()),
-                ('active', models.BooleanField(default=1, verbose_name=b'Active')),
-            ],
-            options={
-                'verbose_name': 'Evaluation Question Set',
-                'verbose_name_plural': 'Evaluation Question Sets',
-            },
-            bases=(models.Model,),
-        ),
+
         migrations.CreateModel(
             name='Material',
             fields=[
@@ -90,9 +76,7 @@ class Migration(migrations.Migration):
                 ('description_override', models.TextField(help_text=b'If present, overrides same field in Course model.', null=True, blank=True)),
                 ('restrictions_override', models.TextField(help_text=b'If present, overrides same field in Course model.', null=True, blank=True)),
                 ('course', models.ForeignKey(to='courses.Course')),
-                ('eval_group', models.ForeignKey(related_name='course_eval_group', blank=True, to='courses.EvalQGroup', help_text=b'Which COURSE evaluations question set should this course be evaluated with at the end of the semester?', null=True, verbose_name=b'Course evaluation question set')),
-                ('instr_eval_group', models.ForeignKey(related_name='instr_eval_group', default=2, to='courses.EvalQGroup', blank=True, help_text=b'Which INSTRUCTOR evaluations question set should this course be evaluated with at the end of the semester?', null=True, verbose_name=b'Instructor evaluation question set')),
-                ('instructors', models.ManyToManyField(to=b'people.Instructor')),
+                ('instructors', models.ManyToManyField(to='people.Instructor')),
             ],
             options={
             },
@@ -105,7 +89,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('slug', models.SlugField()),
                 ('description', models.TextField()),
-                ('instructors', models.ManyToManyField(to=b'people.Instructor')),
+                ('instructors', models.ManyToManyField(to='people.Instructor')),
             ],
             options={
             },
@@ -151,7 +135,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='offering',
             name='students',
-            field=models.ManyToManyField(to=b'people.Profile', blank=True),
+            field=models.ManyToManyField(to='people.Profile', blank=True),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -163,7 +147,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='course',
             name='programs',
-            field=models.ManyToManyField(to=b'courses.Program', null=True, blank=True),
+            field=models.ManyToManyField(to='courses.Program', null=True, blank=True),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -232,7 +216,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='offering',
             name='instructors',
-            field=models.ManyToManyField(to=b'people.Instructor', null=True, blank=True),
+            field=models.ManyToManyField(to='people.Instructor', null=True, blank=True),
             preserve_default=True,
         ),
         migrations.RemoveField(
@@ -243,9 +227,7 @@ class Migration(migrations.Migration):
             model_name='offering',
             name='instr_eval_group',
         ),
-        migrations.DeleteModel(
-            name='EvalQGroup',
-        ),
+
         migrations.AlterField(
             model_name='offering',
             name='enroll_lim',
@@ -255,7 +237,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='offering',
             name='instructors',
-            field=models.ManyToManyField(to=b'people.Instructor', blank=True),
+            field=models.ManyToManyField(to='people.Instructor', blank=True),
             preserve_default=True,
         ),
     ]
