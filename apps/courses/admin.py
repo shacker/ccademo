@@ -36,7 +36,7 @@ class OfferingAdminForm(forms.ModelForm):
 
 
 class OfferingAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__','course_sec_id','section','sec_term',)
+    list_display = ('__str__','course_sec_id','section','sec_term',)
     search_fields = ('title','course__long_title','course_sec_id')
     actions = [make_copy]
     form = OfferingAdminForm
@@ -44,7 +44,7 @@ class OfferingAdmin(admin.ModelAdmin):
 
 class CourseAdmin(admin.ModelAdmin):
     search_fields = ('internal_title','long_title',)
-    list_display = ('__unicode__','internal_title','short_title_formatted',)
+    list_display = ('__str__','internal_title','short_title_formatted',)
 
 
 
