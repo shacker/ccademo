@@ -16,7 +16,7 @@ def dashboard(request):
 
     # CCA main site news
     feed = feedparser.parse('https://www.cca.edu/news/feed')
-    ccanews = feed['entries']
+    ccanews = feed['entries'][0:4]
 
 
     # NYT API data

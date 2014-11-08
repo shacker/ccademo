@@ -44,9 +44,7 @@
 			  <div class="panel-body">
 			    <ul>
 					{% for story in ccanews %}
-						{% if forloop.counter|divisibleby:3 %}
-							<li><a href="{{story.url}}">{{story.title}}</a></li>
-						{% endif %}
+						<li><a href="{{story.url}}">{{story.title}}</a></li>
 					{% endfor %}
 			    </ul>
 			  </div>
