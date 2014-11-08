@@ -123,7 +123,6 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-
 STATIC_URL = '/static/'
 
 # Locations for static files
@@ -135,6 +134,12 @@ STATICFILES_FINDERS = (
 )
 
 NYT_API_KEY = '675c2c18ffb102513d15141c24b8e19e:8:50612933'
+
+# See https://github.com/shacker/django-todo/wiki/Requirements-and-Installation
+TODO_STAFF_ONLY = False
+TODO_DEFAULT_ASSIGNEE = 'shack'
+TODO_DEFAULT_LIST_ID = 9
+TODO_PUBLIC_SUBMIT_REDIRECT = 'dashboard'
 
 
 try:
