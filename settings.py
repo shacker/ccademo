@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'postman',
     'todo',
+    'stronghold',
 
 
     # Our apps
@@ -76,7 +77,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'stronghold.middleware.LoginRequiredMiddleware',
 )
+
+
+# Stronghold makes whole site login-required except for exemptions
+STRONGHOLD_DEFAULTS = True
+STRONGHOLD_PUBLIC_URLS = ('/','/admin',)
 
 
 AUTHENTICATION_BACKENDS = (

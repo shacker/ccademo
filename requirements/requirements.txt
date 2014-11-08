@@ -16,6 +16,7 @@ fabric
 python3-ldap
 pytz
 feedparser
+django-stronghold
 
 # manual install  for now
 # django-postman
