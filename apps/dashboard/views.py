@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from news.models import News
 from notifications.models import Notification
+from todo.models import Item
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -73,7 +74,7 @@ def dashboard(request):
     # Financial aid notifications
     finaid_notifs = Notification.objects.filter(user=request.user, resolved=False, source__name="Financial Aid")
 
-
+    tickets = Item.objects.filter(assigned_to=request.user, completed=False)
 
 
 
