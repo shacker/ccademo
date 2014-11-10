@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'todo',
     'stronghold',
     'tinymce',
+    'mce_filebrowser',
 
 
     # Our apps
@@ -89,14 +90,15 @@ STRONGHOLD_PUBLIC_URLS = ('/','/admin',)
 
 
 TINYMCE_DEFAULT_CONFIG = {
-    'plugins': "table,spellchecker,paste,searchreplace",
-    'theme': "advanced",
+    'plugins': "table,spellchecker,paste,searchreplace,image",
+    'theme': "modern",
     'cleanup_on_startup': True,
     'custom_undo_redo_levels': 10,
+    'file_browser_callback': 'mce_filebrowser',
 }
 TINYMCE_SPELLCHECKER = True
 TINYMCE_COMPRESSOR = False
-
+# TINYMCE_FILEBROWSER=True
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

@@ -16,6 +16,8 @@ urlpatterns = patterns('',
 
     # Static/CMS pages
     (r'^tinymce/', include('tinymce.urls')),
+    (r'^mce_filebrowser/', include('mce_filebrowser.urls')),
+
     url(r'^pages/$', 'ccapages.views.index', name='pages_all'),
     url(r'^pages/', include('ccapages.urls')),
 

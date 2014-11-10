@@ -2,9 +2,10 @@ from django.contrib import admin
 from ccapages.models import FlatPage
 from django.utils.translation import ugettext_lazy as _
 from ccapages.forms import FlatpageForm
+from mce_filebrowser.admin import MCEFilebrowserAdmin
 
 
-class FlatPageAdmin(admin.ModelAdmin):
+class FlatPageAdmin(MCEFilebrowserAdmin):
     form = FlatpageForm
     fieldsets = (
         (None, {'fields': ('url', 'title', 'content', 'sites')}),
