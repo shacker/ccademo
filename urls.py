@@ -16,6 +16,7 @@ urlpatterns = patterns('',
 
     # Static/CMS pages
     url(r'^pages/', include('ccapages.urls')),
+    (r'^tinymce/', include('tinymce.urls')),
 
     # url(r'^postman/', include('postman.urls')),
 

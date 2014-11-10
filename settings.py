@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'postman',
     'todo',
     'stronghold',
+    'tinymce',
 
 
     # Our apps
@@ -85,6 +86,16 @@ MIDDLEWARE_CLASSES = (
 # Stronghold makes whole site login-required except for exemptions
 STRONGHOLD_DEFAULTS = True
 STRONGHOLD_PUBLIC_URLS = ('/','/admin',)
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,paste,searchreplace",
+    'theme': "advanced",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+}
+TINYMCE_SPELLCHECKER = True
+TINYMCE_COMPRESSOR = False
 
 
 AUTHENTICATION_BACKENDS = (
@@ -119,14 +130,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -140,6 +147,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
 )
+
+# collectstatic command will gather static files here
+STATIC_ROOT = os.path.join(BASE_DIR, "static_collect")
+
 
 NYT_API_KEY = '675c2c18ffb102513d15141c24b8e19e:8:50612933'
 

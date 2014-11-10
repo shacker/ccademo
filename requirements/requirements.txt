@@ -18,6 +18,7 @@ pytz
 feedparser
 django-stronghold
 django-todo
+django-tinymce
 
 # manual install  for now
 # django-postman

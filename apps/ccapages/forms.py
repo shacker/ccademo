@@ -2,6 +2,7 @@ from django import forms
 from django.conf import settings
 from ccapages.models import FlatPage
 from django.utils.translation import ugettext, ugettext_lazy as _
+from tinymce.widgets import TinyMCE
 
 
 class FlatpageForm(forms.ModelForm):
@@ -10,6 +11,8 @@ class FlatpageForm(forms.ModelForm):
                     " and trailing slashes."),
         error_message=_("This value must contain only letters, numbers,"
                         " dots, underscores, dashes, slashes or tildes."))
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 120, 'rows': 30}))
+
 
     class Meta:
         model = FlatPage
