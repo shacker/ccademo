@@ -2,10 +2,11 @@ from django.conf import settings
 from ccapages.models import FlatPage
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.template import loader, RequestContext
 from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_protect
+
 
 DEFAULT_TEMPLATE = 'ccapages/default.html'
 
@@ -17,6 +18,12 @@ DEFAULT_TEMPLATE = 'ccapages/default.html'
 # or a redirect is required for authentication, the 404 needs to be returned
 # without any CSRF checks. Therefore, we only
 # CSRF protect the internal implementation.
+
+
+def index(request):
+
+    return render(request, 'ccapages/index.html', locals())
+
 
 
 def flatpage(request, url):

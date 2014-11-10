@@ -15,8 +15,9 @@ urlpatterns = patterns('',
 	url(r'^todo/', include('todo.urls')),
 
     # Static/CMS pages
-    url(r'^pages/', include('ccapages.urls')),
     (r'^tinymce/', include('tinymce.urls')),
+    url(r'^pages/$', 'ccapages.views.index', name='pages_all'),
+    url(r'^pages/', include('ccapages.urls')),
 
     # url(r'^postman/', include('postman.urls')),
 

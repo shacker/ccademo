@@ -30,8 +30,6 @@ class FlatpageNode(template.Node):
             flatpages = flatpages.filter(
                 url__startswith=self.starts_with.resolve(context))
 
-        user = self.user.resolve(context)
-
         context[self.context_name] = flatpages
         return ''
 
