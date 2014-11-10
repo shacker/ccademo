@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^scheduler/', include('scheduler.urls')),
 	url(r'^todo/', include('todo.urls')),
 
+    # Static/CMS pages
+    url(r'^pages/', include('ccapages.urls')),
 
     # url(r'^postman/', include('postman.urls')),
 
