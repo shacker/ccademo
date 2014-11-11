@@ -11,10 +11,21 @@
 	</div>
 
 	<div class="row">
-		{% for widget in widgets %}
+		{% for widget in userwidgets %}
 			{# Rendered in dashboard/widget_instance.html #}
 			{% render_widget widget user %}
 		{% endfor %}
 	</div>
+
+    <div class="well">
+    	<h3>Unused Widgets</h3>
+    	<p>Click to add</p>
+    	<ul>
+    	{% for w in otherwidgets %}
+    		<li><a href="{% url 'widget_add' w.id %}">{{w.title}}</a></li>
+    	{% endfor %}
+		</ul>
+    </div>
+
 
 {% endblock content %}

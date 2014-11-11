@@ -301,6 +301,9 @@ class UserWidget(models.Model):
     widget = models.ForeignKey(CCAWidget)
     order = models.IntegerField(default=0)
 
+    def __str__(self):
+        return "{username} - {widget}".format(username = self.profile.user.username, widget=self.widget)
+
 
 class Staff(BaseProfile):
     """

@@ -8,8 +8,12 @@ from people.constants import STATE_CHOICES_WITH_NULL
 from people.models import (
     Alumni, Instructor, Student, Staff,
     Experience, Reference, Award,
-    Education, Address, Donation, Profile, Skill
+    Education, Address, Donation, Profile, Skill,
+    UserWidget,
     )
+
+class UserWidgetAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'widget', 'order')
 
 class AlumniInline(admin.StackedInline):
      model = Alumni
@@ -105,6 +109,7 @@ class ExperienceAdminForm(forms.ModelForm):
 
 
 
+
 class ExperienceAdmin(ProfileRelatedAdmin):
     list_display = ('profile','title','company','city','state')
     list_filter = ('state','start_date',)
@@ -123,6 +128,7 @@ class ReferenceAdmin(ProfileRelatedAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
+admin.site.register(UserWidget, UserWidgetAdmin)
 admin.site.register(Instructor, InstructorAdmin)
 admin.site.register(Staff, StaffAdmin)
 admin.site.register(Student, StudentAdmin)

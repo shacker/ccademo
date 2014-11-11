@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib import messages
+
 from dashboard.widget_functions import *
+from dashboard.models import CCAWidget
 from people.models import UserWidget
+
 
 
 def landing(request):
@@ -30,12 +34,56 @@ def landing(request):
 
 def dashboard(request):
     """
-    Dashboard view
+    Dashboard view.
+    Template tag in dashboard.html handles widget logic.
     """
 
-    widgets = UserWidget.objects.filter(profile=request.user.profile).order_by('order')
+    # This user's used widgets
+    userwidgets = UserWidget.objects.filter(profile=request.user.profile).order_by('order')
 
-    # For each user-selected widget, run the associated function to get data
+    # Get a list of ids of parent widget objects in use by this user
+    usedwidgets = [u.widget.id for u in userwidgets]
+
+    # The set of all parent widgets minus the set of widgets the user already has installed
+    otherwidgets = CCAWidget.objects.exclude(id__in=usedwidgets)
 
     return render(request, 'dashboard/dashboard.html', locals())
+
+
+
+def widget_remove(request, userwidget_id):
+    '''
+    Remove a UserWidget instance from User's profile.
+    Redirects immediately without displaying anything.
+    '''
+
+    try:
+        UserWidget.objects.get(id=userwidget_id).delete()
+        messages.success(request, "Widget removed")
+
+    except:
+        messages.error(request, "Error removing widget")
+
+    return HttpResponseRedirect(reverse('dashboard'))
+
+
+def widget_add(request, widget_id):
+    '''
+    Takes a CCAWidget ID and combines it with a profile object
+    to create a UserWidget instance.
+    Redirects immediately without displaying anything.
+    '''
+
+    try:
+        profile = request.user.profile
+        cca_widget = CCAWidget.objects.get(id=widget_id)
+        user_widget = UserWidget(profile=profile, widget=cca_widget, order=0)
+        user_widget.save()
+
+        messages.success(request, "Widget added")
+
+    except:
+        messages.error(request, "Error saving widget")
+
+    return HttpResponseRedirect(reverse('dashboard'))
 

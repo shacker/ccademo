@@ -1,9 +1,10 @@
 {# Used by the dashboard `render_widget` inclusion tag #}
+{# Receives two objects: "meta" for UserWidget instance and "data" for data #}
 <div class="col-sm-4">
 	<ul class="list-group">
 
 		<li class="list-group-item active">
-			{{meta.title}}
+			ID: {{meta.id}} {{meta.widget.title}} Pri: {{meta.order}}
 		</li>
 
 		{# {{data}} #}
@@ -14,9 +15,9 @@
 			</li>
 		{% endfor %}
 		<li class="list-group-item widget-bottom">
-			<a href="{{meta.linkurl}}">More</a>
+			<a href="{{meta.widget.linkurl}}">More</a>
 			...
-			<a href="">X</a>
+			<a href="{% url 'widget_remove' meta.id %}">X</a>
 		</li>
 
     </ul>

@@ -153,6 +153,9 @@ STATICFILES_FINDERS = (
 # collectstatic command will gather static files here
 STATIC_ROOT = os.path.join(BASE_DIR, "static_collect")
 
+# Override CSS class for the ERROR tag level to match Bootstrap class name
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {message_constants.ERROR: 'danger'}
 
 NYT_API_KEY = '675c2c18ffb102513d15141c24b8e19e:8:50612933'
 

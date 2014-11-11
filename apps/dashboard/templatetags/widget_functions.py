@@ -13,6 +13,6 @@ def render_widget(widget_instance, user):
 
     # Return both the metadata (UserWidget instance) and the retrieved data for this instance
     return {
-        'meta': widget_instance.widget,
+        'meta': widget_instance,
         'data': data,
     }
