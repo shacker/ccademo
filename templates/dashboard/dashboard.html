@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load widget_functions %}
+
+{% block page_title %}{{ block.super }}Dashboard{% endblock page_title %}
+
+{% block content %}
+
+	<div class="page-header">
+		<h3>Welcome to Your CCA Dashboard</h3>
+	</div>
+
+	<div class="row">
+		{% for widget in widgets %}
+			{# Rendered in dashboard/widget_instance.html #}
+			{% render_widget widget user %}
+		{% endfor %}
+	</div>
+
+{% endblock content %}

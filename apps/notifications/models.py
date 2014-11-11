@@ -37,6 +37,14 @@ class Notification(models.Model):
     resolved_on = models.DateTimeField(blank=True, null=True, help_text='Item marked resolved on date/time')
     level = models.CharField(choices=NOTIFICATION_TYPE_CHOICES, max_length=12, default="info")
 
+    def title(self):
+        '''
+        We call obj.title in the dashboard widgets, which works for most object types.
+        But Notifications don't have titles, so we mirror the text field as title.
+        '''
+        return self.text
+
+
     def __str__(self):
         return "{user} - {source} - {excerpt}".format(
             user = self.user.username,
