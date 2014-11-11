@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 
 from dashboard.widget_functions import *
-from dashboard.models import CCAWidget
+from dashboard.models import CCAWidget, WIDGETS_DEFAULT_SET
 from people.models import UserWidget
 
 
@@ -40,6 +40,15 @@ def dashboard(request):
 
     # This user's used widgets
     userwidgets = UserWidget.objects.filter(profile=request.user.profile).order_by('order')
+
+    # If user has no widgets, instantiate the default set
+    if userwidgets.count() == 0:
+        for widget_id in WIDGETS_DEFAULT_SET:
+            profile = request.user.profile
+            cca_widget = CCAWidget.objects.get(id=widget_id)
+            user_widget = UserWidget(profile=profile, widget=cca_widget, order=0)
+            user_widget.save()
+
 
     # Get a list of ids of parent widget objects in use by this user
     usedwidgets = [u.widget.id for u in userwidgets]
