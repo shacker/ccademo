@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
 from dashboard.widget_functions import *
 from dashboard.models import CCAWidget, WIDGETS_DEFAULT_SET
@@ -108,4 +109,27 @@ def widget_add(request, widget_id):
         messages.error(request, "Error saving widget")
 
     return HttpResponseRedirect(reverse('dashboard'))
+
+
+@csrf_exempt
+def widgets_reorder(request):
+    '''
+    Takes an ajax posted list of ordered IDs of userwidgets
+    and saves new ordering data to the db.
+    '''
+    user_widget_ids = request.POST.getlist('datasorted[]')
+
+    # Items arrive in order, so all we need to do is increment up from one, saving
+    # "counter" as the new priority for the current object.
+    # Python "enumerate()" is built-in counter
+    for counter, w_id in enumerate(user_widget_ids):
+        update_widget = UserWidget.objects.get(id=w_id)
+        update_widget.order = counter
+        update_widget.save()
+
+    # All views must return an httpresponse of some kind ... without this we get
+    # error 500s in the log even though things look peachy in the browser.
+    # Return Apache 202 ("Accepted")
+    return HttpResponse(status=202)
+
 

@@ -16,5 +16,9 @@ urlpatterns = patterns('',
         views.widget_add,
         name='widget_add'),
 
+    url(r'^reorder$',
+        views.widgets_reorder,
+        name='widgets_reorder'),
+
 )
 

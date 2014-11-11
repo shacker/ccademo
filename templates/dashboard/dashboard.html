@@ -4,13 +4,17 @@
 
 {% block page_title %}{{ block.super }}Dashboard{% endblock page_title %}
 
+{% block extrahead %}
+    <script src="{% static '/static/dashboard/js/widgets.js' %}"></script>
+{% endblock extrahead %}
+
 {% block content %}
 
 	<div class="page-header">
 		<h3>Welcome to Your CCA Dashboard</h3>
 	</div>
 
-	<div class="row">
+	<div class="row" id="sortable">
 		{% for widget in userwidgets %}
 			{# Rendered in dashboard/widget_instance.html #}
 			{% render_widget widget user %}
