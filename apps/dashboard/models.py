@@ -13,3 +13,16 @@ class CCAWidget(models.Model):
 
     class Meta:
         verbose_name_plural = "CCA Widgets"
+
+
+class UserWidget(models.Model):
+    '''
+    Through-table used to track the order of widgets used by a user on their Dashboard.
+    '''
+
+    profile = models.ForeignKey('people.Profile')
+    widget = models.ForeignKey(CCAWidget)
+    order = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "{username} - {widget}".format(username = self.profile.user.username, widget=self.widget)
