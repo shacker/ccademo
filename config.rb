@@ -8,3 +8,4 @@ css_dir = "static/styles/css"
 sass_dir = "static/styles/sass"
 images_dir = "static/img"
 javascripts_dir = "static/js"
+# relative_assets = true

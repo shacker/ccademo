@@ -13,7 +13,7 @@ dump.rdb
 src/*
 public/*
 .sass-cache
-static/bower_components/*
+static/bower_components
 .stversions
 apps/contrib/
 static_collect
