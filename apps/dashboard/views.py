@@ -7,6 +7,17 @@ from dashboard.widget_functions import *
 from dashboard.models import CCAWidget, WIDGETS_DEFAULT_SET
 from people.models import UserWidget
 
+def create_user_widget(request, widget_id):
+    # Given a CCAWidget ID, creates UserWidget for requesting user
+    try:
+        profile = request.user.profile
+        cca_widget = CCAWidget.objects.get(id=widget_id)
+        user_widget = UserWidget(profile=profile, widget=cca_widget, order=0)
+        user_widget.save()
+        return True
+
+    except:
+        return False
 
 
 def landing(request):
@@ -44,10 +55,7 @@ def dashboard(request):
     # If user has no widgets, instantiate the default set
     if userwidgets.count() == 0:
         for widget_id in WIDGETS_DEFAULT_SET:
-            profile = request.user.profile
-            cca_widget = CCAWidget.objects.get(id=widget_id)
-            user_widget = UserWidget(profile=profile, widget=cca_widget, order=0)
-            user_widget.save()
+            create_user_widget(request, widget_id)
 
 
     # Get a list of ids of parent widget objects in use by this user
@@ -67,11 +75,20 @@ def widget_remove(request, userwidget_id):
     '''
 
     try:
-        UserWidget.objects.get(id=userwidget_id).delete()
-        messages.success(request, "Widget removed")
-
+        user_widget = UserWidget.objects.get(id=userwidget_id)
     except:
-        messages.error(request, "Error removing widget")
+        messages.error(request, "That widget does not exist.")
+
+    if user_widget.user_can_delete_widget():
+        try:
+            user_widget.delete()
+            messages.success(request, "Widget removed")
+
+        except:
+            messages.error(request, "Error removing widget")
+
+    else:
+            messages.error(request, "Sorry, this widget is required.")
 
     return HttpResponseRedirect(reverse('dashboard'))
 
@@ -84,11 +101,7 @@ def widget_add(request, widget_id):
     '''
 
     try:
-        profile = request.user.profile
-        cca_widget = CCAWidget.objects.get(id=widget_id)
-        user_widget = UserWidget(profile=profile, widget=cca_widget, order=0)
-        user_widget.save()
-
+        create_user_widget(request, widget_id)
         messages.success(request, "Widget added")
 
     except:

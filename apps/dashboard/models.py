@@ -5,7 +5,7 @@ from django.utils import timezone
 # IDs of widgets that must appear for everyone
 # Initially, just preventing deletion of these.
 # TODO: Instantiate new users with this set
-WIDGETS_DEFAULT_SET = [1, 2, 3]
+WIDGETS_DEFAULT_SET = [1, 2, 3,]
 
 class CCAWidget(models.Model):
     title = models.CharField(max_length=100, default="")
@@ -32,3 +32,10 @@ class UserWidget(models.Model):
         return "{username} - {widget}".format(
             username = self.profile.user.username, widget=self.widget
             )
+
+    def user_can_delete_widget(self):
+        # Don't allow deletion of default widget set
+        if self.widget.id not in WIDGETS_DEFAULT_SET:
+            return True
+
+

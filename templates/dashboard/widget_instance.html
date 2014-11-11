@@ -17,7 +17,9 @@
 		<li class="list-group-item widget-bottom">
 			<a href="{{meta.widget.linkurl}}">More</a>
 			...
-			<a href="{% url 'widget_remove' meta.id %}">X</a>
+			{% if meta.user_can_delete_widget %}
+				<a href="{% url 'widget_remove' meta.id %}">X</a>
+			{% endif %}
 		</li>
 
     </ul>
