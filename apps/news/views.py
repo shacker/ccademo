@@ -9,3 +9,11 @@ def news_detail(request, slug):
 
 	return render(request, 'news/detail.html', locals())
 
+
+
+def news_index(request):
+
+	stories = News.objects.filter(published=True)
+
+	return render(request, 'news/index.html', locals())
+
