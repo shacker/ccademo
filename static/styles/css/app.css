@@ -8024,3 +8024,7 @@ button.close {
     display: none !important;
   }
 }
+/* line 5, ../sass/app.scss */
+.page-header {
+  margin-top: 0;
+}
