@@ -11,6 +11,7 @@ from people.signals import create_profile, story_added
 from django.template.defaultfilters import slugify
 # from courses.models import Major
 from django.core.urlresolvers import reverse
+from dashboard.models import CCAWidget
 
 
 # Each Instructor belongs to one of these groups
@@ -116,6 +117,7 @@ class BaseProfile(models.Model):
         return "%sForm" % self._meta.module_name.title()
 
 
+
 class Profile(BaseProfile):
     """
     The base profile model which contains fields that pertain to everyone.
@@ -163,6 +165,10 @@ class Profile(BaseProfile):
 
     # Preferences
     email_on_follow = models.BooleanField(default=True,help_text='Receive email when someone follows you.')
+
+    # Track user's dashboard widgets, with custom 'through' table to track order
+    dashboard_widgets = models.ManyToManyField(CCAWidget, through='UserWidget', blank=True, null=True, symmetrical=False, help_text='This users set of Dashboard Widgets')
+
 
     # Model Managers
     objects = models.Manager()
@@ -285,6 +291,15 @@ class Profile(BaseProfile):
 
 # When model instance is saved, trigger creation of corresponding profile
 signals.post_save.connect(create_profile, sender=User)
+
+
+class UserWidget(models.Model):
+    '''
+    Through-table used to track the order of widgets used by a user on their Dashboard.
+    '''
+    profile = models.ForeignKey(Profile)
+    widget = models.ForeignKey(CCAWidget)
+    order = models.IntegerField(default=0)
 
 
 class Staff(BaseProfile):
