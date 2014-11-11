@@ -19,9 +19,10 @@ feedparser
 django-stronghold
 django-todo
 # django-tinymce # version 3
-https://github.com/progressive-business-media/django-tinymce4.git
-pip install git+http://github.com/progressive-cms/django-tinymce4.git#egg=tinymce
-django-tinymce-filebrowser
+# Only need one of these!
+# git+https://github.com/progressive-business-media/django-tinymce4.git
+git+http://github.com/progressive-cms/django-tinymce4.git#egg=tinymce
+# django-tinymce-filebrowser
 
 # manual install  for now
 # django-postman

@@ -3,16 +3,21 @@
 	<ul class="list-group">
 
 		<li class="list-group-item active">
-			<a href="">{{meta.title}}</a>
+			{{meta.title}}
 		</li>
 
 		{# {{data}} #}
 		{% for obj in data.object_list %}
 			{# {{obj.notif}} #}
-			<a href="{{obj.get_absolute_url}}">
-				<li class="list-group-item list-group-item-{{obj.level}}">{{obj.title}}
-			</a></li>
+			<li class="list-group-item list-group-item-{{obj.level}}">
+				<a href="{{obj.get_absolute_url}}">{{obj.title}}</a>
+			</li>
 		{% endfor %}
+		<li class="list-group-item widget-bottom">
+			<a href="{{meta.linkurl}}">More</a>
+			...
+			<a href="">X</a>
+		</li>
 
     </ul>
 </div>
