@@ -8216,3 +8216,8 @@ button.close {
   color: #1a3f94;
   font-weight: bold;
 }
+
+/* line 18, ../sass/app.scss */
+.navbar-brand img {
+  height: 100%;
+}
