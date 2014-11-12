@@ -5,8 +5,9 @@
 
 {% block title %}Course Offering Details{% endblock %}
 
-{% block extrahead %}{% endblock extrahead %}
-
+{% block extrafoot %}
+    <script src="{% static '/static/courses/js/scripts.js' %}"></script>
+{% endblock extrafoot %}
 
 {% block app_nav %}
     {% include "sidebars/class.html" %}
@@ -15,8 +16,8 @@
 {% block main %}
 
 
-<!-- BEGIN course_description -->
 <div class="course_description">
+
     <h2>{{ offering.course_sec_id }}:
         {% if offering.title %}
             {{ offering.title }}
@@ -60,7 +61,7 @@
     {% endif %}
 
     <div class="row">
-     <h3>Instructors:</h3>
+    <h3>Instructors:</h3>
     {% for i in offering.instructors.all %}
         <div class="col-sm-3">
 
@@ -129,7 +130,6 @@
 
 
 <div id="addtoschedule" style="display:none;">
-
     <p>Are you sure you want to add this class to your schedule? (you can always remove it later)</p>
 
     <p> ScheduleBuilder is for your convenience only. <br />
@@ -139,10 +139,9 @@
     <form action="{% url 'add_course_to_schedule' offering.id %}" method="post" accept-charset="utf-8">
         {% csrf_token %}
         <p>
-            <input type="submit" value="Yes please" class="btn btn-primary small">
+            <input type="submit" value="Yes please" class="btn btn-primary">
         </p>
     </form>
 </div>
-
 
 {% endblock main %}
