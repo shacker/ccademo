@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from courses.forms import CourseContactForm, QueryForm
+from courses.forms import CourseContactForm, QueryForm, OfferingIntraEditForm
 from postman.models import Message, STATUS_PENDING, STATUS_ACCEPTED
 from django.db.models import Q  # For search
 
@@ -187,6 +187,42 @@ def offering_detail(request, course_sec_id):
     if request.user.is_authenticated():
         if request.user in offering.students.all():
             scheduled = True
+
+    # Allow instructors of a specific offering to override some course details
+    if request.user.profile in [i.profile for i in offering.instructors.all()]:
+        user_can_edit_offering = True
+
+        if request.method == 'POST':
+            course_edit_form = OfferingIntraEditForm(request.POST, instance=offering)
+            if course_edit_form.is_valid():
+                course_edit_form.save()
+                messages.success(request, "Course Offering details overridden")
+                return HttpResponseRedirect(reverse('offering_detail',args=[offering.course_sec_id]))
+
+        else:
+
+            '''
+            The form's initial values are tricksy because the title and body displayed
+            on the *Offering* are inherited from the parent Course object. But when the
+            form is saved, it saves overrides into the Offering object itself. To avoid
+            presenting a blank form, show inherited values *unless* the object has
+            previously been overridden.
+            '''
+
+            if not offering.title:
+                init_title = offering.course.long_title
+            else:
+                init_title = offering.title
+
+            if not offering.title:
+                init_description_override = offering.course.description
+            else:
+                init_description_override = offering.description_override
+
+            course_edit_form = OfferingIntraEditForm(
+                instance=offering,
+                initial={'title': init_title, 'description_override': init_description_override}
+                )
 
 
     return render_to_response(

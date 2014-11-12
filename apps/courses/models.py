@@ -44,8 +44,6 @@ class Semester(models.Model):
         return self.name
 
 
-
-
 class Course(models.Model):
     long_title = models.CharField(max_length=100)
     internal_title = models.CharField(max_length=16)
@@ -110,9 +108,8 @@ class Offering(models.Model):
         for i in self.instructors.all():
           all_members.add(i.profile.user.id)
 
-        # additional queries here
-
         return User.objects.filter(pk__in=all_members)
+
 
 
 class Assignment(models.Model):
