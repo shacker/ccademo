@@ -33,14 +33,6 @@ def landing(request):
     else:
         # Show some generic news and prompt for login
 
-        # Internal news app
-        intranews = get_intra_news()
-
-        # CCA main site news (Chimera News)
-        ccanews = get_chimera_news()['entries'][0:4]
-
-        nyt_stories = get_nyt_news()[0:4]
-
         return render(request, 'landing.html', locals())
 
 
