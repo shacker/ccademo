@@ -70,7 +70,10 @@ def profile_edit(request, template_name="people/profile_edit.html", ):
         if form.is_valid():
             form.save()
             messages.success(request, "Your profile was updated.")
-            return HttpResponseRedirect(reverse('people_profile_edit'))
+            return HttpResponseRedirect(reverse('people_profile_detail', args=[request.user.username]))
+        else:
+            messages.error(request, "There were errors in the form - see RED fields below.")
+
     else:
         form = Form(instance=profile)
 

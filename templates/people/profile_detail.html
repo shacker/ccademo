@@ -1,4 +1,5 @@
 {% extends "pane_full.html" %}
+{% load thumbnail %}
 
 {% block title %}{{ profile }}{% endblock %}
 
@@ -8,7 +9,11 @@
 
     <h2>{{profile.get_display_name}}</h2>
 
-    {% if profile.datatel_avatar_url %}
+    {# Use uploaded photo. If not, use datatel photo. If not, use silhouette #}
+
+    {% if profile.photo %}
+        <p><img src="{% thumbnail profile.photo 100x100 crop %}" alt="" /></p>
+    {% elif profile.datatel_avatar_url %}
         <p><img width="100" src="{{ profile.datatel_avatar_url }}" /></p>
     {% else %}
         <p><img width="100" src="{{ STATIC_URL }}images/silhouette.jpg" /></p>

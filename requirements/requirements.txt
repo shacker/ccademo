@@ -5,7 +5,8 @@ requests
 django-countries
 django-localflavor
 pillow
-sorl-thumbnail==11.12.1b
+# Prob don't need sorl anymore
+# sorl-thumbnail==11.12.1b
 simplejson
 django-extensions
 django-bootstrap-form

@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
 
 admin.site.index_template = 'admin/cca_custom_index.html'
 
@@ -27,5 +29,5 @@ urlpatterns = patterns('',
 	(r'^accounts/login$', 'django_cas_ng.views.login'),
 	(r'^accounts/logout$', 'django_cas_ng.views.logout'),
 
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

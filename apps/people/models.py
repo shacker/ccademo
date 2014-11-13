@@ -1,21 +1,23 @@
+from datetime import datetime, date
+
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User, Group
-# from django_countries.fields import Country
 from django.contrib import admin
-from localflavor.us.models import PhoneNumberField, USStateField
-from people import constants
-from datetime import datetime, date
 from django.db.models import signals
-from people.signals import create_profile, story_added
 from django.template.defaultfilters import slugify
-# from courses.models import Major
 from django.core.urlresolvers import reverse
+
+from easy_thumbnails.fields import ThumbnailerImageField
+from localflavor.us.models import PhoneNumberField, USStateField
+
+from people import constants
+from people.signals import create_profile, story_added
 from dashboard.models import CCAWidget, UserWidget
 
 
 # Each Instructor belongs to one of these groups
-INSTRUCTOR_GROUPS = ["Faculty","Visiting Scholars", "Lecturers", "Visiting Lecturers"]
+INSTRUCTOR_GROUPS = ["Faculty", "Visiting Scholars", "Lecturers", "Visiting Lecturers"]
 
 
 def get_avatar_path(instance, filename):
@@ -28,7 +30,7 @@ def get_avatar_path(instance, filename):
     # through django's slugify function (if you run the whole thing through,
     # you lose the "." separator in the filename.)
     parts = str(filename).split(".")
-    return 'upload/avatars/' + instance.user.username + '/' + slugify(parts[0]) + '.' + parts[1]
+    return 'avatars/' + instance.user.username + '/' + slugify(parts[0]) + '.' + parts[1]
 
 
 class Medium(models.Model):
@@ -50,7 +52,7 @@ class EmployeeProfileManager(models.Manager):
 
         return super(EmployeeProfileManager, self).get_queryset().filter(
             user__groups__name__in=
-            ['Staff','IT Staff','Faculty','Faculty Emeritus','Lecturers','Visiting Lecturers','Web Team']
+            ['Staff', 'IT Staff', 'Faculty', 'Faculty Emeritus', 'Lecturers', 'Visiting Lecturers', 'Web Team']
             )
 
 
@@ -63,7 +65,7 @@ class StaffProfileManager(models.Manager):
     def get_queryset(self):
         return super(StaffProfileManager, self).get_queryset().filter(
             user__groups__name__in=
-            ['Staff','IT Staff','Web Team']
+            ['Staff', 'IT Staff', 'Web Team']
             )
 
 
@@ -140,6 +142,7 @@ class Profile(BaseProfile):
 
     user = models.OneToOneField(User, primary_key=True)
     person_id = models.IntegerField(blank=True, null=True, help_text='Datatel ID')
+    photo = ThumbnailerImageField(upload_to=get_avatar_path, blank=True, null=True)
     datatel_avatar_url = models.CharField('Datatel avatar URL', blank=True, null=True, max_length=60)
     suffix = models.IntegerField(
                 max_length=2,
@@ -148,23 +151,23 @@ class Profile(BaseProfile):
                     max_length=2,
                     blank=True, null=True,
                     choices=constants.PROFILE_SALUTATION_CHOICES)
-    middle_name = models.CharField(max_length=50, blank=True,null=True)
-    title = models.CharField(blank=True,null=True, max_length=32)
-    about = models.TextField(blank=True,null=True,help_text="A few sentences about yourself - capsule biography. No HTML allowed.", max_length=256)
-    email2 = models.EmailField('Secondary Email', blank=True,null=True)
-    home_phone1 = models.CharField('Home Phone',max_length=60, blank=True,null=True)
-    biz_phone1 = models.CharField('Business Phone',max_length=60, blank=True,null=True)
-    mobile_phone1 = models.CharField('Mobile Phone',max_length=60, blank=True,null=True)
-    fax = models.CharField(max_length=60, blank=True,null=True)
-    allow_contact = models.BooleanField(default=True,help_text='Allow the public to contact you through CalCentral.')
+    middle_name = models.CharField(max_length=50, blank=True, null=True)
+    title = models.CharField(blank=True, null=True, max_length=32)
+    about = models.TextField(blank=True, null=True, help_text="A few sentences about yourself - capsule biography. No HTML allowed.", max_length=256)
+    email2 = models.EmailField('Secondary Email', blank=True, null=True)
+    home_phone1 = models.CharField('Home Phone', max_length=60, blank=True, null=True)
+    biz_phone1 = models.CharField('Business Phone', max_length=60, blank=True, null=True)
+    mobile_phone1 = models.CharField('Mobile Phone', max_length=60, blank=True, null=True)
+    fax = models.CharField(max_length=60, blank=True, null=True)
+    allow_contact = models.BooleanField(default=True, help_text='Allow the public to contact you through CalCentral.')
     show_name = models.BooleanField(default=True, help_text='Not currently implemented, for future use.')
-    url_personal = models.URLField('Personal website',blank=True,null=True)
-    url_org = models.URLField('Organization website',blank=True,null=True)
-    accepted_terms = models.BooleanField(default=False,help_text="All users must accept our terms and conditions before doing anything on the site.")
-    followees = models.ManyToManyField('self', blank=True,null=True,related_name='followers', symmetrical=False, help_text='People this person is following.')
+    url_personal = models.URLField('Personal website', blank=True, null=True)
+    url_org = models.URLField('Organization website', blank=True, null=True)
+    accepted_terms = models.BooleanField(default=False, help_text="All users must accept our terms and conditions before doing anything on the site.")
+    followees = models.ManyToManyField('self', blank=True, null=True, related_name='followers', symmetrical=False, help_text='People this person is following.')
 
     # Preferences
-    email_on_follow = models.BooleanField(default=True,help_text='Receive email when someone follows you.')
+    email_on_follow = models.BooleanField(default=True, help_text='Receive email when someone follows you.')
 
     # Track user's dashboard widgets, with custom 'through' table to track order
     dashboard_widgets = models.ManyToManyField(CCAWidget, through=UserWidget, blank=True, null=True, symmetrical=False, help_text='This users set of Dashboard Widgets')
@@ -256,7 +259,7 @@ class Profile(BaseProfile):
             return True
         return False
 
-    def in_group(self,group):
+    def in_group(self, group):
         """
         Return True if the user/profile is in the group. Requires a string or a
         Group object as argument.
@@ -300,9 +303,9 @@ class Staff(BaseProfile):
     """
 
     profile = models.OneToOneField(Profile, primary_key=True)
-    office_num = models.CharField("Office",max_length=30, blank=True,null=True,help_text='Room number')
+    office_num = models.CharField("Office", max_length=30, blank=True, null=True, help_text='Room number')
     #office = models.ForeignKey(Room)
-    extension = models.CharField(blank=True,null=True, max_length=30,help_text='UC Berkeley Phone Extension #-####')
+    extension = models.CharField(blank=True, null=True, max_length=30, help_text='UC Berkeley Phone Extension #-####')
 
     objects = ProfileManager()
     active_objects = ExtendActiveManager()
@@ -321,10 +324,10 @@ class Instructor(BaseProfile):
     """
 
     profile = models.OneToOneField(Profile, primary_key=True)
-    office_num = models.CharField(max_length=30, blank=True,null=True,help_text='Room number')
-    extension = models.CharField(blank=True, null=True,max_length=30,help_text='UC Berkeley phone extension, e.g. 3-1234')
+    office_num = models.CharField(max_length=30, blank=True, null=True, help_text='Room number')
+    extension = models.CharField(blank=True, null=True, max_length=30, help_text='UC Berkeley phone extension, e.g. 3-1234')
     bio_short = models.TextField(help_text="Required for all instructors; used on index pages. Limited to around 175 words.")
-    bio_long = models.TextField(blank=True,null=True,help_text="Used on instructor detail pages.")
+    bio_long = models.TextField(blank=True, null=True, help_text="Used on instructor detail pages.")
 
     objects = ProfileManager()
     active_objects = ExtendActiveManager()
@@ -340,12 +343,12 @@ class Student(BaseProfile):
     """
 
     profile = models.OneToOneField(Profile, primary_key=True)
-    grad_year = models.IntegerField('Graduation year',max_length=4,choices=constants.YEARS, blank=True, null=True)
-    funding_amount = models.FloatField(blank=True,null=True,default=0)
-    enrollment_date = models.DateField(blank=True,null=True)
-    program_length = models.IntegerField(blank=True,null=True)
-    visiting_scholar = models.BooleanField(default=False,help_text="Check box if this student is a visiting scholar.")
-    # majors = models.ManyToManyField('courses.Major',blank=True,null=True,related_name="studentmajors")
+    grad_year = models.IntegerField('Graduation year', max_length=4, choices=constants.YEARS, blank=True, null=True)
+    funding_amount = models.FloatField(blank=True, null=True, default=0)
+    enrollment_date = models.DateField(blank=True, null=True)
+    program_length = models.IntegerField(blank=True, null=True)
+    visiting_scholar = models.BooleanField(default=False, help_text="Check box if this student is a visiting scholar.")
+    # majors = models.ManyToManyField('courses.Major', blank=True, null=True, related_name="studentmajors")
 
     objects = ProfileManager()
     active_objects = ExtendActiveManager()
@@ -360,29 +363,29 @@ class Alumni(BaseProfile):
     """
 
     profile = models.OneToOneField(Profile, primary_key=True)
-    grad_year = models.IntegerField('Graduation year',max_length=4,choices=constants.YEARS, null=True)
-    third_year = models.BooleanField('Is this student on the 3-year plan?',default=False)
+    grad_year = models.IntegerField('Graduation year', max_length=4, choices=constants.YEARS, null=True)
+    third_year = models.BooleanField('Is this student on the 3-year plan?', default=False)
     j200_inst = models.CharField(
                     'J200 Instructor',
-                    blank=True,null=True,
+                    blank=True, null=True,
                     max_length=100,
                     help_text='e.g. Gorney')
-    funding_amount = models.FloatField(blank=True,null=True,default=0)
-    enrollment_date = models.DateField(blank=True,null=True)
-    program_length = models.IntegerField(blank=True,null=True)
+    funding_amount = models.FloatField(blank=True, null=True, default=0)
+    enrollment_date = models.DateField(blank=True, null=True)
+    program_length = models.IntegerField(blank=True, null=True)
     equipment_balance = models.FloatField(default=0.0)
-    visiting_scholar = models.BooleanField(default=False,help_text="Check box if this student is a visiting scholar.")
+    visiting_scholar = models.BooleanField(default=False, help_text="Check box if this student is a visiting scholar.")
 
-    employer = models.CharField(blank=True,null=True, max_length=255)
-    specialty = models.CharField(blank=True,null=True, max_length=128,help_text='e.g. Sports')
+    employer = models.CharField(blank=True, null=True, max_length=255)
+    specialty = models.CharField(blank=True, null=True, max_length=128, help_text='e.g. Sports')
     medium = models.IntegerField(
                         max_length=4,
                         choices=constants.MEDIUM_CHOICES,
                         null=True,
                         blank=True)
-    prev_emp1 = models.CharField('Previous Employer #1',max_length=384,blank=True,null=True,)
-    prev_emp2 = models.CharField('Previous Employer #2',max_length=384,blank=True,null=True,)
-    prev_emp3 = models.CharField('Previous Employer #3',max_length=384,blank=True,null=True,)
+    prev_emp1 = models.CharField('Previous Employer #1', max_length=384, blank=True, null=True, )
+    prev_emp2 = models.CharField('Previous Employer #2', max_length=384, blank=True, null=True, )
+    prev_emp3 = models.CharField('Previous Employer #3', max_length=384, blank=True, null=True, )
 
     notes_exclude = models.BooleanField(
                                 'Exclude notes',
@@ -400,29 +403,29 @@ class Alumni(BaseProfile):
                                 help_text='If unchecked, record will be hidden even from other J-School alumni, faculty, students and staff.')
     freelance = models.BooleanField(
                                 'Freelancing?',
-                                default=False,)
-    region = models.IntegerField(max_length=4,choices=constants.REGION_CHOICES,null=True,blank=True)
-    prev_intern1 = models.CharField('Previous Intership 1',max_length=384,blank=True,null=True,)
-    prev_intern2 = models.CharField('Previous Intership 1',max_length=384,blank=True,null=True,)
-    prev_intern3 = models.CharField('Previous Intership 1',max_length=384,blank=True,null=True,)
+                                default=False, )
+    region = models.IntegerField(max_length=4, choices=constants.REGION_CHOICES, null=True, blank=True)
+    prev_intern1 = models.CharField('Previous Intership 1', max_length=384, blank=True, null=True, )
+    prev_intern2 = models.CharField('Previous Intership 1', max_length=384, blank=True, null=True, )
+    prev_intern3 = models.CharField('Previous Intership 1', max_length=384, blank=True, null=True, )
     first_job = models.CharField(
                     'First job out of J-School',
                     max_length=384,
-                    blank=True,null=True,)
-    books = models.TextField(blank=True,null=True,)
-    deceased_notes = models.CharField(blank=True,null=True, max_length=255)
+                    blank=True, null=True, )
+    books = models.TextField(blank=True, null=True, )
+    deceased_notes = models.CharField(blank=True, null=True, max_length=255)
     mia = models.BooleanField(
                     default=False,
                     help_text='Unable to contact this person, whereabouts unknown.')
-    mia_notes = models.TextField(blank=True,null=True,)
-    interview = models.BooleanField(default=False,help_text='Has this person been interviewed [for xxx?]')
+    mia_notes = models.TextField(blank=True, null=True, )
+    interview = models.BooleanField(default=False, help_text='Has this person been interviewed [for xxx?]')
 
-    interview_year = models.IntegerField(choices=constants.YEARS,default=0)
-    interview_notes = models.TextField(blank=True,null=True)
-    agents_year = models.IntegerField(choices=constants.YEARS,default=0,help_text='Not sure what this field is for?',blank=True,null=True,)
-    agents_notes = models.TextField(help_text='Not sure what this field is for?',blank=True,null=True,)
-    event_attend_notes = models.TextField(blank=True,null=True)
-    famous_notes = models.TextField(blank=True,null=True)
+    interview_year = models.IntegerField(choices=constants.YEARS, default=0)
+    interview_notes = models.TextField(blank=True, null=True)
+    agents_year = models.IntegerField(choices=constants.YEARS, default=0, help_text='Not sure what this field is for?', blank=True, null=True, )
+    agents_notes = models.TextField(help_text='Not sure what this field is for?', blank=True, null=True, )
+    event_attend_notes = models.TextField(blank=True, null=True)
+    famous_notes = models.TextField(blank=True, null=True)
 
     volunteer_speak = models.BooleanField(
                                 default=False,
@@ -454,9 +457,9 @@ class Alumni(BaseProfile):
                                 blank=True,
                                 null=True,
                                 help_text="Do you have suggestions for us about what you'd like to get out of the J-School Alumni Organization? If so, please write us a note and we'll try to incorporate your idea.")
-    committee_notes = models.TextField(blank=True,null=True)
+    committee_notes = models.TextField(blank=True, null=True)
     inactive = models.BooleanField(default=False)
-    revision = models.IntegerField(help_text='This field should increment up when record is updated.',blank=True,null=True)
+    revision = models.IntegerField(help_text='This field should increment up when record is updated.', blank=True, null=True)
 
     objects = ProfileManager()
     active_objects = ExtendActiveManager()
@@ -473,8 +476,8 @@ class Donation(models.Model):
     profile = models.ForeignKey(Profile)
     amount = models.IntegerField()
     date = models.DateField()
-    description = models.CharField(max_length=765, blank=True,null=True)
-    notes = models.TextField(blank=True,null=True)
+    description = models.CharField(max_length=765, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
     class Meta:
         db_table = u'people_donation'
 
@@ -488,15 +491,15 @@ class Address(models.Model):
     """
 
     profile = models.ForeignKey(Profile)
-    address_type = models.IntegerField(max_length=2,choices=constants.ADDRESS_TYPE_CHOICES)
-    street_1 = models.CharField(max_length=200, blank=True,null=True)
-    street_2 = models.CharField(max_length=200, blank=True,null=True)
-    street_3 = models.CharField(max_length=200, blank=True,null=True)
+    address_type = models.IntegerField(max_length=2, choices=constants.ADDRESS_TYPE_CHOICES)
+    street_1 = models.CharField(max_length=200, blank=True, null=True)
+    street_2 = models.CharField(max_length=200, blank=True, null=True)
+    street_3 = models.CharField(max_length=200, blank=True, null=True)
     city = models.CharField(max_length=200)
-    state = USStateField(blank=True,null=True)
-    state_other = models.CharField(max_length=384,blank=True,null=True,help_text='Useful for international addresses.')
-    postal_code = models.CharField(max_length=50,blank=True,null=True)
-    # country  = models.ForeignKey(Country,blank=True,null=True)
+    state = USStateField(blank=True, null=True)
+    state_other = models.CharField(max_length=384, blank=True, null=True, help_text='Useful for international addresses.')
+    postal_code = models.CharField(max_length=50, blank=True, null=True)
+    # country  = models.ForeignKey(Country, blank=True, null=True)
     display = models.BooleanField(default=True, help_text="Display this address on my profile page")
 
     def __str__(self):
@@ -518,9 +521,9 @@ class Award(models.Model):
     """
 
     profile = models.ForeignKey(Profile)
-    title = models.CharField(max_length=200,blank=True,null=True)
-    description = models.TextField(blank=True,null=True)
-    date_received = models.DateField(blank=True,null=True,help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
+    title = models.CharField(max_length=200, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    date_received = models.DateField(blank=True, null=True, help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
     display = models.BooleanField(default=True, help_text="Display item on my public profile page")
 
     def __str__(self):
@@ -552,15 +555,15 @@ class Experience(models.Model):
     experience_type = models.IntegerField(
                         max_length=3,
                         choices=constants.EXPERIENCE_TYPE_CHOICES,
-                        blank=True,null=True)
-    title = models.CharField(max_length=200,help_text="Title you held at this job or internship.",blank=True,null=True)
-    description = models.TextField(help_text="Summary of the experience.",blank=True,null=True)
-    company = models.CharField(max_length=200,blank=True,null=True,help_text="Company or organization name.")
-    city = models.CharField(max_length=200,blank=True,null=True)
-    state = USStateField(blank=True,null=True)
-    country  = models.CharField(max_length=200,blank=True,null=True)
-    start_date = models.DateField(blank=True,null=True,help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
-    end_date = models.DateField(blank=True,null=True,help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
+                        blank=True, null=True)
+    title = models.CharField(max_length=200, help_text="Title you held at this job or internship.", blank=True, null=True)
+    description = models.TextField(help_text="Summary of the experience.", blank=True, null=True)
+    company = models.CharField(max_length=200, blank=True, null=True, help_text="Company or organization name.")
+    city = models.CharField(max_length=200, blank=True, null=True)
+    state = USStateField(blank=True, null=True)
+    country  = models.CharField(max_length=200, blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True, help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
+    end_date = models.DateField(blank=True, null=True, help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
     display = models.BooleanField(default=True, help_text="Display item on my public profile page")
 
 
@@ -596,11 +599,11 @@ class Education(models.Model):
     diploma = models.IntegerField(
                         max_length=3,
                         choices=constants.EDUCATION_TYPE_CHOICES,
-                        blank=True,null=True)
-    school = models.CharField(max_length=200,blank=True,null=True)
-    description = models.TextField(blank=True,null=True,help_text="Summary of education period.")
-    start_date = models.DateField(blank=True,null=True,help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
-    end_date = models.DateField(blank=True,null=True,help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
+                        blank=True, null=True)
+    school = models.CharField(max_length=200, blank=True, null=True)
+    description = models.TextField(blank=True, null=True, help_text="Summary of education period.")
+    start_date = models.DateField(blank=True, null=True, help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
+    end_date = models.DateField(blank=True, null=True, help_text="Please enter dates in this format: 1986-09-13 for Sept. 13 1986.")
     display = models.BooleanField(default=True, help_text="Display item on my public profile page")
 
     class Meta:

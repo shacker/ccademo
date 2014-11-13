@@ -53,12 +53,13 @@ INSTALLED_APPS = (
     'bootstrapform',
     'widget_tweaks',
     # 'anonymizer',
-    'sorl.thumbnail',
+    # 'sorl.thumbnail',
     'postman',
     'todo',
     'stronghold',
     'tinymce',
     'mce_filebrowser',
+    'easy_thumbnails',
 
 
     # Our apps
@@ -149,6 +150,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
 )
+
+MEDIA_URL = '/media/'
 
 # collectstatic command will gather static files here
 STATIC_ROOT = os.path.join(BASE_DIR, "static_collect")

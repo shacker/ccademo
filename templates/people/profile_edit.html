@@ -1,7 +1,6 @@
 {% extends "pane_full.html" %}
-
-
 {% load bootstrap %}
+{% load thumbnail %}
 
 {% block title %}Update your profile{% endblock %}
 {% block page_heading %}Update your profile{% endblock %}
@@ -43,53 +42,58 @@
 
 
 <ul>
-<strong>Addresses</strong>
-{% for obj in profile.address_set.all %}
-<li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='address' %}"
-        >{{ obj }}</a>&nbsp;({{ obj.get_address_type_display }})</li>
-{% endfor %}
-<li class="add_new"><a href="{% url 'people_profile_add_related' related_model='address' %}"
-        >Add New</a></li>
+    <strong>Addresses</strong>
+    {% for obj in profile.address_set.all %}
+    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='address' %}"
+            >{{ obj }}</a>&nbsp;({{ obj.get_address_type_display }})</li>
+    {% endfor %}
+    <li class="add_new">
+        <a href="{% url 'people_profile_add_related' related_model='address' %}">Add New</a>
+    </li>
 </ul>
 
 <ul>
-<strong>Stories</strong>
-{% for obj in profile.story_set.all %}
-<li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='story' %}"
-    >{{ obj }}</a></li>
-{% endfor %}
-<li class="add_new"><a href="{% url 'people_profile_add_related' related_model='story' %}"
-        >Add New</a></li>
+    <strong>Stories</strong>
+    {% for obj in profile.story_set.all %}
+    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='story' %}"
+        >{{ obj }}</a></li>
+    {% endfor %}
+    <li class="add_new">
+        <a href="{% url 'people_profile_add_related' related_model='story' %}">Add New</a>
+    </li>
 </ul>
 
 <ul>
-<strong>Books</strong>
-{% for obj in profile.book_set.all %}
-<li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='book' %}"
-    >{{ obj }}</a></li>
-{% endfor %}
-<li class="add_new"><a href="{% url 'people_profile_add_related' related_model='book' %}"
-        >Add New</a></li>
+    <strong>Books</strong>
+    {% for obj in profile.book_set.all %}
+    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='book' %}"
+        >{{ obj }}</a></li>
+    {% endfor %}
+    <li class="add_new">
+        <a href="{% url 'people_profile_add_related' related_model='book' %}">Add New</a>
+    </li>
 </ul>
 
 <ul>
-<strong>Awards</strong>
-{% for obj in profile.award_set.all %}
-<li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='award' %}"
-    >{{ obj }}</a></li>
-{% endfor %}
-<li class="add_new"><a href="{% url 'people_profile_add_related' related_model='award' %}"
-        >Add New</a></li>
+    <strong>Awards</strong>
+    {% for obj in profile.award_set.all %}
+    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='award' %}"
+        >{{ obj }}</a></li>
+    {% endfor %}
+    <li class="add_new">
+        <a href="{% url 'people_profile_add_related' related_model='award' %}">Add New</a>
+    </li>
 </ul>
 
 <ul>
-<strong>Other Work</strong>
-{% for obj in profile.otherwork_set.all %}
-<li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='otherwork' %}"
-    >{{ obj }}</a></li>
-{% endfor %}
-<li class="add_new"><a href="{% url 'people_profile_add_related' related_model='otherwork' %}"
-        >Add New</a></li>
+    <strong>Other Work</strong>
+    {% for obj in profile.otherwork_set.all %}
+    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='otherwork' %}"
+        >{{ obj }}</a></li>
+    {% endfor %}
+    <li class="add_new">
+        <a href="{% url 'people_profile_add_related' related_model='otherwork' %}">Add New</a>
+    </li>
 </ul>
 
 <ul>
