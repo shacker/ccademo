@@ -25,6 +25,4 @@ django-todo
 git+http://github.com/progressive-cms/django-tinymce4.git#egg=tinymce
 # django-tinymce-filebrowser
 
-# manual install  for now
-# django-postman
-
+hg+https://hg@bitbucket.org/psam/django-postman
