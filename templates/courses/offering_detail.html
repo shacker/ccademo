@@ -15,7 +15,6 @@
 
 {% block main %}
 
-
 <div class="course_description">
 
     <h2>{{ offering.course_sec_id }}:
@@ -36,7 +35,6 @@
             <p><a href="#" class="btn btn-primary" id="course_edit_button">Edit Details</a></p>
 
             <div id="course_edit_form" style="display:none;">
-
                 <form
                     action=""
                     method="post" accept-charset="utf-8">
@@ -60,36 +58,41 @@
         </p>
     {% endif %}
 
-    <div class="row">
-    <h3>Instructors:</h3>
-    {% for i in offering.instructors.all %}
-        <div class="col-sm-3">
+    {# Only show instructors block if any are listed #}
+    {% if offering.instructors.all %}
+        <div class="row">
+            <h3>Instructors:</h3>
+            {% for i in offering.instructors.all %}
+                <div class="col-sm-3">
 
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a href="{% url 'people_profile_detail' i.profile.user.username %}">
-                        {{i}}{% if i.profile.suffix %}, {{i.profile.get_suffix_display}}{% endif %}</a><br />
-                        {% if i.profile.title %}{{i.profile.title}}{% endif %}
-                </h3>
-              </div>
-              <div class="panel-body">
-              <a href="{% url 'people_profile_detail' i.profile.user.username %}">
-                {% if i.profile.datatel_avatar_url %}
-                    <img width="100" src="{{ i.profile.datatel_avatar_url }}" />
-                {% else %}
-                    <a href="{% url 'people_profile_detail' i.profile.user.username %}" title="">
-                        <img width="100" src="{{ STATIC_URL }}images/silhouette.jpg" />
-                    </a>
-                {% endif %}
-                </a>
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a href="{% url 'people_profile_detail' i.profile.user.username %}">
+                                {{i}}{% if i.profile.suffix %}, {{i.profile.get_suffix_display}}{% endif %}
+                            </a><br />
+                            {% if i.profile.title %}{{i.profile.title}}{% endif %}
+                        </h3>
+                      </div>
 
-              </div>
-            </div>
+                      <div class="panel-body">
+                      <a href="{% url 'people_profile_detail' i.profile.user.username %}">
+                        {% if i.profile.datatel_avatar_url %}
+                            <img width="100" src="{{ i.profile.datatel_avatar_url }}" />
+                        {% else %}
+                            <a href="{% url 'people_profile_detail' i.profile.user.username %}" title="">
+                                <img width="100" src="{{ STATIC_URL }}images/silhouette.jpg" />
+                            </a>
+                        {% endif %}
+                        </a>
+                      </div>
+                    </div>
 
-        </div>
-     {% endfor %}
-     </div>
+                </div>
+             {% endfor %}
+         </div>
+    {% endif %}
+
 
 
     <div class="row">
@@ -98,14 +101,26 @@
         <dl>
             <dt>COURSE DETAILS:</dt>
             <dd><strong>Location:</strong>
-            {# If location is "other", print the location_other field. In the Rooms table "Other" is record 59 #}
+            {#
+               If location is "other", print the location_other field.
+               In the Rooms table "Other" is record 59
+            #}
             {% ifequal offering.location.id 59 %}
                 {{ offering.location_other }}
             {% else %}
                 {{ offering.location }}
             {% endifequal %}
             </dd>
-            <dd><strong>Time:</strong> {{ offering.start_date }}</dd>
+            <dd><strong>Starts:</strong> {{ offering.start_date }}</dd>
+
+            <dd><strong>Meetings:</strong>
+            {% for day in offering.days_of_week.all %}
+                {{day}}s at {% if not forloop.last %},{% endif %}
+                {{offering.start_time}},
+                for {{offering.duration}} hours
+            {% endfor %}
+            </dd>
+
             <dd><strong>Section ID:</strong> {{ offering.course_sec_id }}</dd>
             <dd><strong>Type:</strong> {{ offering.course.get_course_type_display }}</dd>
             <dd><strong>Section:</strong> {{ offering.sec_term }}</dd>

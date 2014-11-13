@@ -4,7 +4,7 @@ ccademo
 CCA intranet demo
 
 Course with many students and instructors
-http://127.0.0.1:8000/courses/class/20356/participants
+http://127.0.0.1:8000/courses/offering/20356/participants
 
 Rendering forms with bootstrap: Two custom libs installed:
 
