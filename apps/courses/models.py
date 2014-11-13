@@ -9,6 +9,13 @@ A program ("Ceramics") can be in many majors.
 A course offering can be in many programs.
 '''
 
+class Days(models.Model):
+    # FK to days of week
+    day = models.CharField(max_length=12)
+
+    def __str__(self):
+      return self.day
+
 
 class Room(models.Model):
     """
@@ -70,6 +77,9 @@ class Offering(models.Model):
     students = models.ManyToManyField(Profile, blank=True)
     start_date = models.DateTimeField(blank=True, default=datetime.datetime.now)
     end_date = models.DateTimeField(blank=True, default=datetime.datetime.now)
+    days_of_week = models.ManyToManyField(Days, blank=True, null=True)
+    start_time = models.TimeField(blank=True, null=True, help_text='Use military time, e.g. 08:30:00 for 8:30 am')
+    duration = models.FloatField(blank=True, null=True, help_text='Class meeting length. Enter as integers: For a 90 minute class enter 1.5')
     location = models.ForeignKey(Room,help_text='If location is mixed, such as &quot;Monday in the Mission, Thursday RM 104&quot; then select Other as location and fill in Other Location field.')
     location_other = models.CharField(blank=True, max_length=100)
     grading = models.TextField(blank=True,null=True)

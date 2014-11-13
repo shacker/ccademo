@@ -92,6 +92,7 @@ class SemesterAdmin(admin.ModelAdmin):
 class InstructorAdmin(admin.ModelAdmin):
     pass
 
+
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Offering,OfferingAdmin)
 admin.site.register(Program,ProgramAdmin)
