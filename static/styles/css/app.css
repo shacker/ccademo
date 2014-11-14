@@ -8210,18 +8210,23 @@ button.close {
   margin-top: 0;
 }
 
-/* line 14, ../sass/app.scss */
+/* line 13, ../sass/app.scss */
+.nav .badge {
+  background-color: red;
+}
+
+/* line 17, ../sass/app.scss */
 .widget-bottom {
   background-color: #beedfc;
   border-top: 1px solid #9a9a9a;
 }
-/* line 17, ../sass/app.scss */
+/* line 20, ../sass/app.scss */
 .widget-bottom a {
   color: #1a3f94;
   font-weight: bold;
 }
 
-/* line 23, ../sass/app.scss */
+/* line 26, ../sass/app.scss */
 .navbar-brand img {
   height: 100%;
 }
