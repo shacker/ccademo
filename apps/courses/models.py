@@ -124,6 +124,17 @@ class Offering(models.Model):
         return User.objects.filter(pk__in=all_members)
 
 
+class Builder(models.Model):
+    '''
+    ScheduleBuilder can't be showing real enrolments - needs to track *intentions*.
+    This is a simple FK to Offering for ScheduleBuilder purposes.
+    '''
+    offering = models.ForeignKey(Offering)
+    profile = models.ForeignKey(Profile)
+
+    def __str__(self):
+      return self.offering.display_name()
+
 
 class Assignment(models.Model):
     '''Assignments given to students in a given course offering'''

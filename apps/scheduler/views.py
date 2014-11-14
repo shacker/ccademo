@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.core import serializers
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from courses.models import Offering
+from courses.models import Offering, Builder
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -18,14 +18,14 @@ def scheduler(request):
     Show the current user's schedule of courses
     """
 
-    myclasses = Offering.objects.filter(students__in=(request.user,))
+    # myclasses = Offering.objects.filter(students__in=(request.user,))
+    builder_offerings = Builder.objects.filter(profile=request.user.profile)
 
     return render_to_response(
         'scheduler/show.html',
         locals(),
         context_instance=RequestContext(request)
         )
-
 
 
 def scheduler_json(request):
@@ -48,25 +48,26 @@ def scheduler_json(request):
     ]
     '''
 
-    offerings = Offering.objects.filter(students__in=(request.user,))
+    # offerings = Offering.objects.filter(students__in=(request.user,))
+    builder_offerings = Builder.objects.filter(profile=request.user.profile)
     pallette = ['#5e9964', '#99368c', '#446fba', '#5fba39', '#432919', '#302043', '#9d122c']
     data = []
 
-    for o in offerings:
+    for b in builder_offerings:
         # This offering could happen on multiple days of the week.
         # Set event color per class, not event, so matched class events have matching colors.
         # Don't reuse colors - grab last color from list and remove.
         colorval = pallette.pop()
 
-        for day_of_week in o.days_of_week.all():
-            startstop = generate_date_strings(day_of_week, o.start_time, o.duration)
+        for day_of_week in b.offering.days_of_week.all():
+            startstop = generate_date_strings(day_of_week, b.offering.start_time, b.offering.duration)
 
             # Stick the offering details into a serializable dictionary
             offering = {}
-            offering['title'] = o.display_name()
+            offering['title'] = b.offering.display_name()
             offering['start'] = str(startstop['start_date_time'])
             offering['end'] = str(startstop['end_date_time'])
-            offering['url'] = reverse('offering_detail', kwargs={'course_sec_id': o.course_sec_id,})
+            offering['url'] = reverse('offering_detail', kwargs={'course_sec_id': b.offering.course_sec_id,})
             offering['color'] = colorval
 
             data.append(offering)
@@ -76,32 +77,35 @@ def scheduler_json(request):
      )
 
 
-def add_course_to_schedule(request,offering_id):
+def add_course_to_schedule(request, offering_id):
     '''
-    Add the selected course to the current user's schedule.
+    Add the selected course to the current user's planned schedule.
     This view only invoked via ajax, never directly.
     We only need to return a 200, not a render_to_response.
     '''
 
-    profile = request.user.profile
-    offering = get_object_or_404(Offering, id=offering_id)
-
     if request.method == "POST":
-        # Skipping the usual form validation since there's nothing but a button to click
-        # and it's harmless to add classes to your own schedule.
-        offering.students.add(profile)
+
+        profile = request.user.profile
+        offering = Offering.objects.get(id=offering_id)
+
+        builder = Builder.objects.create(profile=profile, offering=offering)
+        profile.planned_classes.add(builder)
+
         messages.success(request, "Course added to your ScheduleBuilder")
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
-def remove_course_from_schedule(request,offering_id):
+def remove_course_from_schedule(request, builder_id):
     '''
-    Remove the selected course from the current user's schedule
+    Remove the selected "builder" object from the current user's schedule
     '''
 
-    user = request.user
-    offering = get_object_or_404(Offering, id=offering_id)
+    profile = request.user.profile
+    builder = Builder.objects.get(id=builder_id)
 
-    offering.students.remove(request.user)
-    messages.success(request, "Course removed from your schedule.")
+    profile.planned_classes.remove(builder)
+    builder.delete()
+
+    messages.success(request, "Course removed from your ScheduleBuilder.")
     return HttpResponseRedirect(reverse('scheduler'))

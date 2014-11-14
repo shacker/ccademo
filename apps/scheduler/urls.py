@@ -16,7 +16,7 @@ urlpatterns = patterns('scheduler.views',
         name='add_course_to_schedule'
         ),
 
-    url(r'^remove/(?P<offering_id>[\d]+)$',
+    url(r'^remove/(?P<builder_id>[\d]+)$',
         'remove_course_from_schedule',
         name='remove_course_from_schedule'
         ),

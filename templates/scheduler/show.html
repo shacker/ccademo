@@ -50,7 +50,7 @@
         {# jquery fullcalendar inserts here #}
         <div id='calendar'></div>
 
-        {% if myclasses %}
+        {% if builder_offerings %}
         {# TODO - move style #}
         <style type="text/css">
             .badge a {
@@ -59,18 +59,22 @@
         </style>
 
         <ul class="list-group" style="margin-top: 40px;">
-
-            {% for c in myclasses %}
+            {% for b in builder_offerings %}
             <li class="list-group-item">
-                <span class="badge"><a href="{% url 'remove_course_from_schedule' c.id %}">X</a></span>
-                <strong><a href="{% url 'offering_detail' c.course_sec_id %}">{{c.course_sec_id}}: {{c}}</a></strong> <br>
-                Room: {{c.location}},
+                <span class="badge">
+                    <a href="{% url 'remove_course_from_schedule' b.id %}">X</a>
+                </span>
+                <strong>
+                    <a href="{% url 'offering_detail' b.offering.course_sec_id %}">
+                    {{b.offering.course_sec_id}}: {{b.offering}}</a></strong> <br>
+                    Room: {{b.offering.location}},
 
-                {% for day in c.days_of_week.all %}
-                    {{day}}s at {% if not forloop.last %},{% endif %}
-                    {{c.start_time}},
-                    for {{c.duration}} hours
-                {% endfor %}
+                    {% for day in b.offering.days_of_week.all %}
+                        {{day}}s at {% if not forloop.last %},{% endif %}
+                        {{b.offering.start_time}},
+                        for {{b.offering.duration}} hours
+                    {% endfor %}
+                </strong>
             </li>
             {% endfor %}
 

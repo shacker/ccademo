@@ -171,6 +171,7 @@ class Profile(BaseProfile):
 
     # Track user's dashboard widgets, with custom 'through' table to track order
     dashboard_widgets = models.ManyToManyField(CCAWidget, through=UserWidget, blank=True, null=True, symmetrical=False, help_text='This users set of Dashboard Widgets')
+    planned_classes = models.ManyToManyField('courses.Builder', blank=True, null=True, symmetrical=False, help_text='Classes this user intends to take', related_name='planned_classes')
 
 
     # Model Managers
