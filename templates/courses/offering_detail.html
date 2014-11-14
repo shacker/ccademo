@@ -108,7 +108,7 @@
                 {{ offering.location }}
             {% endifequal %}
             </dd>
-            <dd><strong>Starts:</strong> {{ offering.start_date }}</dd>
+            <dd><strong>Starts:</strong> {{ offering.start_date|date:"F d, Y" }}</dd>
 
             <dd><strong>Meetings:</strong>
             {% for day in offering.days_of_week.all %}
