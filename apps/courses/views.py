@@ -1,4 +1,4 @@
-from courses.models import Program, Course, Offering, Semester, Assignment, Material
+from courses.models import Program, Course, Offering, Semester, Assignment, Material, Builder
 from people.models import Instructor
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -184,9 +184,12 @@ def offering_detail(request, course_sec_id):
 
     offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
 
-    if request.user.is_authenticated():
-        if request.user in offering.students.all():
-            scheduled = True
+    # Is this offering already in ScheduleBuilder?
+    try:
+        Builder.objects.get(profile=request.user.profile, offering=offering)
+        scheduled = True
+    except:
+        pass
 
     # Allow instructors of a specific offering to override some course details
     if request.user.profile in [i.profile for i in offering.instructors.all()]:

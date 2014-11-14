@@ -50,7 +50,7 @@ def scheduler_json(request):
 
     # offerings = Offering.objects.filter(students__in=(request.user,))
     builder_offerings = Builder.objects.filter(profile=request.user.profile)
-    pallette = ['#5e9964', '#99368c', '#446fba', '#5fba39', '#432919', '#302043', '#9d122c']
+    pallette = ['#387e9d', '#9d5388', '#b5bab8','#5e9964', '#99368c', '#446fba', '#5fba39', '#432919', '#302043', '#9d122c']
     data = []
 
     for b in builder_offerings:

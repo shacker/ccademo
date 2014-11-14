@@ -49,7 +49,7 @@
     </div>
 
     {% if scheduled %}
-        This class is already in your <a href="{% url 'scheduler' %}">schedule</a>.
+        <p><strong>This course offering is already in your <a href="{% url 'scheduler' %}">schedule</a>.</strong></p>
     {% else %}
         <p>
             <a href="#" class="btn btn-primary" onclick="loadAddToSchedule(this.href);return false;">
