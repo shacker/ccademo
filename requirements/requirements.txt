@@ -25,4 +25,4 @@ django-todo
 git+http://github.com/progressive-cms/django-tinymce4.git#egg=tinymce
 # django-tinymce-filebrowser
 
-git+https://github.com/arneb/django-messages.git
+git+https://github.com/cca/django-messages.git

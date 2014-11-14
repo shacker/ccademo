@@ -51,7 +51,9 @@
                 {{ profile.mobile_phone1 }}
             {% endif %}
             </li>
-        <li class="list-group-item">Fax: {{ profile.fax }}</li>
+        <li class="list-group-item">
+            <a href="{% url 'messages_compose_to' profile.user %}" class="btn btn-success">Contact {{profile.user.first_name}}</a>
+        </li>
     </ul>
 
     {% for a in profile.address_set.all %}
