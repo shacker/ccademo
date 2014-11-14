@@ -1,4 +1,8 @@
-# from schedular.models import Schedule
+import json
+import random
+from time import strftime
+from datetime import datetime, timedelta
+from django.core import serializers
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from courses.models import Offering
@@ -6,6 +10,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from scheduler.utils import generate_date_strings
 
 
 def scheduler(request):
@@ -21,6 +26,40 @@ def scheduler(request):
         context_instance=RequestContext(request)
         )
 
+
+
+def scheduler_json(request):
+
+    '''
+    Output user's ScheduleBuilder classes as JSON for use by jQuery FullCalendar
+    '''
+
+    offerings = Offering.objects.filter(students__in=(request.user,))
+    data = []
+
+    for o in offerings:
+        # This offering could happen on multiple days of the week
+        # Set event color per class, not event, so we get nice color pairings
+        r = lambda: random.randint(0,255)
+        colorval = '#%02X%02X%02X' % (r(),r(),r())
+
+        for day_of_week in o.days_of_week.all():
+            startstop = generate_date_strings(day_of_week, o.start_time, o.duration)
+
+            # Stick the offering details into a serializable dictionary
+            offering = {}
+            offering['title'] = o.display_name()
+            offering['start'] = str(startstop['start_date_time'])
+            offering['end'] = str(startstop['end_date_time'])
+            offering['url'] = reverse('offering_detail', kwargs={'course_sec_id': o.course_sec_id,})
+            offering['color'] = colorval
+
+            data.append(offering)
+
+
+    return HttpResponse(
+        json.dumps(data), content_type='application/json'
+     )
 
 
 def add_course_to_schedule(request,offering_id):

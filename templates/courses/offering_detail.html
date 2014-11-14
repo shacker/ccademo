@@ -101,10 +101,7 @@
         <dl>
             <dt>COURSE DETAILS:</dt>
             <dd><strong>Location:</strong>
-            {#
-               If location is "other", print the location_other field.
-               In the Rooms table "Other" is record 59
-            #}
+            {# If location is "other", print the location_other field. In the Rooms table "Other" is record 59 #}
             {% ifequal offering.location.id 59 %}
                 {{ offering.location_other }}
             {% else %}

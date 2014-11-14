@@ -97,6 +97,9 @@ class Offering(models.Model):
     def __str__(self):
       return self.title if self.title else self.course.long_title
 
+    def display_name(self):
+        return self.title if self.title else self.course.long_title
+
     def description(self):
         return self.description_override if self.description_override else self.course.description
 

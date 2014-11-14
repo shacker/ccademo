@@ -1,6 +1,41 @@
 {% extends "base.html" %}
+{% load static from staticfiles %}
 
 {% block title %}Course Schedule{% endblock %}
+
+{% block extrahead %}
+    <link href="{% static 'bower_components/fullcalendar/dist/fullcalendar.css' %}" rel="stylesheet">
+    <script src="{% static 'bower_components/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.min.js' %}"></script>
+
+    <script>
+    $(document).ready(function() {
+
+        // page is now ready, initialize the calendar...
+
+        $('#calendar').fullCalendar({
+            // put your options and callbacks here
+            weekends: false,
+            defaultView: 'agendaWeek',
+            minTime: "08:00:00",
+            maxTime: "18:00:00",
+            events: "/scheduler/api",
+            header: {
+                left:   '',
+                center: '',
+                right:  ''
+            },
+            columnFormat: {
+                month: 'ddd',    // Mon
+                week: 'ddd M/D', // Mon 9/7
+                day: 'dddd'      // Monday
+            }
+        });
+
+    });
+    </script>
+{% endblock extrahead %}
+
 
 {% block content %}
 
@@ -12,6 +47,9 @@
             <b>This is NOT an official schedule and does NOT mean you've actually enrolled in these courses! </b>
         </div>
 
+        {# jquery fullcalendar inserts here #}
+        <div id='calendar'></div>
+
         {% if myclasses %}
         {# TODO - move style #}
         <style type="text/css">
@@ -20,14 +58,19 @@
             }
         </style>
 
-        <ul class="list-group">
-
+        <ul class="list-group" style="margin-top: 40px;">
 
             {% for c in myclasses %}
             <li class="list-group-item">
                 <span class="badge"><a href="{% url 'remove_course_from_schedule' c.id %}">X</a></span>
-                <strong><a href="{% url 'offering_detail' c.id %}">{{c.course_sec_id}}: {{c}}</a></strong> <br>
-                Room: {{c.location}}, {{c.start_date|date:"f a"}}<br />
+                <strong><a href="{% url 'offering_detail' c.course_sec_id %}">{{c.course_sec_id}}: {{c}}</a></strong> <br>
+                Room: {{c.location}},
+
+                {% for day in c.days_of_week.all %}
+                    {{day}}s at {% if not forloop.last %},{% endif %}
+                    {{c.start_time}},
+                    for {{c.duration}} hours
+                {% endfor %}
             </li>
             {% endfor %}
 
