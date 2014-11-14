@@ -31,17 +31,32 @@ def scheduler(request):
 def scheduler_json(request):
 
     '''
-    Output user's ScheduleBuilder classes as JSON for use by jQuery FullCalendar
+    Output user's ScheduleBuilder classes as JSON for use by jQuery FullCalendar.
+    Final output needs to look like:
+
+    [
+        {
+        "start": "2014-11-14 13:00:25.015320",
+        "end": "2014-11-14 14:30:25.015320",
+        "title": "L: Reading Franz Kafka"
+        },
+        {
+        "start": "2014-11-13 09:00:25.018352",
+        "end": "2014-11-13 10:30:25.018352",
+        "title": "CP2: Engage: Public Space"
+        }
+    ]
     '''
 
     offerings = Offering.objects.filter(students__in=(request.user,))
+    pallette = ['#5e9964', '#99368c', '#446fba', '#5fba39', '#432919', '#302043', '#9d122c']
     data = []
 
     for o in offerings:
-        # This offering could happen on multiple days of the week
-        # Set event color per class, not event, so we get nice color pairings
-        r = lambda: random.randint(0,255)
-        colorval = '#%02X%02X%02X' % (r(),r(),r())
+        # This offering could happen on multiple days of the week.
+        # Set event color per class, not event, so matched class events have matching colors.
+        # Don't reuse colors - grab last color from list and remove.
+        colorval = pallette.pop()
 
         for day_of_week in o.days_of_week.all():
             startstop = generate_date_strings(day_of_week, o.start_time, o.duration)
@@ -55,7 +70,6 @@ def scheduler_json(request):
             offering['color'] = colorval
 
             data.append(offering)
-
 
     return HttpResponse(
         json.dumps(data), content_type='application/json'
