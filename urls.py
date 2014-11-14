@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'^pages/$', 'ccapages.views.index', name='pages_all'),
     url(r'^pages/', include('ccapages.urls')),
 
-    # url(r'^postman/', include('postman.urls')),
+    url(r'^messages/', include('django_messages.urls')),
 
 	(r'^accounts/login$', 'django_cas_ng.views.login'),
 	(r'^accounts/logout$', 'django_cas_ng.views.logout'),

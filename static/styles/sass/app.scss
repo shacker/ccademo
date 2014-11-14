@@ -2,9 +2,14 @@
 @import "bootstrap";
 @import "bootstrap/variables";
 
-.page-header {
+.page-header-nomargin {
 	margin-top: 0;
+
+	h1 {
+		margin-top: 0;
+	}
 }
+
 
 .widget-bottom {
 	background-color: #beedfc;
@@ -18,3 +23,4 @@
 .navbar-brand img {
 	height: 100%;
 }
+
