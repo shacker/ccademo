@@ -44,13 +44,15 @@
         <h1>Schedule Builder</h1>
         <div class="well">
             You've added the courses below to your schedule.<br />
-            <b>This is NOT an official schedule and does NOT mean you've actually enrolled in these courses! </b>
+            <b>ScheduleBuilder is for schedule planning only. It does NOT enroll you in any courses!</b>
         </div>
 
         {# jquery fullcalendar inserts here #}
         <div id='calendar'></div>
 
         {% if builder_offerings %}
+        <h3>List view</h3>
+        <p>Click "X" to remove a course offering from your schedule.</p>
         {# TODO - move style #}
         <style type="text/css">
             .badge a {
