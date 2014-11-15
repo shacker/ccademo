@@ -186,7 +186,7 @@ def offering_detail(request, course_sec_id):
 
     # Is this offering already in ScheduleBuilder?
     try:
-        Builder.objects.get(profile=request.user.profile, offering=offering)
+        builder = Builder.objects.get(profile=request.user.profile, offering=offering)
         scheduled = True
     except:
         pass
