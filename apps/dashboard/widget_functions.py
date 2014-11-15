@@ -2,7 +2,7 @@ import json
 import requests
 import feedparser
 from django.conf import settings
-from news.models import News
+from pages.models import Page
 from notifications.models import Notification
 from todo.models import Item
 
@@ -11,7 +11,7 @@ class WidgetFunctions():
 
     def get_ets_news(widget_instance, user):
         return {
-            'object_list': News.objects.filter(published=True)
+            'object_list': Page.objects.filter(published=True, category__slug='news').order_by('-timestamp')
             }
 
     def get_chimera_news(widget_instance, user):

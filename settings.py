@@ -64,7 +64,6 @@ INSTALLED_APPS = (
     # Our apps
     'base',
     'dashboard',
-    'news',
     'people',
     'courses',
     'scheduler',
