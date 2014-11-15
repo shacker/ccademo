@@ -1,4 +1,4 @@
-{% extends "pane_full.html" %}
+{% extends "page_full.html" %}
 {% load thumbnail %}
 
 {% block title %}{{ profile }}{% endblock %}
@@ -86,47 +86,6 @@
     </ul>
     {% endif %}
 
-
-    {% if profile.story_set.all %}
-    <h2>Published Stories</h2>
-    <ul>
-    {% for s in profile.story_set.all %}
-    <li>
-    <p><a href="{{s.url}}">{{s.headline}}</a> {{s.publication}}<br />
-        {{s.summary|safe}}</p>
-    </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-
-
-    {% if profile.book_set.all %}
-    <h2>Books</h2>
-    <ul>
-        {% for b in profile.book_set.all %}
-        <li>
-        <p><a href="{{b.url}}">{{b.title}}</a> {{b.publication}}<br />
-        {{b.published_on}} {% if b.isbn %}:: ISBN: {{b.isbn}}{% endif %}<br />
-        {{b.description|linebreaks}}</p>
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-
-    {% if profile.otherwork_set.all %}
-    <h2>Other Works</h2>
-    <ul>
-    {% for o in profile.otherwork_set.all %}
-    <li>
-        {{o.description}}
-        {% if o.url %}
-            <br /><a href="{{ o.url }}">More info</a>
-        {% endif %}
-    </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
 
 
     {% if profile.award_set.all %}

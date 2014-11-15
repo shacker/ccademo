@@ -152,12 +152,9 @@ def profiles_add_edit_related(request,
     a new object.
     """
 
-    # OtherWork needs an exception because of camel case
-    if related_model == 'otherwork':
-        related_model = 'OtherWork'
-    else:
-        # Capitalize first char
-        related_model = related_model.title()
+
+    # Capitalize first char
+    related_model = related_model.title()
 
     Model = getattr(people_models, related_model)
     Form = getattr(people_forms, '%sForm' % related_model)

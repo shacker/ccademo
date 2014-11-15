@@ -1,4 +1,4 @@
-{% extends "pane_full.html" %}
+{% extends "page_sub.html" %}
 {% load bootstrap %}
 {% load thumbnail %}
 
@@ -6,128 +6,84 @@
 {% block page_heading %}Update your profile{% endblock %}
 
 {% block app_nav %}
-<div class="box">
-<h2><a href="#" id="toggle-">Edit Profile Info</a></h2>
 
-{% if profile.staff %}
-    <ul>
-    <strong>My Staff Info</strong>
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='staff' %}">Office: {{ profile.staff.office_num }}</a></li>
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='staff' %}">Phone Extension(#-####): {{ profile.staff.extension }}</a></li>
+
+    {% if profile.staff %}
+        <ul class="list-group">
+            <strong>My Staff Info</strong>
+            <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='staff' %}">Office: {{ profile.staff.office_num }}</a></li>
+            <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='staff' %}">Phone Extension(#-####): {{ profile.staff.extension }}</a></li>
+        </ul>
+    {% endif %}
+
+    {% if profile.student %}
+        <ul class="list-group">
+            <strong>My Student Info</strong>
+            <li class="list-group-item"></li>
+        </ul>
+    {% endif %}
+
+    {% if profile.alumni %}
+        <ul class="list-group">
+            <strong>Edit Alumni Info</strong>
+            <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='alumni' %}">{{ profile.alumni.grad_year }}</a></li>
+        </ul>
+    {% endif %}
+
+    {% if profile.instructor %}
+        <ul class="list-group">
+            <strong>Edit Instructor Info</a></strong>
+            <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='instructor' %}">Office: {{ profile.instructor.office_num }}</a></li>
+            <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='instructor' %}">Office Phone: {{ profile.instructor.extension }}</a></li>
+            <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='instructor' %}">Bio: {{ profile.instructor.bio_short|striptags|truncatewords:"15" }}</a></li>
+        </ul>
+    {% endif %}
+
+    <ul class="list-group">
+        <strong>Addresses (<a href="{% url 'people_profile_add_related' related_model='address' %}">Add New</a>)</strong>
+        {% for obj in profile.address_set.all %}
+        <li class="list-group-item">
+            <a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='address' %}">
+            {{ obj }}</a>&nbsp;({{ obj.get_address_type_display }})
+        </li>
+        {% endfor %}
+
     </ul>
-{% endif %}
 
-{% if profile.student %}
-    <ul>
-        <strong>My Student Info</strong>
-        <li></li>
+    <ul class="list-group">
+        <strong>Awards (<a href="{% url 'people_profile_add_related' related_model='award' %}">Add New</a>)</strong>
+        {% for obj in profile.award_set.all %}
+        <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='award' %}"
+            >{{ obj }}</a></li>
+        {% endfor %}
     </ul>
-{% endif %}
 
-{% if profile.alumni %}
-    <ul>
-        <strong>Edit    Alumni Info</strong>
-        <li><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='alumni' %}">{{ profile.alumni.grad_year }}</a></li>
+    <ul class="list-group">
+        <strong>Experience (<a href="{% url 'people_profile_add_related' related_model='experience' %}">Add New</a>)</strong>
+        {% for obj in profile.experience_set.all %}
+        <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='experience' %}">
+            {{ obj }}</a>
+        </li>
+        {% endfor %}
     </ul>
-{% endif %}
 
-{% if profile.instructor %}
-    <ul>
-        <strong>Edit Instructor Info</a></strong>
-        <li><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='instructor' %}">Office: {{ profile.instructor.office_num }}</a></li>
-        <li><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='instructor' %}">Office Phone: {{ profile.instructor.extension }}</a></li>
-        <li><a href="{% url 'people_profile_edit_related' related_obj_id=profile.pk related_model='instructor' %}">Bio: {{ profile.instructor.bio_short|striptags|truncatewords:"15" }}</a></li>
+    <ul class="list-group">
+        <strong>Skills (<a href="{% url 'people_profile_add_related' related_model='skill' %}">Add New</a>)</strong>
+        {% for obj in profile.skill_set.all %}
+        <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='skill' %}"
+            >{{ obj }}</a></li>
+        {% endfor %}
     </ul>
-{% endif %}
 
+    <ul class="list-group">
+        <strong>Education (<a href="{% url 'people_profile_add_related' related_model='education' %}"
+                >Add New</a>)</strong>
+        {% for obj in profile.education_set.all %}
+        <li class="list-group-item"><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='education' %}"
+            >{{ obj }}</a></li>
+        {% endfor %}
+    </ul>
 
-<ul>
-    <strong>Addresses</strong>
-    {% for obj in profile.address_set.all %}
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='address' %}"
-            >{{ obj }}</a>&nbsp;({{ obj.get_address_type_display }})</li>
-    {% endfor %}
-    <li class="add_new">
-        <a href="{% url 'people_profile_add_related' related_model='address' %}">Add New</a>
-    </li>
-</ul>
-
-<ul>
-    <strong>Stories</strong>
-    {% for obj in profile.story_set.all %}
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='story' %}"
-        >{{ obj }}</a></li>
-    {% endfor %}
-    <li class="add_new">
-        <a href="{% url 'people_profile_add_related' related_model='story' %}">Add New</a>
-    </li>
-</ul>
-
-<ul>
-    <strong>Books</strong>
-    {% for obj in profile.book_set.all %}
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='book' %}"
-        >{{ obj }}</a></li>
-    {% endfor %}
-    <li class="add_new">
-        <a href="{% url 'people_profile_add_related' related_model='book' %}">Add New</a>
-    </li>
-</ul>
-
-<ul>
-    <strong>Awards</strong>
-    {% for obj in profile.award_set.all %}
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='award' %}"
-        >{{ obj }}</a></li>
-    {% endfor %}
-    <li class="add_new">
-        <a href="{% url 'people_profile_add_related' related_model='award' %}">Add New</a>
-    </li>
-</ul>
-
-<ul>
-    <strong>Other Work</strong>
-    {% for obj in profile.otherwork_set.all %}
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='otherwork' %}"
-        >{{ obj }}</a></li>
-    {% endfor %}
-    <li class="add_new">
-        <a href="{% url 'people_profile_add_related' related_model='otherwork' %}">Add New</a>
-    </li>
-</ul>
-
-<ul>
-    <strong>Experience</strong>
-    {% for obj in profile.experience_set.all %}
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='experience' %}">
-        {{ obj }}</a>
-    </li>
-    {% endfor %}
-    <li class="add_new">
-        <a href="{% url 'people_profile_add_related' related_model='experience' %}">Add New</a>
-    </li>
-</ul>
-
-<ul>
-    <strong>Skills</strong>
-    {% for obj in profile.skill_set.all %}
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='skill' %}"
-        >{{ obj }}</a></li>
-    {% endfor %}
-    <li class="add_new"><a href="{% url 'people_profile_add_related' related_model='skill' %}">Add New</a></li>
-</ul>
-
-<ul>
-    <strong>Education</strong>
-    {% for obj in profile.education_set.all %}
-    <li><a href="{% url 'people_profile_edit_related' related_obj_id=obj.pk related_model='education' %}"
-        >{{ obj }}</a></li>
-    {% endfor %}
-    <li class="add_new"><a href="{% url 'people_profile_add_related' related_model='education' %}"
-            >Add New</a></li>
-</ul>
-
-</div>
 {% endblock %}
 
 {% block help_nav_content %}
@@ -136,7 +92,9 @@
     </p>
 {% endblock %}
 
-{% block content %}
+{% block main %}
+
+    <h2>Edit Profile</h2>
 
     <form role="form" class="form" accept-charset="utf-8" enctype="multipart/form-data" action="" method="post">
         <div class="form-group">
@@ -146,4 +104,4 @@
          <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-{% endblock %}
+{% endblock main %}

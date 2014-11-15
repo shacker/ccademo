@@ -1,26 +1,19 @@
-{% extends "pane_full.html" %}
-
+{% extends "page_full.html" %}
+{% load bootstrap %}
 
 {% block title %}Update {{ related_model|title }} Info{% endblock %}
 {% block page_heading %}Update {{ related_model|title }} Info{% endblock %}
 
 {% block content %}
 
-<p>
-Please update your profile information and click the submit at the bottom.
-</p>
+	<p>
+		Please update your profile information and click the submit at the bottom.
+	</p>
 
-<form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
-
-<table>
-{{ form }}
-</table>
-
-<p class="submit">
-<input type="submit" name="submit" value="Submit" />
-<a class="cancel" href="{% url people_profile_edit %}">Cancel</a>
-</p>
-
-</form>
+	<form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form|bootstrap }}
+		<input type="submit" name="submit" class="btn btn-primary" value="Submit" />
+	</form>
 
 {% endblock %}
