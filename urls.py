@@ -21,9 +21,6 @@ urlpatterns = patterns('',
     (r'^tinymce/', include('tinymce.urls')),
     (r'^mce_filebrowser/', include('mce_filebrowser.urls')),
 
-    url(r'^pages/$', 'ccapages.views.index', name='pages_all'),
-    url(r'^pages/', include('ccapages.urls')),
-
     url(r'^messages/', include('django_messages.urls')),
 
 	(r'^accounts/login$', 'django_cas_ng.views.login'),

@@ -69,7 +69,6 @@ INSTALLED_APPS = (
     'courses',
     'scheduler',
     'notifications',
-    'ccapages',
 )
 
 MIDDLEWARE_CLASSES = (
