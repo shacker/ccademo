@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from courses.forms import CourseContactForm, QueryForm, OfferingIntraEditForm
+from courses.forms import QueryForm, OfferingIntraEditForm
 from postman.models import Message, STATUS_PENDING, STATUS_ACCEPTED
 from django.db.models import Q  # For search
 
@@ -286,29 +286,6 @@ def offering_contact(request, course_sec_id):
 
     offering = get_object_or_404(Offering, course_sec_id=course_sec_id)
     recips = offering.instructors.all()
-
-    if request.method == 'POST':
-        form = CourseContactForm(request.POST)
-        if form.is_valid():
-
-            for r in recips:
-                # Create Postman message
-                # Instantiate new message on Postman's Message class
-                msg = Message.objects.create(
-                    subject = form.cleaned_data['subject'],
-                    body = form.cleaned_data['body'],
-                    sender = request.user,
-                    recipient = r.profile.user,
-                    moderation_status = STATUS_ACCEPTED,
-                    )
-                # Also send corresponding emails
-                msg.notify_users(STATUS_PENDING,is_auto_moderated=True)
-
-            messages.success(request, "Message sent.")
-            return HttpResponseRedirect(reverse('offering_detail',args=[offering.id]))
-
-    else:
-        form = CourseContactForm() # An unbound form
 
     return render_to_response(
         'courses/offering_contact.html',

@@ -1,5 +1,6 @@
 {% extends "page_sub.html" %}
 {% load thumbnail %}
+{% load bootstrap %}
 
 {% block title %}Course Offering Contacter{% endblock %}
 
@@ -10,24 +11,23 @@
 
 {% block main %}
 
-<h2>Contact: {{offering}} ({{offering.sec_term}})</h2>
+	<h2>Contact instructors for:<br />{{offering}} ({{offering.sec_term}})</h2>
+	{% if recips.count > 0 %}
 
+		<p>Your message will be sent to instructors:</p>
 
-<p>Your message will be sent to:</p>
+		<p><strong>
+		    {% for r in recips  %}
+		        {{r}}{% if not forloop.last %},{% endif %}
+		    {% endfor %}
+		</strong></p>
 
-<ul>
-    {% for r in recips  %}
-        <li>{{r}}</li>
-    {% endfor %}
+		<a href="/messages/compose/{% for r in recips %}{{r.profile.user.username}}{% if not forloop.last %}+{% endif %}{% endfor %}" class="btn btn-success">Contact Instructors</a>
 
-</ul>
+	{% else %}
+		<p>There are no instructors currently listed for this course offering.</p>
 
-<form action="" method="post" accept-charset="utf-8">
-    {% csrf_token %}
-    <table>
-    {{form.as_table}}
-    </table>
-    <p><input type="submit" value="submit"></p>
-</form>
+	{% endif %}
+
 
 {% endblock main %}
