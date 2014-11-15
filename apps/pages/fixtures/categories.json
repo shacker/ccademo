@@ -1,0 +1,10 @@
+[
+{
+  "model": "pages.category",
+  "pk": 1,
+  "fields": {
+    "name": "News",
+    "slug": "news"
+  }
+}
+]

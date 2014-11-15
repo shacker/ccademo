@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block page_title %}{{ block.super }}News - {{story.title}}{% endblock page_title %}
+
+{% block content %}
+
+	<div class="page-header">
+		<h3>CCA News</h3>
+	</div>
+
+	<div class="well">
+		{% for story in stories %}
+			<h4 style="margin-top:30px;"><a href="{% url 'news_detail' story.slug %}">{{story.title}}</a></h4>
+			<p>{{story.author.profile}}, {{story.timestamp|date:"M d, Y"}}</p>
+			{{story.body|safe|truncatewords:50}}
+		{% endfor %}
+	</div>
+
+{% endblock content %}

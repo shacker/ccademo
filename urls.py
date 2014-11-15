@@ -8,8 +8,13 @@ admin.site.index_template = 'admin/cca_custom_index.html'
 urlpatterns = patterns('',
 
     url(r'^$', 'dashboard.views.landing', name='landing'),
-    url(r'^news/(?P<slug>[\w-]+)/$', 'news.views.news_detail',  name='news_detail'),
-    url(r'^news/$', 'news.views.news_index',  name='news_index'),
+
+    url(r'^pages/(?P<slug>[\w-]+)/$', 'pages.views.page_detail',  name='page_detail'),
+    url(r'^pages/$', 'pages.views.pages_index',  name='pages_index'),
+
+    url(r'^news/(?P<slug>[\w-]+)/$', 'pages.views.news_detail',  name='news_detail'),
+    url(r'^news/$', 'pages.views.news_index',  name='news_index'),
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^people/', include('people.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
