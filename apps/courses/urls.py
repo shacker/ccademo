@@ -16,7 +16,6 @@ urlpatterns = patterns('courses.views',
 
     # Course offering subsections
     url(r'^offering/(?P<course_sec_id>[\d]+)$', 'offering_detail', name="offering_detail"),
-    url(r'^offering/(?P<course_sec_id>[\d]+)/schedule$', 'offering_schedule', name="offering_schedule"),
     url(r'^offering/(?P<course_sec_id>[\d]+)/announcements$', 'offering_announcements', name="offering_announcements"),
     url(r'^offering/(?P<course_sec_id>[\d]+)/contact$', 'offering_contact', name="offering_contact"),
     url(r'^offering/(?P<course_sec_id>[\d]+)/policies$', 'offering_policies', name="offering_policies"),
