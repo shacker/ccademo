@@ -22,3 +22,7 @@ But when we need per-field granularity, apply the classes Bootstrap needs indivi
 {% load widget_tweaks %}
 ...
 {% render_field form.title class+="form-control" %}
+
+Fork of django_messages - special URL identifier
+http://127.0.0.1:8000/messages/compose/group-offering-20356/
+

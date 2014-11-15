@@ -10,30 +10,36 @@
 
 {% block main %}
 
-<h2>Participants: {{offering}} ({{offering.sec_term}})</h2>
+    <h2>Participants: {{offering}} ({{offering.sec_term}})</h2>
 
 
-<h3>Students</h3>
-{% if students.count > 0 %}
-    <ul>
-    {% for s in students  %}
-        <li><a href="{% url 'people_profile_detail' s.user %}">{{s}}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No students are officially registered for this class yet.</p>
-{% endif %}
+    <h3>Students</h3>
+    {% if students.count > 0 %}
+        <ul>
+        {% for s in students  %}
+            <li><a href="{% url 'people_profile_detail' s.user %}">{{s}}</a></li>
+        {% endfor %}
+        </ul>
+
+        {% if request.user.profile.instructor in offering.instructors.all %}
+            <a href="/messages/compose/group/group-offering-{{offering.course_sec_id}}"
+                class="btn btn-success">Send message to students</a>
+        {% endif %}
+
+    {% else %}
+        <p>No students are officially registered for this class yet.</p>
+    {% endif %}
 
 
-<h3>Instructors</h3>
-{% if instructors.count > 0 %}
-    <ul>
-    {% for i in instructors  %}
-        <li><a href="{% url 'people_profile_detail' i.profile.user %}">{{i}}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No instructors are officially listed for this class yet.</p>
-{% endif %}
+    <h3>Instructors</h3>
+    {% if instructors.count > 0 %}
+        <ul>
+        {% for i in instructors  %}
+            <li><a href="{% url 'people_profile_detail' i.profile.user %}">{{i}}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No instructors are officially listed for this class yet.</p>
+    {% endif %}
 
 {% endblock main %}
