@@ -160,7 +160,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
 )
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/uploads/'
 
 # collectstatic command will gather static files here
 STATIC_ROOT = os.path.join(BASE_DIR, "static_collect")

@@ -284,7 +284,7 @@ class Profile(BaseProfile):
             return False
 
     def get_form_name(self):
-        return "%sForm" % self._meta.module_name.title()
+        return "%sForm" % self._meta.model_name.title()
 
     def get_primary_email(self):
         """

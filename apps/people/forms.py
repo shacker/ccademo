@@ -64,7 +64,7 @@ class ProfileForm(forms.ModelForm):
             pass
 
     email = forms.EmailField()
-    avatar = forms.FileField(
+    photo = forms.FileField(
                     help_text="Should be at least 200px wide. Please use a real image of yourself.",
                     widget=FileWidget,
                     required=False)
@@ -76,7 +76,7 @@ class ProfileForm(forms.ModelForm):
                  'salutation',
                  'title',
                  'about',
-                 'avatar',
+                 'photo',
                  'email',
                  'email2',
                  'home_phone1',
