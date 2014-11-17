@@ -146,12 +146,18 @@ class Profile(BaseProfile):
     datatel_avatar_url = models.CharField('Datatel avatar URL', blank=True, null=True, max_length=60)
     suffix = models.IntegerField(
                 max_length=2,
-                blank=True, null=True, choices=constants.PROFILE_SUFFIX_CHOICES)
+                blank=True, null=True, choices=constants.PROFILE_SUFFIX_CHOICES,
+                help_text='e.g. Dr., Phd.'
+                )
     salutation = models.IntegerField(
                     max_length=2,
                     blank=True, null=True,
-                    choices=constants.PROFILE_SALUTATION_CHOICES)
+                    choices=constants.PROFILE_SALUTATION_CHOICES,
+                    help_text='e.g. Mrs., Ms., Mr.')
     middle_name = models.CharField(max_length=50, blank=True, null=True)
+
+    twitter = models.CharField(blank=True, null=True, max_length=64, help_text='Your twitter username')
+    facebook = models.CharField(blank=True, null=True, max_length=64, help_text='Your Facebook username')
     title = models.CharField(blank=True, null=True, max_length=32)
     about = models.TextField(blank=True, null=True, help_text="A few sentences about yourself - capsule biography. No HTML allowed.", max_length=256)
     email2 = models.EmailField('Secondary Email', blank=True, null=True)
@@ -172,7 +178,6 @@ class Profile(BaseProfile):
     # Track user's dashboard widgets, with custom 'through' table to track order
     dashboard_widgets = models.ManyToManyField(CCAWidget, through=UserWidget, blank=True, null=True, symmetrical=False, help_text='This users set of Dashboard Widgets')
     planned_classes = models.ManyToManyField('courses.Builder', blank=True, null=True, symmetrical=False, help_text='Classes this user intends to take', related_name='planned_classes')
-
 
     # Model Managers
     objects = models.Manager()

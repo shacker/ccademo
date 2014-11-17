@@ -28,7 +28,7 @@
     <ul class="list-group">
         <li class="list-group-item">Title: {{ profile.title }}</li>
         <li class="list-group-item">Email: <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a></li>
-        <li class="list-group-item">Secondary Email: {{ profile.email2 }}</li>
+        <li class="list-group-item">Secondary Email: <a href="mailto:{{ profile.email2 }}">{{ profile.email2 }}</a></li>
         <li class="list-group-item">Home Phone:
             {# Only show home/mobile numbers for staff and faculty to other staff and faculty. #}
             {% if profile.user.is_instructor or profile.user.is_staff %}
@@ -50,7 +50,21 @@
             {% else %}
                 {{ profile.mobile_phone1 }}
             {% endif %}
+        </li>
+
+        {% if profile.twitter %}
+            <li class="list-group-item">Twitter: <a href="http://twitter.com/{{profile.twitter}}">
+                {{ profile.twitter }}</a>
             </li>
+        {% endif %}
+
+        {% if profile.facebook %}
+            <li class="list-group-item">Facebook: <a href="http://facebook.com/{{profile.facebook}}">
+                {{ profile.facebook }}</a>
+            </li>
+        {% endif %}
+
+
         <li class="list-group-item">
             <a href="{% url 'messages_compose_to' profile.user %}" class="btn btn-success">Contact {{profile.user.first_name}}</a>
         </li>

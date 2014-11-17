@@ -85,7 +85,10 @@ class ProfileForm(forms.ModelForm):
                  'fax',
                  'allow_contact',
                  'url_personal',
-                 'url_org',)
+                 'url_org',
+                 'twitter',
+                 'facebook',
+                 )
 
     def _clean_phone(self, fieldname, value):
         """
