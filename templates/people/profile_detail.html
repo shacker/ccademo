@@ -27,8 +27,12 @@
 
     <ul class="list-group">
         <li class="list-group-item">Title: {{ profile.title }}</li>
-        <li class="list-group-item">Email: <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a></li>
-        <li class="list-group-item">Secondary Email: <a href="mailto:{{ profile.email2 }}">{{ profile.email2 }}</a></li>
+        <li class="list-group-item">Email:
+            <a href="mailto:{{ profile.user.email }}">{{ profile.user.email }}</a>
+        </li>
+        <li class="list-group-item">Secondary Email:
+            <a href="mailto:{{ profile.email2 }}">{{ profile.email2 }}</a>
+        </li>
         <li class="list-group-item">Home Phone:
             {# Only show home/mobile numbers for staff and faculty to other staff and faculty. #}
             {% if profile.user.is_instructor or profile.user.is_staff %}
