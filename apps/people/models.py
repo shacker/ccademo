@@ -159,7 +159,7 @@ class Profile(BaseProfile):
     biz_phone1 = models.CharField('Business Phone', max_length=60, blank=True, null=True)
     mobile_phone1 = models.CharField('Mobile Phone', max_length=60, blank=True, null=True)
     fax = models.CharField(max_length=60, blank=True, null=True)
-    allow_contact = models.BooleanField(default=True, help_text='Allow the public to contact you through CalCentral.')
+    allow_contact = models.BooleanField(default=True, help_text='Allow the public to contact you through the CCA Intranet.')
     show_name = models.BooleanField(default=True, help_text='Not currently implemented, for future use.')
     url_personal = models.URLField('Personal website', blank=True, null=True)
     url_org = models.URLField('Organization website', blank=True, null=True)
@@ -404,7 +404,7 @@ class Alumni(BaseProfile):
     pub_display = models.BooleanField(
                                 'Display Option',
                                 default=True,
-                                help_text='If unchecked, record will be hidden even from other J-School alumni, faculty, students and staff.')
+                                help_text='If unchecked, record will be hidden even from other CCA alumni, faculty, students and staff.')
     freelance = models.BooleanField(
                                 'Freelancing?',
                                 default=False, )
@@ -413,7 +413,7 @@ class Alumni(BaseProfile):
     prev_intern2 = models.CharField('Previous Intership 1', max_length=384, blank=True, null=True, )
     prev_intern3 = models.CharField('Previous Intership 1', max_length=384, blank=True, null=True, )
     first_job = models.CharField(
-                    'First job out of J-School',
+                    'First job out of CCA',
                     max_length=384,
                     blank=True, null=True, )
     books = models.TextField(blank=True, null=True, )
@@ -460,7 +460,7 @@ class Alumni(BaseProfile):
     suggestions = models.TextField(
                                 blank=True,
                                 null=True,
-                                help_text="Do you have suggestions for us about what you'd like to get out of the J-School Alumni Organization? If so, please write us a note and we'll try to incorporate your idea.")
+                                help_text="Do you have suggestions for us about what you'd like to get out of the CCA Alumni Organization? If so, please write us a note and we'll try to incorporate your idea.")
     committee_notes = models.TextField(blank=True, null=True)
     inactive = models.BooleanField(default=False)
     revision = models.IntegerField(help_text='This field should increment up when record is updated.', blank=True, null=True)
