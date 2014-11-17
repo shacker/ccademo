@@ -25,6 +25,19 @@ class WidgetFunctions():
             'object_list': data
             }
 
+    def get_sculptors_blog(widget_instance, user):
+        data = feedparser.parse('http://blog.sculpture.org/feed/')['entries'][0:4]
+
+        # Rewrite data to conform internal links
+        for d in data:
+            d['get_absolute_url'] = d['links'][0]['href']
+
+        return {
+            'object_list': data
+            }
+
+
+
     def get_nyt_news(widget_instance, user):
         # NYT API data
         response = requests.get(
@@ -46,6 +59,11 @@ class WidgetFunctions():
     def get_library_notifications(widget_instance, user):
         return {
             'object_list': Notification.objects.filter(user=user, resolved=False, source__name="Library")
+        }
+
+    def get_adp_supervisors(widget_instance, user):
+        return {
+            'object_list': Notification.objects.filter(user=user, resolved=False, source__name="ADP")
         }
 
     def get_housing_notifications(widget_instance, user):

@@ -4,14 +4,18 @@
 	<ul class="list-group">
 
 		<li class="list-group-item active">
-			ID: {{meta.id}} {{meta.widget.title}} Pri: {{meta.order}}
+			{{meta.widget.title}}
 		</li>
 
 		{# {{data}} #}
 		{% for obj in data.object_list %}
 			{# {{obj.notif}} #}
 			<li class="list-group-item list-group-item-{{obj.level}}">
-				<a href="{{obj.get_absolute_url}}">{{obj.title}}</a>
+				{% if obj.get_absolute_url %}
+					<a href="{{obj.get_absolute_url}}">{{obj.title}}</a>
+				{% else %}
+					{{obj.title}}
+				{% endif %}
 			</li>
 		{% endfor %}
 		<li class="list-group-item widget-bottom">
