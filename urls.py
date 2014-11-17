@@ -5,6 +5,7 @@ from django.conf import settings
 
 admin.site.index_template = 'admin/cca_custom_index.html'
 
+
 urlpatterns = patterns('',
 
     url(r'^$', 'dashboard.views.landing', name='landing'),
@@ -30,6 +31,10 @@ urlpatterns = patterns('',
 
 	(r'^accounts/login$', 'django_cas_ng.views.login'),
 	(r'^accounts/logout$', 'django_cas_ng.views.logout'),
+
+    # Django REST Framework
+    url(r'^api/', include('api.urls')),
+
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

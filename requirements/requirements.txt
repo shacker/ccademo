@@ -26,3 +26,4 @@ git+http://github.com/progressive-cms/django-tinymce4.git#egg=tinymce
 # django-tinymce-filebrowser
 
 git+https://github.com/cca/django-messages.git
+git+https://github.com/tomchristie/django-rest-framework.git
