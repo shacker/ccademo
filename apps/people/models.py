@@ -337,6 +337,9 @@ class Instructor(BaseProfile):
         verbose_name = "Instructor"
         verbose_name_plural = "Instructors"
 
+    def __str__(self):
+        return self.profile.get_display_name()
+
 
 class Student(BaseProfile):
     """
