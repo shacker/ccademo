@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 
 from rest_framework import serializers
 from courses.models import Course, Offering
-from people.models import Instructor
+from people.models import Profile, Instructor
 
 # Serializers define the API representation.
 
@@ -57,3 +57,25 @@ class OfferingSerializer(serializers.ModelSerializer):
             "profile_url": reverse('people_profile_detail', args=[i.profile.user.username])}
             for i in obj.instructors.all()
             ]
+
+
+class RelatedUserSerializer(serializers.Serializer):
+    # Needed to represent related User as a nested object on the ProfileSerializer
+    id = serializers.Field(source='id')
+    username = serializers.Field(source='username')
+    email = serializers.Field(source='email')
+    first_name = serializers.Field(source='first_name')
+    last_name = serializers.Field(source='last_name')
+
+
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    profile_url = serializers.HyperlinkedIdentityField(view_name='profile-detail')
+    display_name = serializers.SerializerMethodField('get_display_name')
+    user = RelatedUserSerializer(required=False)
+
+    class Meta:
+        model = Profile
+        fields = ('display_name', 'profile_url', 'user', 'person_id', 'photo', 'datatel_avatar_url', 'about', 'url_personal')
+
+    def get_display_name(self, obj):
+        return obj.get_display_name()
