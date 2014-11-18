@@ -32,6 +32,8 @@ urlpatterns = patterns('',
 	(r'^accounts/login$', 'django_cas_ng.views.login'),
 	(r'^accounts/logout$', 'django_cas_ng.views.logout'),
 
+    (r'^temp/login/$', 'base.views.login_user'),
+
     # Django REST Framework
     url(r'^api/', include('api.urls')),
 
