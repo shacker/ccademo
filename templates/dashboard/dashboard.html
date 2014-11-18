@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% load widget_functions %}
+{% load cca_widgets %}
 
 {% block page_title %}{{ block.super }}Dashboard{% endblock page_title %}
 
@@ -13,6 +13,8 @@
 	<div class="page-header">
 		<h3>Welcome to Your CCA Dashboard</h3>
 	</div>
+
+	<p>Drag to organize. "X" to remove. Use list below to add more!</p>
 
 	<div class="row" id="sortable">
 		{% for widget in userwidgets %}
