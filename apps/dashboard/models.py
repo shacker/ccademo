@@ -7,10 +7,17 @@ from django.utils import timezone
 # TODO: Instantiate new users with this set
 WIDGETS_DEFAULT_SET = [1, 2, 3,]
 
+WIDGET_TYPE_CHOICES = (
+    ('list','List'),
+    ('html','HTML'),
+)
+
 class CCAWidget(models.Model):
     title = models.CharField(max_length=100, default="")
+    type = models.CharField('Type',choices=WIDGET_TYPE_CHOICES, max_length=4, default='list',)
     linkurl = models.URLField(blank=True, help_text='Widget title links elsewhwere')
-    func = models.CharField('Function to call', max_length=100)
+    func = models.CharField('Function to call', max_length=100, null=True, blank=True, help_text='Use for internal data transforms to standard widget list.')
+    html = models.TextField('HTML', blank=True, null=True, help_text='Use for abitrary embeddable widgets')
 
     def __str__(self):
         return self.title

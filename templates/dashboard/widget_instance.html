@@ -7,17 +7,28 @@
 			{{meta.widget.title}}
 		</li>
 
-		{# {{data}} #}
-		{% for obj in data.object_list %}
-			{# {{obj.notif}} #}
-			<li class="list-group-item list-group-item-{{obj.level}}">
-				{% if obj.get_absolute_url %}
-					<a href="{{obj.get_absolute_url}}">{{obj.title}}</a>
-				{% else %}
-					{{obj.title}}
-				{% endif %}
-			</li>
-		{% endfor %}
+		{# Two possible widget types: transformed list or free-form #}
+		{% if meta.widget.type == "list" %}
+
+			{# {{data}} #}
+			{% for obj in data.object_list %}
+				{# {{obj.notif}} #}
+				<li class="list-group-item list-group-item-{{obj.level}}">
+					{% if obj.get_absolute_url %}
+						<a href="{{obj.get_absolute_url}}">{{obj.title}}</a>
+					{% else %}
+						{{obj.title}}
+					{% endif %}
+				</li>
+			{% endfor %}
+
+		{% else %}
+
+			{# Display raw HTML of parent widget contents #}
+			{{meta.widget.html|safe}}
+
+		{% endif %}
+
 		<li class="list-group-item widget-bottom">
 			<a href="{{meta.widget.linkurl}}">More</a>
 			...
