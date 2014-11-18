@@ -7,23 +7,21 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('people', '0003_auto_20141110_2347'),
+        ('people', '0001_initial'),
+        ('dashboard', '0001_initial'),
     ]
 
     operations = [
-        migrations.RemoveField(
+        migrations.AddField(
             model_name='userwidget',
             name='profile',
+            field=models.ForeignKey(to='people.Profile'),
+            preserve_default=True,
         ),
-        migrations.RemoveField(
+        migrations.AddField(
             model_name='userwidget',
             name='widget',
-        ),
-        migrations.RemoveField(
-            model_name='profile',
-            name='dashboard_widgets',
-        ),
-        migrations.DeleteModel(
-            name='UserWidget',
+            field=models.ForeignKey(to='dashboard.CCAWidget'),
+            preserve_default=True,
         ),
     ]
