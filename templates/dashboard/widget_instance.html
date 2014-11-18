@@ -32,7 +32,7 @@
 		<li class="list-group-item widget-bottom">
 			<a href="{{meta.widget.linkurl}}">More</a>
 			...
-			{% if meta.user_can_delete_widget %}
+			{% if not meta.widget.mandatory %}
 				<a href="{% url 'widget_remove' meta.id %}">X</a>
 			{% endif %}
 		</li>

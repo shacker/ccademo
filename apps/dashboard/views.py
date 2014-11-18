@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
 from dashboard.widget_functions import *
-from dashboard.models import CCAWidget, WIDGETS_DEFAULT_SET
+from dashboard.models import CCAWidget
 from people.models import UserWidget
 
 def create_user_widget(request, widget_id):
@@ -40,22 +40,43 @@ def dashboard(request):
     """
     Dashboard view.
     Template tag in dashboard.html handles widget logic.
+    User starts with set of default widgets and has access to a list of
+    "otherwidgets", which is the list of all widgets unused by that user
+    minus widgets s/he does not have access to.
     """
 
-    # This user's used widgets
+    # This user's current widget instances
     userwidgets = UserWidget.objects.filter(profile=request.user.profile).order_by('order')
 
     # If user has no widgets, instantiate the default set
     if userwidgets.count() == 0:
-        for widget_id in WIDGETS_DEFAULT_SET:
-            create_user_widget(request, widget_id)
+        for widget in CCAWidget.objects.filter(mandatory=True):
+            create_user_widget(request, widget.id)
+
+
+    # Start with minimal sets for least privileged users and build up.
+    # This way, in case someone is both a faculty member *and* a superuser (e.g.),
+    # they get the superuser widget set. Note 'all' means "available to all users,"
+    # not "all permissions."
+
+    if request.user.profile.is_student():
+        otherwidgets = CCAWidget.objects.filter(role_level__in=['all', 'student'])
+
+    if request.user.profile.is_instructor():
+        otherwidgets = CCAWidget.objects.filter(role_level__in=['all', 'students', 'faculty',])
+
+    if request.user.profile.is_staff():
+        otherwidgets = CCAWidget.objects.filter(role_level__in=['all', 'students', 'faculty', 'staff'])
+
+    if request.user.is_superuser:
+        otherwidgets = CCAWidget.objects.all()
 
 
     # Get a list of ids of parent widget objects in use by this user
-    usedwidgets = [u.widget.id for u in userwidgets]
+    usedwidget_ids = [u.widget.id for u in userwidgets]
 
-    # The set of all parent widgets minus the set of widgets the user already has installed
-    otherwidgets = CCAWidget.objects.exclude(id__in=usedwidgets)
+    # The set of all allowed widgets minus the set of widgets the user already has installed
+    otherwidgets = otherwidgets.exclude(id__in=usedwidget_ids)
 
     return render(request, 'dashboard/dashboard.html', locals())
 
@@ -72,7 +93,7 @@ def widget_remove(request, userwidget_id):
     except:
         messages.error(request, "That widget does not exist.")
 
-    if user_widget.user_can_delete_widget():
+    if not user_widget.widget.mandatory:
         try:
             user_widget.delete()
             messages.success(request, "Widget removed")

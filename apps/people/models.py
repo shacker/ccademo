@@ -210,18 +210,21 @@ class Profile(BaseProfile):
                     mobile=self.mobile_phone1,
                     work=self.biz_phone1)
 
+
     def is_staff(self):
         """
         Return True if the person is in the Staff group.
-        Note: this is different from user.is_staff() which is a similar
-        boolean flag that allows users to access the django admin.
+        Note: this (profile.is_staff()) is different from Django's user.is_staff()
+        which is a similar boolean flag that allows users to access the Django admin.
         """
+
         if not self.user.is_active:
             return False
-        #if self.user.is_staff(): return True
+
         if Group.objects.get(name="Staff") in self.user.groups.all():
             return True
         return False
+
 
     def is_instructor(self):
         """
